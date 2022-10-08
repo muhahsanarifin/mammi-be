@@ -1,0 +1,19 @@
+### Node ###
+# Node Modules
+node_modules
+
+### mammi ###
+# mammi DB
+mammi-db
+
+# mammi ERD ###
+mammi-erd
+
+# mammi Flowchart ###
+mammi-flowchart
+
+### src ###
+src
+
+### index ###
+index.js
