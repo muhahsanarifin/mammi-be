@@ -13,7 +13,10 @@ mammi-erd
 mammi-flowchart
 
 ### src ###
-src
+# src
 
 ### index ###
-index.js
+# index.js
+
+### Env ###
+.env
