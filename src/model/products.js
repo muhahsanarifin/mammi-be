@@ -33,8 +33,8 @@ const filterCategoryProducts = (queryParams) => {
     const query =
       "select product_id, product_name, product_price, product_image, product_stock, product_category from products where lower(product_category) like lower($1)";
     const values = [`%${queryParams.product_category}%`];
-    console.log(values);
     postgreDatabase.query(query, values, (error, result) => {
+      console.log(values);
       if (error) {
         console.log(error);
         return reject(error);
@@ -47,9 +47,14 @@ const filterCategoryProducts = (queryParams) => {
 const sortingProducts = (queryParams) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select transaction_id, delivery_address, product_id, order_quantity, order_total_price, transaction_amount_fee, payment_date from transactions where lower(delivery_address) like lower($1)";
-    const values = [`%${queryParams.delivery_address}%`];
+      "select transaction_id, delivery_address, product_id, order_quantity, order_total_price, transaction_amount_fee, payment_date from transactions where lower(delivery_address) like lower($1)  or lower(order_quantity) like lower($2) or lower(transaction_amount_fee) like lower($3)";
+    const values = [
+      `%${queryParams.delivery_address}%`,
+      `%${queryParams.order_quantity}%`,
+      `%${queryParams.transaction_amount_fee}%`,
+    ];
     postgreDatabase.query(query, values, (error, result) => {
+      console.log(values);
       if (error) {
         console.log(error);
         return reject(error);
