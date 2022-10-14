@@ -1,7 +1,5 @@
 const {
   getProducts,
-  filterCategoryProducts,
-  sortingProducts,
   findProducts,
   createProducts,
   editProducts,
@@ -11,7 +9,8 @@ const {
 const productController = {
   get: async (req, res) => {
     try {
-      const response = await getProducts();
+      const response = await getProducts(req.query);
+      console.log(response);
       res.status(200).send({
         data: response.rows,
       });
@@ -23,42 +22,15 @@ const productController = {
     }
   },
 
-  findProducts: async (req, res) => {
+  find: async (req, res) => {
     try {
-      const response = await findProducts();
+      const response = await findProducts(req.query);
+      console.log(response);
       res.status(200).send({
         data: response.rows,
       });
     } catch (error) {
       console.log(error);
-      res.status(500).send({
-        message: "Internal Server Error",
-      });
-    }
-  },
-
-  filter: async (req, res) => {
-    console.log(req.query);
-    try {
-      const response = await filterCategoryProducts(req.query);
-      return res.status(200).send({
-        data: response.rows,
-      });
-    } catch (error) {
-      res.status(500).send({
-        message: "Internal Server Error",
-      });
-    }
-  },
-
-  sort: async (req, res) => {
-    console.log(req.query);
-    try {
-      const response = await sortingProducts(req.query);
-      res.status(200).send({
-        data: response.rows,
-      });
-    } catch (error) {
       res.status(500).send({
         message: "Internal Server Error",
       });
@@ -68,8 +40,8 @@ const productController = {
   create: async (req, res) => {
     try {
       const response = await createProducts(req.body);
-      res.status(201).send({
-        data: response,
+      res.status(200).send({
+        data: response.rows,
       });
     } catch (error) {
       console.log(error);
@@ -82,14 +54,8 @@ const productController = {
   edit: async (req, res) => {
     try {
       const response = await editProducts(req.body, req.params);
-      if (response.num == 1) {
-        res.status(200).send({
-          response,
-          massage: "Product was updated successdully.",
-        });
-      }
-      return res.send({
-        message: `Cannot update product with id ${req.params.id}. Maybe product was not found or req.body is empty!`,
+      res.status(200).send({
+        data: response.rows,
       });
     } catch (error) {
       console.log(error);
@@ -103,7 +69,7 @@ const productController = {
     try {
       const response = await dropProducts(req.params);
       res.status(200).send({
-        data: response,
+        data: response.rows,
       });
     } catch (error) {
       console.log(error);

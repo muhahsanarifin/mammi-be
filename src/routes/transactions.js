@@ -2,13 +2,18 @@ const express = require("express");
 
 const transactionsRouter = express.Router();
 
-const { get, create, edit, drop } = require("../controllers/transactions");
+const {
+  get,
+  // create,
+  edit,
+  drop,
+} = require("../controllers/transactions");
 
 // GET
 transactionsRouter.get("/", get);
 
 // POST
-transactionsRouter.post("/", create);
+// transactionsRouter.post("/", create);
 
 // PATCH
 transactionsRouter.patch("/:id", edit);

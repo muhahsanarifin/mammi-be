@@ -15,7 +15,7 @@ const promosController = {
     } catch (error) {
       console.log(error);
       res.status(500).send({
-        msg: "Internal Server Error",
+        message: "Internal Server Error",
       });
     }
   },
@@ -23,13 +23,14 @@ const promosController = {
   create: async (req, res) => {
     try {
       const response = await createPromos(req.body);
+      console.log(response);
       res.status(201).send({
         data: response,
       });
     } catch (error) {
       console.log(error);
       res.status(500).send({
-        msg: "Internal Server Error",
+        message: "Internal Server Error",
       });
     }
   },
@@ -37,13 +38,14 @@ const promosController = {
   edit: async (req, res) => {
     try {
       const response = await editPromos(req.body, req.params);
+      console.log(response);
       res.status(200).send({
         data: response,
       });
     } catch (error) {
       console.log(error);
       res.status(500).send({
-        msg: "Internal Server Error",
+        message: "Internal Server Error",
       });
     }
   },
@@ -57,7 +59,7 @@ const promosController = {
     } catch (error) {
       console.log(error);
       res.status(500).send({
-        msg: "Internal Server Error",
+        message: "Internal Server Error",
       });
     }
   },

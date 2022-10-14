@@ -3,7 +3,7 @@ const postgreDatabase = require("../config/postgre");
 const getPromos = () => {
   return new Promise((resolve, reject) => {
     const query =
-      "select promo_id, promo_name, coupon_code, discount, valid_promo from promos order by promo_id asc";
+      "select promos.id, promos.code, promos.discount, p.product_name, promos.created_at, promos.updated_at from promos join products p on promos.product_id = p.id order by promos.id asc";
     postgreDatabase.query(query, (error, result) => {
       if (error) {
         console.log(error);
@@ -17,11 +17,11 @@ const getPromos = () => {
 const createPromos = (body) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into promos (promo_name, coupon_code, discound, valid_promo) values ($1, $2, $3 , $4)";
-    const { promo_name, coupon_code, discound, valid_promo } = body;
+      "insert into promos (code, discount, product_id, created_at, updated_at) values ($1, $2, $3, $4, $5)";
+    const { code, discount, product_id, created_at, updated_at } = body;
     postgreDatabase.query(
       query,
-      [promo_name, coupon_code, discound, valid_promo],
+      [code, discount, product_id, created_at, updated_at],
       (error, result) => {
         if (error) {
           console.log(error);
@@ -35,11 +35,13 @@ const createPromos = (body) => {
 
 const editPromos = (body, params) => {
   return new Promise((resolve, reject) => {
-    let query = "update products set ";
+    let query = "update promos set ";
+
     const data = [];
+
     Object.keys(body).forEach((key, index, array) => {
       if (index === array.length - 1) {
-        query += `${key} = $${index + 1} where promo_id = $${index + 2}`;
+        query += `${key} = $${index + 1} where promos.id = $${index + 2}`;
         data.push(body[key], params.id);
         return;
       }

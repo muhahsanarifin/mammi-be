@@ -1,9 +1,35 @@
 const postgreDatabase = require("../config/postgre");
 
-const getProducts = () => {
+const getProducts = (queryParams) => {
   return new Promise((resolve, reject) => {
-    const query =
-      "select product_id, product_name, product_price, product_image, product_size, product_stock, product_description, product_category, promos.promo_name, promos.discount from products full join promos on products.promo_id = promos.promo_id order by product_id asc;";
+    // Init query
+    let query;
+    query = "select * from products p";
+    query = "select * from categories c";
+
+    // Find all products
+    query =
+      "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id";
+
+    // Filter products
+    if (queryParams.price == "low") {
+      query =
+        "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id order by p.price asc";
+    }
+    if (queryParams.price == "expensive") {
+      query =
+        "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id order by p.price desc";
+    }
+
+    if (queryParams.post == "oldest") {
+      query =
+        "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id order by p.created_at asc";
+    }
+
+    if (queryParams.post == "newest") {
+      query =
+        "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id order by p.updated_at desc";
+    }
     postgreDatabase.query(query, (error, result) => {
       if (error) {
         console.log(error);
@@ -14,47 +40,17 @@ const getProducts = () => {
   });
 };
 
-const findProducts = () => {
+const findProducts = (queryParams) => {
   return new Promise((resolve, reject) => {
-    const query =
-      "select product_id, product_name, product_price, product_image, product_size, product_stock, product_description, product_category, promos.promo_name, promos.discount from products join promos on products.promo_id = promos.promo_id order by product_id asc";
-    postgreDatabase.query(query, (error, result) => {
-      if (error) {
-        console.log(error);
-        return reject(error);
-      }
-      return resolve(result);
-    });
-  });
-};
+    // Init query
+    let query;
+    query = "select * from products p";
+    query = "select * from categories c";
 
-const filterCategoryProducts = (queryParams) => {
-  return new Promise((resolve, reject) => {
-    const query =
-      "select product_id, product_name, product_price, product_image, product_stock, product_category from products where lower(product_category) like lower($1)";
-    const values = [`%${queryParams.product_category}%`];
+    query =
+      "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id where lower(c.category_name) like lower($1)";
+    let values = [`%${queryParams.c.category_name}%`];
     postgreDatabase.query(query, values, (error, result) => {
-      console.log(values);
-      if (error) {
-        console.log(error);
-        return reject(error);
-      }
-      return resolve(result);
-    });
-  });
-};
-
-const sortingProducts = (queryParams) => {
-  return new Promise((resolve, reject) => {
-    const query =
-      "select transaction_id, delivery_address, product_id, order_quantity, order_total_price, transaction_amount_fee, payment_date from transactions where lower(delivery_address) like lower($1)  or lower(order_quantity) like lower($2) or lower(transaction_amount_fee) like lower($3)";
-    const values = [
-      `%${queryParams.delivery_address}%`,
-      `%${queryParams.order_quantity}%`,
-      `%${queryParams.transaction_amount_fee}%`,
-    ];
-    postgreDatabase.query(query, values, (error, result) => {
-      console.log(values);
       if (error) {
         console.log(error);
         return reject(error);
@@ -67,33 +63,17 @@ const sortingProducts = (queryParams) => {
 const createProducts = (body) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into products (product_name, product_price, product_image, product_size, product_stock, product_description, product_category) values ($1, $2, $3, $4, $5, $6, $7)";
-    const {
-      product_name,
-      product_price,
-      product_image,
-      product_size,
-      product_stock,
-      product_description,
-      product_category,
-    } = body;
+      "insert into products (product_name, product_price, product_image) values ($1,$2,$3)";
+    const { product_name, product_price, product_image } = body;
     postgreDatabase.query(
       query,
-      [
-        product_name,
-        product_price,
-        product_image,
-        product_size,
-        product_stock,
-        product_description,
-        product_category,
-      ],
+      [product_name, product_price, product_image],
       (error, result) => {
         if (error) {
           console.log(error);
-          return reject(error);
+          reject(error);
         }
-        return resolve(result);
+        resolve(result);
       }
     );
   });
@@ -107,7 +87,7 @@ const editProducts = (body, params) => {
 
     Object.keys(body).forEach((key, index, array) => {
       if (index === array.length - 1) {
-        query += `${key} = $${index + 1} where product_id = $${index + 2}`;
+        query += `${key} = $${index + 1} where products.id = $${index + 2}`;
         data.push(body[key], params.id);
         return;
       }
@@ -126,7 +106,7 @@ const editProducts = (body, params) => {
 
 const dropProducts = (params) => {
   return new Promise((resolve, reject) => {
-    const query = "delete from products where product_id = $1";
+    const query = "delete from products where products.id = $1";
     postgreDatabase.query(query, [params.id], (error, result) => {
       if (error) {
         console.log(error);
@@ -139,8 +119,6 @@ const dropProducts = (params) => {
 
 const productsModel = {
   getProducts,
-  filterCategoryProducts,
-  sortingProducts,
   findProducts,
   createProducts,
   editProducts,
