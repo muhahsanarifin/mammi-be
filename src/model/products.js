@@ -1,36 +1,43 @@
+/* eslint-disable prettier/prettier */
+
 const postgreDatabase = require("../config/postgre");
 
 const getProducts = (queryParams) => {
   return new Promise((resolve, reject) => {
-    // Init query
-    let query;
-    query = "select * from products p";
-    query = "select * from categories c";
-
-    // Find all products
-    query =
+    // Find all products ↴
+    let query =
       "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id";
 
-    // Filter products
-    if (queryParams.price == "low") {
-      query =
-        "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id order by p.price asc";
-    }
-    if (queryParams.price == "expensive") {
-      query =
-        "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id order by p.price desc";
+    // Filter products ↴
+    if (queryParams.post == "latest") {
+      query += ` order by p.created_at desc`;
     }
 
     if (queryParams.post == "oldest") {
-      query =
-        "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id order by p.created_at asc";
+      query += ` order by p.created_at asc`;
     }
 
-    if (queryParams.post == "newest") {
-      query =
-        "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id order by p.updated_at desc";
+    if (queryParams.price == "low") {
+      query += ` order by p.price asc`;
     }
+
+    if (queryParams.price == "expensive") {
+      query += ` order by p.price desc`;
+    }
+
+    // Filter  Category Products ↴
+    if (queryParams.filter) {
+      query += ` where lower(c.category_name) like lower('%${queryParams.filter}%')`;
+    }
+
+    // Search Products ↴
+    if (queryParams.search) {
+      query += ` where lower(p.product_name) like lower('%${queryParams.search}%')`;
+    }
+
     postgreDatabase.query(query, (error, result) => {
+      console.log(result);
+      console.log(query);
       if (error) {
         console.log(error);
         return reject(error);
@@ -63,11 +70,12 @@ const findProducts = (queryParams) => {
 const createProducts = (body) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into products (product_name, product_price, product_image) values ($1,$2,$3)";
-    const { product_name, product_price, product_image } = body;
+      "insert into products (product_name, category_id, image, created_at, updated_at, price) values ($1,$2,$3,$4,$5,$6)";
+    const { product_name, category_id, image, created_at, updated_at, price } =
+      body;
     postgreDatabase.query(
       query,
-      [product_name, product_price, product_image],
+      [product_name, category_id, image, created_at, updated_at, price],
       (error, result) => {
         if (error) {
           console.log(error);

@@ -21,7 +21,6 @@ const productController = {
       });
     }
   },
-
   find: async (req, res) => {
     try {
       const response = await findProducts(req.query);
@@ -45,7 +44,7 @@ const productController = {
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
+      res.status(500).send({
         message: "Internal Server Error",
       });
     }
@@ -54,12 +53,14 @@ const productController = {
   edit: async (req, res) => {
     try {
       const response = await editProducts(req.body, req.params);
+      console.log(res.body);
+      console.log(response);
       res.status(200).send({
         data: response.rows,
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
+      res.status(500).send({
         message: "Internal Server Error",
       });
     }

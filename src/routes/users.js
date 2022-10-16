@@ -2,35 +2,19 @@ const express = require("express");
 
 const usersRouter = express.Router();
 
-const { get, create, edit, drop } = require("../controllers/users");
+// ▣ New Script
+const { gets, get, register, editPassword } = require("../controllers/users");
+
+// GETS
+usersRouter.get("/", gets);
 
 // GET
-usersRouter.get("/", get);
+usersRouter.get("/:id", get);
 
-// POST
-usersRouter.post("/", create);
+// REGISTER users
+usersRouter.post("/", register);
 
-// PATCH
-usersRouter.patch("/:id", edit);
-
-// DELETE
-usersRouter.delete("/:id", drop);
+// EDIT password
+usersRouter.patch("/edit-password", editPassword);
 
 module.exports = usersRouter;
-
-// ▨ Syntax is not used
-// usersRouter.get("/", async (req, res) => {
-//   try {
-//     const query = "select id, first_name, last_name, birth, gender from users";
-//     const response = await postgreDatabase.query(query);
-//     res.status(200).json({
-//       data: response.rows,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       msg: "internal Server Error",
-//     });
-//   }
-// });
-// module.exports = usersRouter;

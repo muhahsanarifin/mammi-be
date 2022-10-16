@@ -20,3 +20,9 @@ mammi-flowchart
 
 ### Env ###
 .env
+
+## README ###
+README.md
+
+### HELPERS ###
+helpers/product-res.js
