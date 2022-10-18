@@ -18,8 +18,8 @@ const userController = {
         data: { ...response.rows[0], email: body.email },
       });
     } catch (error) {
-      res.status(500).send({
-        message: "Internal Server Error",
+      res.status(401).send({
+        message: error.detail,
       });
     }
   },
@@ -57,7 +57,7 @@ const userController = {
     try {
       const response = await deleteAccount(req.params);
       res.status(200).send({
-        data: response.rows,
+        data: "User was delete successfully",
       });
     } catch (error) {
       res.status(500).send({

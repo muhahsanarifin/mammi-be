@@ -118,7 +118,7 @@ const deleteAccount = (params) => {
 const getUsers = () => {
   return new Promise((resolve, reject) => {
     const query =
-      "select id, email, password, phone_number, role, created_at, updated_at from users order by id asc";
+      "select id, email, phone_number, role, created_at, updated_at from users order by id asc";
     postgreDatabase.query(query, (error, result) => {
       if (error) {
         console.log(error);

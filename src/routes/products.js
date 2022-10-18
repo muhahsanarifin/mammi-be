@@ -14,28 +14,12 @@ productsRouter.get("/", isLogin(), get);
 productsRouter.get("/pages", pages);
 
 // POST
-productsRouter.post(
-  "/",
-  isLogin(),
-  allowedRoles("Admin"),
-  uploads.single("image"),
-  create
-);
+productsRouter.post("/", isLogin(), uploads.single("image"), create);
 
 // PATCH
-productsRouter.patch(
-  "/:id",
-  isLogin(),
-  allowedRoles("Admin"),
-  update
-);
+productsRouter.patch("/:id", isLogin(), allowedRoles("Admin"), update);
 
 // DELETE
-productsRouter.delete(
-  "/:id",
-  isLogin(),
-  allowedRoles("Admin"),
-  drop
-);
+productsRouter.delete("/:id", isLogin(), allowedRoles("Admin"), drop);
 
 module.exports = productsRouter;
