@@ -1,7 +1,9 @@
-## About The Project
 
 <h2 align="center">MAMMI - Backend</h2>
 
+## About The Project
+
+Mammi is coffee shop.
 
 ## ENDPOINT DETAILS
 
