@@ -64,8 +64,7 @@ const productPages = (queryParams) => {
     let limit = Number(queryParams.limit);
     let offset = (page - 1) * limit;
     query += `limit $${values.length + 1} offset $${values.length + 2}`;
-    values.push(limit, offset);
-    
+    values.push(limit, offset);   
     postgreDatabase.query(query, values, (error, result) => {
       if (error) {
         return reject(error);

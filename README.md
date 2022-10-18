@@ -5,31 +5,6 @@
 
 Mammi is coffee shop.
 
-## ENDPOINT DETAILS
-
-| Endpoint     |            Method             | Info         |
-| ------------ | :---------------------------: | :----------- |
-| /auth        |        `POST` `DELETE`        | Auth         |
-| /user        | `POST` `GET` `PATCH` `DELETE` | Users        |
-| /profile     |      `POST` `GET` `PATCH`     | Profiles     |
-| /product     | `POST` `GET` `PATCH` `DELETE` | Products     |
-| /promo       | `POST` `GET` `PATCH` `DELETE` | Promos       |
-| /transaction | `POST` `GET` `PATCH` `DELETE` | Transactions |
-
-## Built With
-
-![nodejs](https://img.shields.io/badge/nodejs-16-brightgreen)
-![expressjs](https://img.shields.io/badge/expressjs-4-lightgrey)
-![postgreSQL](https://img.shields.io/badge/postgreSQL-11-blue)
-
-## Features
-
-1. Authentication system Login,Register with JWT
-2. Form input Validation, hash password.
-3. Searching and Sorting with Pagination.
-4. Page Navigation Handling.
-5. Create products with upload image.
-
 ## Getting Started
 
 1. Download this Project or you can type
@@ -42,7 +17,7 @@ $ git clone https://github.com/muhahsanarifin/mammi.git
 2. Install NPM packages
 
 ```sh
-$ npm install / $ npm install
+$ npm install
 ```
 
 3. Starting client
@@ -51,7 +26,32 @@ $ npm install / $ npm install
 $ npm start
 ```
 
-4. Mammi is Running
+## Built With
+
+![nodejs](https://img.shields.io/badge/nodejs-16-brightgreen)
+![expressjs](https://img.shields.io/badge/expressjs-4-lightgrey)
+![postgreSQL](https://img.shields.io/badge/postgreSQL-11-blue)
+
+
+## ENDPOINT DETAILS
+
+| Endpoint     |            Method             | Info         |
+| ------------ | :---------------------------: | :----------- |
+| /auth        |        `POST` `DELETE`        | Auth         |
+| /user        | `POST` `GET` `PATCH` `DELETE` | Users        |
+| /profile     |      `POST` `GET` `PATCH`     | Profiles     |
+| /product     | `POST` `GET` `PATCH` `DELETE` | Products     |
+| /promo       | `POST` `GET` `PATCH` `DELETE` | Promos       |
+| /transaction | `POST` `GET` `PATCH` `DELETE` | Transactions |
+
+## Features
+
+1. Authentication system Login,Register with JWT
+2. Form input Validation, hash password.
+3. Searching and Sorting with Pagination.
+4. Page Navigation Handling.
+5. Create products with upload image.
+6. Etc.
 
 ## Related Project
 
