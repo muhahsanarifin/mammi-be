@@ -1,7 +1,4 @@
-<h2 align="left">MAMMI - Backend</h2>
-
-<p> <samp><i>&copy; 2022 mammi</i></samp> </p>
-
+<h2 align="center">MAMMI - Backend</h2>
 
 ## About The Project
 
@@ -58,3 +55,5 @@ $ npm start
 ## Related Project
 
 -   Backend API Documentation [`here`](https://documenter.getpostman.com/view/16092081/2s847ESaDX)
+
+<p> <samp><i>&copy; 2022 mammi</i></samp> </p>

@@ -33,9 +33,9 @@ const registerUsers = (body) => {
 // Edit Users Model ↴ // ◔ On progress
 const editPassword = (body) => {
   return new Promise((resolve, reject) => {
-    const { old_password, new_password, id } = body;
-    const getPwdQuery = "select password from users where id = $1";
-    const getPwdValues = [id];
+    const { old_password, new_password, email } = body;
+    const getPwdQuery = "select password from users where email = $1";
+    const getPwdValues = [email];
     postgreDatabase.query(getPwdQuery, getPwdValues, (error, response) => {
       if (error) {
         console.log(error);
@@ -57,8 +57,9 @@ const editPassword = (body) => {
             console.log(error);
             return reject({ error });
           }
-          const editPwdQuery = "update users set password = $1 where id = $2";
-          const editPwdValues = [newHashedPassword, id];
+          const editPwdQuery =
+            "update users set password = $1 where email = $2";
+          const editPwdValues = [newHashedPassword, email];
           postgreDatabase.query(
             editPwdQuery,
             editPwdValues,
