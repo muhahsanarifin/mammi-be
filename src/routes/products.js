@@ -27,7 +27,6 @@ productsRouter.patch(
   "/:id",
   isLogin(),
   allowedRoles("Admin"),
-  uploads.single("image"),
   update
 );
 
@@ -36,7 +35,6 @@ productsRouter.delete(
   "/:id",
   isLogin(),
   allowedRoles("Admin"),
-  uploads.single("image"),
   drop
 );
 
