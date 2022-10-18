@@ -1,8 +1,7 @@
-<h2 align="center">MAMMI - Backend</h2>
-
 ## About The Project
 
-Bujank Coffee is everyone can drinks
+<h2 align="center">MAMMI - Backend</h2>
+
 
 ## ENDPOINT DETAILS
 
