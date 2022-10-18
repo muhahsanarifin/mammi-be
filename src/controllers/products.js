@@ -1,8 +1,9 @@
+/* eslint-disable prettier/prettier */
 const {
   getProducts,
-  findProducts,
+  productPages,
   createProducts,
-  editProducts,
+  updateProducts,
   dropProducts,
 } = require("../model/products");
 
@@ -10,7 +11,6 @@ const productController = {
   get: async (req, res) => {
     try {
       const response = await getProducts(req.query);
-      console.log(response);
       res.status(200).send({
         data: response.rows,
       });
@@ -21,10 +21,10 @@ const productController = {
       });
     }
   },
-  find: async (req, res) => {
+
+  pages: async (req, res) => {
     try {
-      const response = await findProducts(req.query);
-      console.log(response);
+      const response = await productPages(req.query);
       res.status(200).send({
         data: response.rows,
       });
@@ -38,7 +38,7 @@ const productController = {
 
   create: async (req, res) => {
     try {
-      const response = await createProducts(req.body);
+      const response = await createProducts(req.body, req.file);
       res.status(200).send({
         data: response.rows,
       });
@@ -50,11 +50,9 @@ const productController = {
     }
   },
 
-  edit: async (req, res) => {
+  update: async (req, res) => {
     try {
-      const response = await editProducts(req.body, req.params);
-      console.log(res.body);
-      console.log(response);
+      const response = await updateProducts(req.body, req.params);
       res.status(200).send({
         data: response.rows,
       });

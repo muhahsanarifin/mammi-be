@@ -2,21 +2,42 @@ const express = require("express");
 
 const productsRouter = express.Router();
 
-const { get, find, create, edit, drop } = require("../controllers/products");
+const { get, pages, create, update, drop } = require("../controllers/products");
+
+const isLogin = require("../middlewares/isLogin");
+const allowedRoles = require("../middlewares/allowedRoles");
+const uploads = require("../middlewares/uploadImages");
 
 // GET
-productsRouter.get("/", get);
+productsRouter.get("/", isLogin(), get);
 
-// FIND
-productsRouter.get("/find", find);
+productsRouter.get("/pages", pages);
 
 // POST
-productsRouter.post("/", create);
+productsRouter.post(
+  "/",
+  isLogin(),
+  allowedRoles("Admin"),
+  uploads.single("image"),
+  create
+);
 
 // PATCH
-productsRouter.patch("/:id", edit);
+productsRouter.patch(
+  "/:id",
+  isLogin(),
+  allowedRoles("Admin"),
+  uploads.single("image"),
+  update
+);
 
 // DELETE
-productsRouter.delete("/:id", drop);
+productsRouter.delete(
+  "/:id",
+  isLogin(),
+  allowedRoles("Admin"),
+  uploads.single("image"),
+  drop
+);
 
 module.exports = productsRouter;

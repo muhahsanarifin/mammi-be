@@ -69,6 +69,26 @@ const login = (body) => {
   });
 };
 
-const modelAuth = { login };
+// Logout ↴
+const logout = (token) => {
+  new Promise((resolve, reject) => {
+    const query = "insert into tokens(token) values($1)";
+    postgreDatabase.query(query, [token], (error, result) => {
+      if (error) {
+        console.log(error);
+        return reject({
+          error: new Error("Internet Server Error"),
+          status: 500,
+        });
+      }
+      return resolve({
+        message: "Logout is successfully",
+        status: "200",
+      });
+    });
+  });
+};
+
+const modelAuth = { login, logout };
 
 module.exports = modelAuth;

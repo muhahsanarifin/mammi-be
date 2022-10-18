@@ -1,8 +1,6 @@
 const bcrypt = require("bcrypt");
 const postgreDatabase = require("../config/postgre");
 
-// ▣ New Script
-
 // Register Users Model ↴ // ◔ On progress
 const registerUsers = (body) => {
   return new Promise((resolve, reject) => {
@@ -15,12 +13,18 @@ const registerUsers = (body) => {
       const query =
         "insert into users (email, password, phone_number) values ($1, $2, $3) returning id";
       const values = [email, hashedPassord, phone_number];
-      postgreDatabase.query(query, values, (error, result) => {
+      postgreDatabase.query(query, values, (error, response) => {
         if (error) {
           console.log(error);
           return reject(error);
         }
-        return resolve(result);
+        const queryProfile = `insert into profiles (user_id) values(${response.rows[0].id})`;
+        postgreDatabase.query(queryProfile, (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          resolve(result);
+        });
       });
     });
   });
@@ -72,6 +76,45 @@ const editPassword = (body) => {
   });
 };
 
+const editProfile = (body, params) => {
+  return new Promise((resolve, reject) => {
+    let query = "update profiles set ";
+
+    const data = [];
+
+    Object.keys(body).forEach((key, index, array) => {
+      if (index === array.length - 1) {
+        query += `${key} = $${index + 1} where user_id = $${index + 2}`;
+        data.push(body[key], params.id);
+        return;
+      }
+      query += `${key} = $${index + 1},`;
+      data.push(body[key]);
+    });
+    postgreDatabase.query(query, data, (error, result) => {
+      if (error) {
+        console.log(error);
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+const deleteAccount = (params) => {
+  return new Promise((resolve, reject) => {
+    const query = "delete from profiles where user_id = $1";
+    const values = [params.id];
+    postgreDatabase.query(query, values, (error, result) => {
+      if (error) {
+        console.log(error);
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 const getUsers = () => {
   return new Promise((resolve, reject) => {
     const query =
@@ -86,11 +129,11 @@ const getUsers = () => {
   });
 };
 
-const getUser = (params) => {
+const getUser = (queryParams) => {
   return new Promise((resolve, reject) => {
     const query =
       "select id, email, password, phone_number, role, created_at, updated_at from users where id = $1";
-    postgreDatabase.query(query, [params.id], (error, result) => {
+    postgreDatabase.query(query, [queryParams.id], (error, result) => {
       if (error) {
         console.log(error);
         return reject(error);
@@ -100,57 +143,13 @@ const getUser = (params) => {
   });
 };
 
-// ▢ Old Script
-// const getUsers = () => {
-//   return new Promise((resolve, reject) => {
-//     const query =
-//       "select user_id, display_name, first_name, last_name, birth, email, phone_number from users order by user_id asc";
-//     postgreDatabase.query(query, (error, result) => {
-//       if (error) {
-//         console.log(error);
-//         return reject(error);
-//       }
-//       return resolve(result);
-//     });
-//   });
-// };
-
-// const editUsers = (body, params) => {
-//   return new Promise((resolve, reject) => {
-//     let query = "update users set ";
-//     const data = [];
-//     Object.keys(body).forEach((key, index, array) => {
-//       if (index === array.length - 1) {
-//         query += `${key} = $${index + 1} where user_id = $${index + 2}`;
-//         data.push(body[key], params.id);
-//         return;
-//       }
-//       query += `${key} = $${index + 1},`;
-//       data.push(body[key]);
-//     });
-//     postgreDatabase.query(query, data, (error, result) => {
-//       if (error) {
-//         console.log(error);
-//         return reject(error);
-//       }
-//       return resolve(result);
-//     });
-//   });
-// };
-
-// const dropUsers = (params) => {
-//   return new Promise((resolve, reject) => {
-//     const query = "delete from users where user_id = $1";
-//     postgreDatabase.query(query, [params.id], (error, result) => {
-//       if (error) {
-//         console.log(error);
-//         return reject(error);
-//       }
-//       return resolve(result);
-//     });
-//   });
-// };
-
-const usersModel = { registerUsers, editPassword, getUsers, getUser };
+const usersModel = {
+  registerUsers,
+  editPassword,
+  getUsers,
+  getUser,
+  editProfile,
+  deleteAccount,
+};
 
 module.exports = usersModel;

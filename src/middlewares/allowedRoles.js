@@ -1,6 +1,6 @@
 module.exports = (...allowedeRole) => {
   return (req, res, next) => {
-    const payload = re.userPayload;
+    const payload = req.userPayload;
     let isAllowed = false;
     for (let role of allowedeRole) {
       if (role !== payload.role) continue;

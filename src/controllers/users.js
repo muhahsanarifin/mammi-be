@@ -1,6 +1,8 @@
 const {
   registerUsers,
   editPassword,
+  editProfile,
+  deleteAccount,
   getUsers,
   getUser,
 } = require("../model/users");
@@ -17,7 +19,7 @@ const userController = {
       });
     } catch (error) {
       res.status(500).send({
-        message: "Inter Server Error",
+        message: "Internal Server Error",
       });
     }
   },
@@ -34,6 +36,32 @@ const userController = {
       const statusCode = objErr.statusCode || 500;
       res.status(statusCode).send({
         message: objErr.error.message,
+      });
+    }
+  },
+
+  editProfile: async (req, res) => {
+    try {
+      const response = await editProfile(req.body, req.params);
+      res.status(200).send({
+        data: response.rows,
+      });
+    } catch (error) {
+      res.status(500).send({
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  deleteAccount: async (req, res) => {
+    try {
+      const response = await deleteAccount(req.params);
+      res.status(200).send({
+        data: response.rows,
+      });
+    } catch (error) {
+      res.status(500).send({
+        message: "Internal Server Error",
       });
     }
   },
@@ -66,64 +94,5 @@ const userController = {
     }
   },
 };
-
-// ▢ Old Script
-// const userController = {
-//   get: async (req, res) => {
-//     try {
-//       const response = await getUsers();
-//       res.status(200).send({
-//         data: response.rows,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).send({
-//         msg: "Internal Server Error",
-//       });
-//     }
-//   },
-
-//   create: async (req, res) => {
-//     try {
-//       const response = await createUsers(req.body);
-//       res.status(201).send({
-//         data: response,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).send({
-//         msg: "Internal Server Error",
-//       });
-//     }
-//   },
-
-//   edit: async (req, res) => {
-//     try {
-//       const response = await editUsers(req.body, req.params);
-//       res.status(200).send({
-//         data: response,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).send({
-//         msg: "Internal Server Error",
-//       });
-//     }
-//   },
-
-//   drop: async (req, res) => {
-//     try {
-//       const response = await dropUsers(req.params);
-//       res.status(200).send({
-//         data: response,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).json({
-//         msg: "Internal Server Error",
-//       });
-//     }
-//   },
-// };
 
 module.exports = userController;

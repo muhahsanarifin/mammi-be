@@ -1,6 +1,7 @@
 const {
   getTransactions,
-  // createTransactions,
+  createTransactions,
+  getHistory,
   editTransactions,
   dropTransactions,
 } = require("../model/transactions");
@@ -16,24 +17,37 @@ const transactionsController = {
     } catch (error) {
       console.log(error);
       res.status(500).send({
-        msg: "Internal Server Error",
+        message: "Internal Server Error",
       });
     }
   },
 
-  // create: async (req, res) => {
-  //   try {
-  //     const response = await createTransactions(req.body);
-  //     res.status(201).send({
-  //       data: response,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //     res.status(500).send({
-  //       msg: "Internal Server Error",
-  //     });
-  //   }
-  // },
+  history: async (req, res) => {
+    try {
+      const response = await getHistory(req.params);
+      res.status(200).send({
+        data: response.rows,
+      });
+    } catch (error) {
+      res.status(500).send({
+        message: "internel server Error",
+      });
+    }
+  },
+
+  create: async (req, res) => {
+    try {
+      const response = await createTransactions(req.body);
+      res.status(201).send({
+        data: response,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        message: "Internal Server Error",
+      });
+    }
+  },
 
   edit: async (req, res) => {
     try {
@@ -44,7 +58,7 @@ const transactionsController = {
     } catch (error) {
       console.log(error);
       res.status(500).send({
-        msg: "Internal Server Error",
+        message: "Internal Server Error",
       });
     }
   },
@@ -58,7 +72,7 @@ const transactionsController = {
     } catch (error) {
       console.log(error);
       res.status(500).send({
-        msg: "Internal Server Error",
+        message: "Internal Server Error",
       });
     }
   },

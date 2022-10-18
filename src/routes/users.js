@@ -2,8 +2,16 @@ const express = require("express");
 
 const usersRouter = express.Router();
 
-// ▣ New Script
-const { gets, get, register, editPassword } = require("../controllers/users");
+const {
+  gets,
+  get,
+  register,
+  editProfile,
+  deleteAccount,
+  editPassword,
+} = require("../controllers/users");
+
+// const uploads = require("../middlewares/uploadImages");
 
 // GETS
 usersRouter.get("/", gets);
@@ -13,6 +21,12 @@ usersRouter.get("/:id", get);
 
 // REGISTER users
 usersRouter.post("/", register);
+
+//DROP account/users
+usersRouter.delete("/:id", deleteAccount);
+
+// EDIT profiles
+usersRouter.patch("/profiles", editProfile);
 
 // EDIT password
 usersRouter.patch("/edit-password", editPassword);
