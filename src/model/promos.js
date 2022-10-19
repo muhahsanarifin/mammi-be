@@ -1,9 +1,17 @@
 const postgreDatabase = require("../config/postgre");
 
-const getPromos = () => {
+const getPromos = (queryParams) => {
   return new Promise((resolve, reject) => {
-    const query =
+    let query =
       "select promos.id, promos.code, promos.discount, p.product_name, promos.created_at, promos.updated_at from promos join products p on promos.product_id = p.id order by promos.id asc";
+
+    if (queryParams.page && queryParams.limit) {
+      let page = Number(queryParams.page);
+      let limit = Number(queryParams.limit);
+      let offset = (page - 1) * limit;
+      query = `select promos.id, promos.code, promos.discount, p.product_name, promos.created_at, promos.updated_at from promos join products p on promos.product_id = p.id order by promos.id limit ${limit} offset ${offset}`;
+    }
+
     postgreDatabase.query(query, (error, result) => {
       if (error) {
         console.log(error);

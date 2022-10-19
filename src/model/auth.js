@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const postgreDatabase = require("../config/postgre");
 
+// Login ↴
 const login = (body) => {
   return new Promise((resolve, reject) => {
     const { email, password } = body;

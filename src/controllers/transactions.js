@@ -52,8 +52,8 @@ const transactionsController = {
   edit: async (req, res) => {
     try {
       const response = await editTransactions(req.body, req.params);
+      console.log(response);
       res.status(200).send({
-        data: response.rows,
         message: "Transaction was updated successfully.",
       });
     } catch (error) {

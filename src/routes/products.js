@@ -15,7 +15,7 @@ productsRouter.get("/", isLogin(), get);
 productsRouter.post("/", isLogin(), uploads.single("image"), create);
 
 // PATCH
-productsRouter.patch("/:id", isLogin(), update);
+productsRouter.patch("/:id", isLogin(), allowedRoles("Admin"), update);
 
 // DELETE
 productsRouter.delete("/:id", isLogin(), drop);

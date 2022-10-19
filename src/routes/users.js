@@ -12,12 +12,13 @@ const {
 } = require("../controllers/users");
 
 // const uploads = require("../middlewares/uploadImages");
+const isLogin = require("../middlewares/isLogin");
 
 // GETS
-usersRouter.get("/", gets);
+usersRouter.get("/", isLogin(), gets);
 
 // GET
-usersRouter.get("/:id", get);
+usersRouter.get("/:id", isLogin(), get);
 
 // REGISTER users
 usersRouter.post("/", register);

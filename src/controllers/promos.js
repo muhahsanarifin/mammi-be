@@ -8,7 +8,7 @@ const {
 const promosController = {
   get: async (req, res) => {
     try {
-      const response = await getPromos();
+      const response = await getPromos(req.query);
       res.status(200).send({
         data: response.rows,
       });
@@ -53,7 +53,7 @@ const promosController = {
     try {
       const response = await dropPromos(req.params);
       res.status(200).send({
-        data: response,
+        message: `Promo discount was updated`,
       });
     } catch (error) {
       console.log(error);

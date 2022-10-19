@@ -2,7 +2,7 @@ const express = require("express");
 
 const transactionsRouter = express.Router();
 // const allowedRoles = require("../middlewares/allowedRoles");
-// const isLogin = require("../middlewares/isLogin");
+const isLogin = require("../middlewares/isLogin");
 
 const {
   get,
@@ -13,18 +13,18 @@ const {
 } = require("../controllers/transactions");
 
 // GET
-transactionsRouter.get("/", get);
+transactionsRouter.get("/", isLogin(), get);
 
 // GET history
-transactionsRouter.get("/history/:id", history);
+transactionsRouter.get("/history/:id", isLogin(), history);
 
 // POST
-transactionsRouter.post("/", create);
+transactionsRouter.post("/", isLogin(), create);
 
 // PATCH
-transactionsRouter.patch("/:id", edit);
+transactionsRouter.patch("/:id", isLogin(), edit);
 
 // DELETE
-transactionsRouter.delete("/:id", drop);
+transactionsRouter.delete("/:id", isLogin(), drop);
 
 module.exports = transactionsRouter;

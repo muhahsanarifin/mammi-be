@@ -69,19 +69,9 @@ const createProducts = (body, file) => {
 const updateProducts = (body, params, file) => {
   return new Promise((resolve, reject) => {
     let query = "update products set ";
-    // let imageURL = null;
+
     const data = [];
 
-    // if (file) {
-    //   imageURL = `/image/${file.filename}`;
-    //   if (Object.keys(body).length === 0) {
-    //     query += `image = '${imageURL}', where products.id = $1 returning *`;
-    //     data.push(params.id);
-    //   }
-    //   if (Object.keys(body).length > 0) {
-    //     query += `image ='${imageURL}',`;
-    //   }
-    // }
     Object.keys(body).forEach((key, index, array) => {
       if (index === array.length - 1) {
         query += `${key} = $${index + 1} where products.id = $${
@@ -98,24 +88,6 @@ const updateProducts = (body, params, file) => {
         return reject(error);
       }
       return resolve(result);
-      // if (result.rows.length === 0) {
-      //   return reject({
-      //     status: 404,
-      //     message: "Data is not found",
-      //   });
-      // }
-      // if (file) {
-      //   return resolve({
-      //     status: 200,
-      //     message: `${result.rows[0].product_name} is updated`,
-      //     data: { productsid, image: imageURL, ...body },
-      //   });
-      // }
-      // return resolve({
-      //   status: 200,
-      //   message: `${result.rows[0].product_name} is updated`,
-      //   data: { id, ...body },
-      // });
     });
   });
 };
