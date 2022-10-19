@@ -31,6 +31,9 @@ postgreDatabase
       );
     });
 
+    //Access static files
+    server.use(express.static("./public"));
+
     // Using parser for body
     server.use(express.json());
     server.use(express.urlencoded({ extended: false }));

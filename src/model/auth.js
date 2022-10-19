@@ -14,7 +14,6 @@ const login = (body) => {
       getPasswordByEmailQuery,
       getPasswordByEmailValues,
       (error, response) => {
-        console.log(response);
         if (error) {
           console.log(error);
           return reject({ error });
@@ -29,7 +28,6 @@ const login = (body) => {
         const hashedPassword = response.rows[0].password;
         bcrypt.compare(password, hashedPassword, (error, isSame) => {
           if (error) {
-            console.log(error);
             return reject({ error });
           }
           if (!isSame)
@@ -53,13 +51,13 @@ const login = (body) => {
             },
             (error, token) => {
               if (error) {
-                console.log(error);
                 return reject({ error });
               }
               return resolve({
                 token,
-                email: payload.email,
                 role: payload.role,
+                email: payload.email,
+                id: payload.id,
               });
             }
           );

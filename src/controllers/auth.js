@@ -20,7 +20,6 @@ const authController = {
   logout: async (req, res) => {
     try {
       const response = await logout(req.header("x-access-token"));
-      console.log(response);
       success(res, 200, {
         data: response,
         message: " Logout was successfully.",

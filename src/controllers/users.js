@@ -7,7 +7,6 @@ const {
   getUser,
 } = require("../model/users");
 
-// ▣ New Script
 const userController = {
   register: async (req, res) => {
     try {
@@ -43,8 +42,10 @@ const userController = {
   editProfile: async (req, res) => {
     try {
       const response = await editProfile(req.body, req.params);
+      console.log(response);
       res.status(200).send({
         data: response.rows,
+        message: "Profile discount was updated",
       });
     } catch (error) {
       res.status(500).send({
@@ -68,7 +69,7 @@ const userController = {
 
   gets: async (req, res) => {
     try {
-      const response = await getUsers();
+      const response = await getUsers(req.query);
       res.status(200).send({
         data: response.rows,
       });

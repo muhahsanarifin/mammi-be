@@ -23,9 +23,8 @@ const promosController = {
   create: async (req, res) => {
     try {
       const response = await createPromos(req.body);
-      console.log(response);
       res.status(201).send({
-        data: response,
+        message: `Code voucher was created`,
       });
     } catch (error) {
       console.log(error);
@@ -40,7 +39,7 @@ const promosController = {
       const response = await editPromos(req.body, req.params);
       console.log(response);
       res.status(200).send({
-        data: response,
+        message: `Promo discount was updated`,
       });
     } catch (error) {
       console.log(error);

@@ -85,7 +85,9 @@ const editProfile = (body, params) => {
 
     Object.keys(body).forEach((key, index, array) => {
       if (index === array.length - 1) {
-        query += `${key} = $${index + 1} where user_id = $${index + 2}`;
+        query += `${key} = $${index + 1} where profiles.user_id = $${
+          index + 2 + `returning *`
+        }`;
         data.push(body[key], params.id);
         return;
       }
@@ -116,10 +118,17 @@ const deleteAccount = (params) => {
   });
 };
 
-const getUsers = () => {
+const getUsers = (queryParams) => {
   return new Promise((resolve, reject) => {
-    const query =
+    let query =
       "select id, email, phone_number, role, created_at, updated_at from users order by id asc";
+
+    if (queryParams.page && queryParams.limit) {
+      let page = Number(queryParams.page);
+      let limit = Number(queryParams.limit);
+      let offset = (page - 1) * limit;
+      query = ` select id, email, phone_number, role, created_at, updated_at from users order by id asc limit ${limit} offset ${offset}`;
+    }
     postgreDatabase.query(query, (error, result) => {
       if (error) {
         console.log(error);

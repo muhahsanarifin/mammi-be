@@ -26,7 +26,7 @@ usersRouter.post("/", register);
 usersRouter.delete("/:id", deleteAccount);
 
 // EDIT profiles
-usersRouter.patch("/profiles", editProfile);
+usersRouter.patch("/profile/:id", editProfile);
 
 // EDIT password
 usersRouter.patch("/edit-password", editPassword);

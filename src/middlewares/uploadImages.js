@@ -4,12 +4,14 @@ const multer = require("multer");
 const path = require("path");
 
 const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, "./public/images");
+  destination: (req, file, cb) => {
+    cb(null, "./public/images");
   },
-  filename: (req, file, callback) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    callback(null, file.fieldname + "-" + uniqueSuffix);
+  filename: (req, file, cb) => {
+    const suffix = `${Date.now()}-${Math.round(Math.random() * 1e3)}`;
+    const ext = path.extname(file.originalname);
+    const fileName = `${file.fieldname}-${suffix}${ext}`;
+    cb(null, fileName);
   },
 });
 

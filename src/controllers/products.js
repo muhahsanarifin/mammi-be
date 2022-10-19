@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 const {
   getProducts,
-  productPages,
   createProducts,
   updateProducts,
   dropProducts,
@@ -22,25 +21,12 @@ const productController = {
     }
   },
 
-  pages: async (req, res) => {
-    try {
-      const response = await productPages(req.query);
-      res.status(200).send({
-        data: response.rows,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        message: "Internal Server Error",
-      });
-    }
-  },
-
   create: async (req, res) => {
     try {
       const response = await createProducts(req.body, req.file);
       res.status(200).send({
         data: response.rows,
+        message: `Prodcut was created successfully.`,
       });
     } catch (error) {
       console.log(error);
@@ -52,9 +38,10 @@ const productController = {
 
   update: async (req, res) => {
     try {
-      const response = await updateProducts(req.body, req.params);
+      const response = await updateProducts(req.body, req.params, req.file);
       res.status(200).send({
         data: response.rows,
+        message: `Prodcut was updated successfully.`
       });
     } catch (error) {
       console.log(error);
@@ -67,8 +54,9 @@ const productController = {
   drop: async (req, res) => {
     try {
       const response = await dropProducts(req.params);
+      console.log(response);
       res.status(200).send({
-        data: response.rows,
+        message: `Prodcut was deleted successfully.`,
       });
     } catch (error) {
       console.log(error);
