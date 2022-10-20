@@ -155,7 +155,7 @@ For more examples, please refer to the [Documentation](https://example.com)
 <!-- CONTRIBUTING -->
 # Contributing
 
-![GitHub contributors](https://img.shields.io/github/contributors/muhahsanarifin/mammi?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors/muhahsanarifin/mammi?style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/muhahsanarifin/mammi?style=flat-square)
 
 
 1. Fork the Project
