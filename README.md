@@ -1,7 +1,7 @@
 <a id="readme-top"></a>
 
 <div align="center"> 
-  <h2>MAMMI - BECKEND</h2>
+  <h2>MAMMI - BACKEND</h2>
 </div>
 
 <!-- PROJECT LOGO -->
