@@ -12,7 +12,7 @@ const {
 } = require("../controllers/users");
 
 // const isLogin = require("../middlewares/isLogin");
-// const uploads = require("../middlewares/uploadImages");
+const upload = require("../middlewares/uploadImages");
 
 // GETS
 usersRouter.get("/", gets);
@@ -27,7 +27,7 @@ usersRouter.post("/", register);
 usersRouter.delete("/:id", deleteAccount);
 
 // EDIT profiles
-usersRouter.patch("/profile/:id", editProfile);
+usersRouter.patch("/profile/:id", upload.single("picture"), editProfile);
 
 // EDIT password
 usersRouter.patch("/edit-password", editPassword);

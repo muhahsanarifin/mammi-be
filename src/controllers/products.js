@@ -38,7 +38,11 @@ const productController = {
 
   update: async (req, res) => {
     try {
-      const response = await updateProducts(req.body, req.params, req.file);
+      if(req.file) {
+        req.body.image = req.file.path;
+      }
+      const response = await updateProducts(req.body, req.params);
+      response.rows[0].image = `images/${req.file.filename}`
       res.status(200).json({
         data: response.rows,
         message: `Product was updated successfully.`

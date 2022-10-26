@@ -33,6 +33,6 @@ let upload = multer({
       cb("Format image must png, jpg, jpeg, gip");
     }
   },
-}).single("image");
+});
 
 module.exports = upload;

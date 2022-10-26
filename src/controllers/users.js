@@ -42,7 +42,11 @@ const userController = {
 
   editProfile: async (req, res) => {
     try {
-      const response = await editProfile(req.body, req.params, req.files);
+      if (req.file) {
+        req.body.picture = req.file.path;
+      }
+      const response = await editProfile(req.body, req.params);
+      response.rows[0].picture = `images/${req.file.filename}`;
       res.status(200).json({
         data: response.rows,
         message: "Profile was updated successfully",

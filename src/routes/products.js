@@ -12,10 +12,10 @@ const upload = require("../middlewares/uploadImages");
 productsRouter.get("/", get);
 
 // POST
-productsRouter.post("/", upload, create);
+productsRouter.post("/", upload.single("image"), create);
 
 // PATCH
-productsRouter.patch("/:id", update);
+productsRouter.patch("/:id", upload.single("image"), update);
 
 // DELETE
 productsRouter.delete("/:id", drop);
