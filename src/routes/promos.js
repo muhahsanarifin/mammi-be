@@ -4,18 +4,18 @@ const promosRouter = express.Router();
 
 const { get, create, edit, drop } = require("../controllers/promos");
 
-const isLogin = require("../middlewares/isLogin");
+// const isLogin = require("../middlewares/isLogin");
 
 // GET
-promosRouter.get("/", isLogin(), get);
+promosRouter.get("/", get);
 
 // POST
-promosRouter.post("/", isLogin(), create);
+promosRouter.post("/", create);
 
 // PATCH
-promosRouter.patch("/:id", isLogin(), edit);
+promosRouter.patch("/:id", edit);
 
 // DELETE
-promosRouter.delete("/:id", isLogin(), drop);
+promosRouter.delete("/:id", drop);
 
 module.exports = promosRouter;

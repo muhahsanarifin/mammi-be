@@ -1,8 +1,6 @@
 const express = require("express");
 
 const transactionsRouter = express.Router();
-// const allowedRoles = require("../middlewares/allowedRoles");
-const isLogin = require("../middlewares/isLogin");
 
 const {
   get,
@@ -12,19 +10,22 @@ const {
   drop,
 } = require("../controllers/transactions");
 
+// const isLogin = require("../middlewares/isLogin");
+// const allowedRoles = require("../middlewares/allowedRoles");
+
 // GET
-transactionsRouter.get("/", isLogin(), get);
+transactionsRouter.get("/", get);
 
 // GET history
-transactionsRouter.get("/history/:id", isLogin(), history);
+transactionsRouter.get("/history/:id", history);
 
 // POST
-transactionsRouter.post("/", isLogin(), create);
+transactionsRouter.post("/", create);
 
 // PATCH
-transactionsRouter.patch("/:id", isLogin(), edit);
+transactionsRouter.patch("/:id", edit);
 
 // DELETE
-transactionsRouter.delete("/:id", isLogin(), drop);
+transactionsRouter.delete("/:id", drop);
 
 module.exports = transactionsRouter;

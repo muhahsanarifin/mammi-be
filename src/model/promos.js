@@ -1,5 +1,6 @@
 const postgreDatabase = require("../config/postgre");
 
+// Get Promos ↴ // ◔ On progress
 const getPromos = (queryParams) => {
   return new Promise((resolve, reject) => {
     let query =

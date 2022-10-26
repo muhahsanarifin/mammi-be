@@ -1,30 +1,30 @@
 <a id="readme-top"></a>
 
-<div align="center"> 
+<!-- <div align="center"> 
   <h2>MAMMI - BACKEND</h2>
-</div>
+</div> -->
 
 <!-- PROJECT LOGO -->
-<!-- <br />
+<br />
 <div align="center">
-  <a href="">
+  <!-- <a href="#">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+  </a> -->
 
-  <h3 align="center">MAMMI</h3>
+  <h2 align="center">MAMMI</h2>
 
   <p align="center">
     <br />
-    <a href=""><strong>Explore the docs »</strong></a>
+    <a href="https://documenter.getpostman.com/view/16092081/2s847ESaDX"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="">View Demo</a>
+    <a href="#">View Demo</a>
     ·
-    <a href="">Report Bug</a>
+    <a href="#">Report Bug</a>
     ·
-    <a href="">Request Feature</a>
+    <a href="#">Request Feature</a>
   </p>
-</div> -->
+</div>
 
 
 
@@ -79,13 +79,13 @@
 
 ## Endpoint
 
-| Endpoint      |            Method             | Info         |
-| ------------  | :---------------------------: | :----------- |
-| /auth         |        `POST` `DELETE`        | Auth         |
-| /users        | `POST` `GET` `PATCH` `DELETE` | Users        |
-| /products     | `POST` `GET` `PATCH` `DELETE` | Products     |
-| /promos       | `POST` `GET` `PATCH` `DELETE` | Promos       |
-| /transactions | `POST` `GET` `PATCH` `DELETE` | Transactions |
+| Endpoint      |            Method             | Info         |       Status      |
+| ------------  | :---------------------------: | :----------- |:----------------- |
+| /auth         |        `POST` `DELETE`        | Auth         | `On going fixing` |
+| /users        | `POST` `GET` `PATCH` `DELETE` | Users        | `On going fixing` |
+| /products     | `POST` `GET` `PATCH` `DELETE` | Products     | `On going fixing` |
+| /promos       | `POST` `GET` `PATCH` `DELETE` | Promos       | `On going fixing` |
+| /transactions | `POST` `GET` `PATCH` `DELETE` | Transactions | `On going fixing` |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -155,7 +155,7 @@ For more examples, please refer to the [Documentation](https://example.com)
 <!-- CONTRIBUTING -->
 # Contributing
 
-![GitHub contributors](https://img.shields.io/github/contributors/muhahsanarifin/mammi?style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/muhahsanarifin/mammi?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors/muhahsanarifin/mammi-be?style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/muhahsanarifin/mammi-be?style=flat-square)
 
 
 1. Fork the Project

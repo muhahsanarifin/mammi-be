@@ -68,7 +68,7 @@ const login = (body) => {
   });
 };
 
-// Logout ↴
+// Logout ↴ // ◬ Issue
 const logout = (token) => {
   new Promise((resolve, reject) => {
     const query = "insert into tokens(token) values($1)";

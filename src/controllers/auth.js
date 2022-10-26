@@ -6,7 +6,7 @@ const authController = {
     try {
       const { body } = req;
       const response = await login(body);
-      console.log(response);
+      console.table(response);
       success(res, 200, {
         data: response,
         message: "Login was successfully",

@@ -11,12 +11,12 @@ const transactionsController = {
     console.log(res);
     try {
       const response = await getTransactions(req.query);
-      res.status(200).send({
+      res.status(200).json({
         data: response.rows,
       });
     } catch (error) {
       console.log(error);
-      res.status(500).send({
+      res.status(500).json({
         message: "Internal Server Error",
       });
     }
@@ -25,11 +25,11 @@ const transactionsController = {
   history: async (req, res) => {
     try {
       const response = await getHistory(req.params);
-      res.status(200).send({
+      res.status(200).json({
         data: response.rows,
       });
     } catch (error) {
-      res.status(500).send({
+      res.status(500).json({
         message: "internel server Error",
       });
     }
@@ -38,12 +38,13 @@ const transactionsController = {
   create: async (req, res) => {
     try {
       const response = await createTransactions(req.body);
-      res.status(201).send({
+      console.log(response);
+      res.status(201).json({
         data: response.rows,
       });
     } catch (error) {
       console.log(error);
-      res.status(500).send({
+      res.status(500).json({
         message: "Internal Server Error",
       });
     }
@@ -52,13 +53,12 @@ const transactionsController = {
   edit: async (req, res) => {
     try {
       const response = await editTransactions(req.body, req.params);
-      console.log(response);
-      res.status(200).send({
+      console.table(response);
+      res.status(200).json({
         message: "Transaction was updated successfully.",
       });
     } catch (error) {
-      console.log(error);
-      res.status(500).send({
+      res.status(500).json({
         message: "Internal Server Error",
       });
     }
@@ -67,12 +67,11 @@ const transactionsController = {
   drop: async (req, res) => {
     try {
       const response = await dropTransactions(req.params);
-      console.log(response);
-      res.status(200).send({
+      console.table(response);
+      res.status(200).json({
         message: "Transaction was deleted successfully.",
       });
     } catch (error) {
-      console.log(error);
       res.status(500).send({
         message: "Internal Server Error",
       });

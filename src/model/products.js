@@ -1,5 +1,6 @@
 const postgreDatabase = require("../config/postgre");
 
+// Get Products ↴ // ◔ On progress
 const getProducts = (queryParams) => {
   return new Promise((resolve, reject) => {
     // Find all products ↴
@@ -28,7 +29,7 @@ const getProducts = (queryParams) => {
       query += ` where lower(c.category_name) like lower('%${queryParams.filter}%')`;
     }
 
-    // Search Products ↴
+    // Search Products ↴ // ◔ On progress
     if (queryParams.search) {
       query += ` where lower(p.product_name) like lower('%${queryParams.search}%')`;
     }
@@ -66,10 +67,10 @@ const createProducts = (body, file) => {
   });
 };
 
+// Updated Products ↴ // ◔ On progress
 const updateProducts = (body, params, file) => {
   return new Promise((resolve, reject) => {
     let query = "update products set ";
-
     const data = [];
 
     Object.keys(body).forEach((key, index, array) => {

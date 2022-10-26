@@ -11,14 +11,14 @@ const {
   editPassword,
 } = require("../controllers/users");
 
+// const isLogin = require("../middlewares/isLogin");
 // const uploads = require("../middlewares/uploadImages");
-const isLogin = require("../middlewares/isLogin");
 
 // GETS
-usersRouter.get("/", isLogin(), gets);
+usersRouter.get("/", gets);
 
 // GET
-usersRouter.get("/:id", isLogin(), get);
+usersRouter.get("/:id", get);
 
 // REGISTER users
 usersRouter.post("/", register);
