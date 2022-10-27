@@ -1,3 +1,5 @@
+const { success, error } = require("../helpers/res");
+
 const {
   getTransactions,
   createTransactions,
@@ -8,17 +10,12 @@ const {
 
 const transactionsController = {
   get: async (req, res) => {
-    console.log(res);
     try {
-      const response = await getTransactions(req.query);
-      res.status(200).json({
-        data: response.rows,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        message: "Internal Server Error",
-      });
+      const url = `${req.protocol}://localhost:8080/api/v1`;
+      const response = await getTransactions(req.query, url);
+      success(res, 200, response);
+    } catch (err) {
+      error(res, 500, err.message);
     }
   },
 

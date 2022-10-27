@@ -1,4 +1,5 @@
-/* eslint-disable prettier/prettier */
+const { success, error } = require("../helpers/res");
+
 const {
   getProducts,
   createProducts,
@@ -9,15 +10,11 @@ const {
 const productController = {
   get: async (req, res) => {
     try {
-      const response = await getProducts(req.query);
-      res.status(200).json({
-        data: response.rows,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        message: "Internal Server Error",
-      });
+      const url = `${req.protocol}://localhost:8080/api/v1`;
+      const response = await getProducts(req.query, url);
+      success(res, 200, response);
+    } catch (err) {
+      error(res, 500, err.message);
     }
   },
 
@@ -38,14 +35,14 @@ const productController = {
 
   update: async (req, res) => {
     try {
-      if(req.file) {
+      if (req.file) {
         req.body.image = req.file.path;
       }
       const response = await updateProducts(req.body, req.params);
-      response.rows[0].image = `images/${req.file.filename}`
+      response.rows[0].image = `images/${req.file.filename}`;
       res.status(200).json({
         data: response.rows,
-        message: `Product was updated successfully.`
+        message: `Product was updated successfully.`,
       });
     } catch (error) {
       console.log(error);

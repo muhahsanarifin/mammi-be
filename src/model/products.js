@@ -1,55 +1,113 @@
 const postgreDatabase = require("../config/postgre");
 
 // Get Products ↴ // ◔ On progress
-const getProducts = (queryParams) => {
+const getProducts = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     // Find all products ↴
     let query =
       "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id";
 
+    let link = `${url}/products?`; //◬ issue
+
     // Filter products ↴
     if (queryParams.post == "latest") {
       query += ` order by p.created_at desc`;
+      link += ` post=${queryParams.post}&`;
     }
 
     if (queryParams.post == "oldest") {
       query += ` order by p.created_at asc`;
+      link += ` post=${queryParams.post}&`;
     }
 
     if (queryParams.price == "low") {
       query += ` order by p.price asc`;
+      link += ` price=${queryParams.price}&`;
     }
 
     if (queryParams.price == "expensive") {
       query += ` order by p.price desc`;
+      link += ` price=${queryParams.price}&`;
     }
 
     // Filter  Category Products ↴
     if (queryParams.filter) {
       query += ` where lower(c.category_name) like lower('%${queryParams.filter}%')`;
+      link += ` filter=${queryParams.filter}&`;
     }
 
     // Search Products ↴ // ◔ On progress
     if (queryParams.search) {
       query += ` where lower(p.product_name) like lower('%${queryParams.search}%')`;
+      link += ` seacrh=${queryParams.search}&`;
     }
+
+    let queryLimit = "";
+    let values = [];
 
     if (queryParams.page && queryParams.limit) {
       let page = Number(queryParams.page);
       let limit = Number(queryParams.limit);
       let offset = (page - 1) * limit;
-      query += ` order by p.id limit ${limit} offset ${offset}`;
+      queryLimit = query + ` order by p.id limit $1 offset $2`;
+      values.push(limit, offset);
+    } else {
+      queryLimit = query;
     }
+
     postgreDatabase.query(query, (error, result) => {
-      if (error) {
-        console.log(error);
-        return reject(error);
-      }
-      return resolve(result);
+      postgreDatabase.query(queryLimit, values, (error, queryResult) => {
+        if (error) {
+          return reject(error);
+        }
+        if (queryResult.rows.length == 0)
+          return reject(new Error("Product Not Found"));
+        let nextRes = null;
+        let prevRes = null;
+        if (queryParams.page && queryParams.limit) {
+          let page = parseInt(queryParams.page);
+          let limit = parseInt(queryParams.limit);
+          let start = (page - 1) * limit;
+          let end = page * limit;
+          let next = "";
+          let prev = "";
+          // console.log(queryResult);
+          const nextData = Math.ceil(result.rowCount / limit);
+          if (start <= result.rowCount) {
+            next = page + 1;
+          }
+          if (end > 0) {
+            prev = page - 1;
+          }
+          if (parseInt(next) <= parseInt(nextData)) {
+            nextRes = `${link}page=${next}&limit=${limit}`;
+          }
+          if (parseInt(prev) !== 0) {
+            prevRes = `${link}page=${prev}&limit=${limit}`;
+          }
+          let sendResponse = {
+            dataCount: result.rowCount,
+            next: nextRes,
+            previous: prevRes,
+            totalPages: Math.ceil(result.rowCount / limit),
+            data: queryResult.rows,
+          };
+          return resolve(sendResponse);
+        }
+        let sendResponse = {
+          dataCount: result.rowCount,
+          next: nextRes,
+          previous: prevRes,
+          totalPages: null,
+          data: queryResult.rows,
+        };
+        return resolve(sendResponse);
+      });
     });
   });
 };
 
+// Create Products ↴
 const createProducts = (body, file) => {
   return new Promise((resolve, reject) => {
     const query =
@@ -67,8 +125,8 @@ const createProducts = (body, file) => {
   });
 };
 
-// Updated Products ↴ // ◔ On progress
-const updateProducts = (body, params, file) => {
+// Updated Products ↴
+const updateProducts = (body, params) => {
   return new Promise((resolve, reject) => {
     let query = "update products set ";
     const data = [];
