@@ -7,9 +7,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <!-- <a href="#">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a> -->
+  <a href="#">
+    <img src="src/assets/images/mammi-logo.png" alt="MAMMI" width="80" height="80">
+  </a>
 
   <h2 align="center">MAMMI</h2>
 

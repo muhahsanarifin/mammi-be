@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
@@ -20,11 +23,14 @@
   "homepage": "https://github.com/muhahsanarifin/mammi#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "cloudinary": "^1.32.0",
     "cors": "^2.8.5",
+    "datauri": "^4.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "jwt-redis": "^7.0.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "path": "^0.12.7",
