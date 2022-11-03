@@ -1,11 +1,13 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const JWTR = require("jwt-redis").default;
+const client = require("../config/redis");
 const postgreDatabase = require("../config/postgre");
 
 // Login ↴
 const login = (body) => {
   return new Promise((resolve, reject) => {
     const { email, password } = body;
+    const jwtr = new JWTR(client);
 
     // First step ↴
     const getPasswordByEmailQuery =
@@ -43,47 +45,28 @@ const login = (body) => {
             email: response.rows[0].email,
             role: response.rows[0].role,
           };
-          jwt.sign(
-            payload,
-            process.env.SECRET_KEY,
-            {
+
+          jwtr
+            .sign(payload, process.env.SECRET_KEY, {
               expiresIn: "6m",
               issuer: process.env.ISSUER,
-            },
-            (error, token) => {
-              if (error) {
-                return reject({ error });
-              }
-              return resolve({
-                token,
-                role: payload.role,
-                email: payload.email,
-                id: payload.id,
-              });
-            }
-          );
+            })
+            .then((token) => {
+              return resolve({ id: payload.id, role: payload.role, token });
+            });
         });
       }
     );
   });
 };
 
-// Logout ↴ // ◬ Issue
+// Logout ↴
 const logout = (token) => {
-  new Promise((resolve, reject) => {
-    const query = "insert into tokens(token) values($1)";
-    postgreDatabase.query(query, [token], (error, result) => {
-      if (error) {
-        console.log(error);
-        return reject({
-          error: new Error("Internet Server Error"),
-          status: 500,
-        });
-      }
-      return resolve({
-        message: "Logout is successfully",
-        status: "200",
-      });
+  return new Promise((resolve, reject) => {
+    const jwtr = new JWTR(client);
+    jwtr.destroy(token.jti).then((res) => {
+      if (!res) reject(new Error("Login First"), statusCode);
+      return resolve();
     });
   });
 };

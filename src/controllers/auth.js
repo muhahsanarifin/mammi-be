@@ -1,14 +1,16 @@
-const { login } = require("../model/auth");
+const { login, logout } = require("../model/auth");
 const { success, error } = require("../helpers/res");
+
+// const client = require("../config/redis");
 
 const authController = {
   login: async (req, res) => {
     try {
       const { body } = req;
       const response = await login(body);
-      console.table(response);
+      console.log(response);
       success(res, 200, {
-        data: response,
+        result: response,
         message: "Login was successfully",
       });
     } catch (objErr) {
@@ -19,14 +21,13 @@ const authController = {
 
   logout: async (req, res) => {
     try {
-      const response = await logout(req.header("x-access-token"));
+      const response = await logout(req.userPayload);
+      console.log(response);
       success(res, 200, {
-        data: response,
-        message: " Logout was successfully.",
+        message: "Logout was successfully",
       });
-    } catch (objErr) {
-      const statusCode = objErr.statusCode || 500;
-      error(res, statusCode, { message: objErr.message });
+    } catch (err) {
+      error(res, 400, err.message);
     }
   },
 };
