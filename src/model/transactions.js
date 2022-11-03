@@ -89,6 +89,21 @@ const getHistory = (queryParams) => {
   });
 };
 
+const getHistories = () => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "select transactions.user_id, products.product_name, products.price, products.image, transactions.status, sizes.size, qty, subtotal from transactions_product_size join transactions on transactions_product_size.transaction_id = transactions.id join products on transactions_product_size.product_id = products.id join sizes on transactions_product_size.size_id = sizes.id order by transactions.user_id";
+
+    postgreDatabase.query(query, (error, result) => {
+      if (error) {
+        console.log(error);
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 const createTransactions = (body) => {
   return new Promise((resolve, reject) => {
     const query =
@@ -148,6 +163,7 @@ const dropTransactions = (params) => {
 const transactionsModel = {
   getTransactions,
   getHistory,
+  getHistories,
   createTransactions,
   editTransactions,
   dropTransactions,
