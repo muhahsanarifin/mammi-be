@@ -7,7 +7,7 @@ const getProducts = (queryParams, url) => {
     let query =
       "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id";
 
-    let link = `${url}/products?`; //◬ issue
+    let link = `${url}/products?`;
 
     // Filter products ↴
     if (queryParams.post == "latest") {
@@ -30,7 +30,13 @@ const getProducts = (queryParams, url) => {
       link += ` price=${queryParams.price}&`;
     }
 
-    // Filter  Category Products ↴
+    if (queryParams.favorite == "true") {
+      query =
+        "select products.product_name, products.price, products.image, transactions.status, qty from transactions_product_size join transactions on transactions_product_size.transaction_id = transactions.id join products on transactions_product_size.product_id = products.id join sizes on transactions_product_size.size_id = sizes.id";
+      link += ` favorite=${queryParams.favorite}&`;
+    }
+
+    // Search  Category Products ↴
     if (queryParams.filter) {
       query += ` where lower(c.category_name) like lower('%${queryParams.filter}%')`;
       link += ` filter=${queryParams.filter}&`;

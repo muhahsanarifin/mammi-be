@@ -10,7 +10,8 @@ const {
 const productController = {
   get: async (req, res) => {
     try {
-      const url = `${req.protocol}://localhost:8080/api/v1`;
+      const url = `${req.protocol}://${req.hostname}/api/v1`;
+      console.log(req.hostname);
       const response = await getProducts(req.query, url);
       success(res, 200, response);
     } catch (err) {
@@ -22,7 +23,7 @@ const productController = {
     try {
       const response = await createProducts(req.body, req.file);
       res.status(200).json({
-        data: response.rows,
+        result: response.rows,
         message: `Product was created successfully.`,
       });
     } catch (error) {
@@ -41,7 +42,7 @@ const productController = {
       }
       const response = await updateProducts(req.body, req.params);
       res.status(200).json({
-        data: response.rows,
+        result: response.rows,
         message: `Product was updated successfully.`,
       });
     } catch (error) {
