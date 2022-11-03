@@ -26,8 +26,7 @@ const userController = {
 
   editPassword: async (req, res) => {
     try {
-      const { body } = req;
-      const response = await editPassword(body);
+      const response = await editPassword(req.body, req.userPayload.id);
       console.log(response);
       res.status(200).json({
         message: "Password was changed successfully",
@@ -44,13 +43,12 @@ const userController = {
   editProfile: async (req, res) => {
     try {
       if (req.file) {
-        //req.body.picture = req.file.path;
         const imageURL = `images/${req.file.name}`;
         req.body.picture = imageURL;
       }
-      const response = await editProfile(req.body, req.params);
+      const response = await editProfile(req.body, req.userPayload.id);
       res.status(200).json({
-        data: response.rows,
+        resutl: response.rows,
         message: "Profile was updated successfully",
       });
     } catch (error) {
@@ -63,8 +61,9 @@ const userController = {
   deleteAccount: async (req, res) => {
     try {
       const response = await deleteAccount(req.params);
+      console.log(response);
       res.status(200).json({
-        data: "User was deleted successfully",
+        message: "User was deleted successfully",
       });
     } catch (error) {
       res.status(500).json({
@@ -75,7 +74,7 @@ const userController = {
 
   gets: async (req, res) => {
     try {
-      const url = `${req.protocol}://localhost:8080/api/v1`;
+      const url = `${req.protocol}://${req.hostname}/api/v1`;
       const response = await getUsers(req.query, url);
       success(res, 200, response);
     } catch (err) {
@@ -85,15 +84,10 @@ const userController = {
 
   get: async (req, res) => {
     try {
-      const response = await getUser(req.params);
-      res.status(200).json({
-        data: response.rows,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        message: "Internal Server Error",
-      });
+      const response = await getUser(req.userPayload.id);
+      success(res, 200, response.rows);
+    } catch (err) {
+      error(res, 500, err.message);
     }
   },
 };

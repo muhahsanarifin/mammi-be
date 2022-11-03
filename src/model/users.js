@@ -1,18 +1,17 @@
 const bcrypt = require("bcrypt");
 const postgreDatabase = require("../config/postgre");
 
-// Register Users ↴ // ◔ On progress
 const registerUsers = (body) => {
   return new Promise((resolve, reject) => {
-    const { email, password, phone_number } = body;
+    const { email, password, phone_number, role } = body;
     bcrypt.hash(password, 10, (error, hashedPassord) => {
       if (error) {
         console.log(error);
         return reject(error);
       }
       const query =
-        "insert into users (email, password, phone_number) values ($1, $2, $3) returning id";
-      const values = [email, hashedPassord, phone_number];
+        "insert into users (email, password, phone_number, role) values ($1, $2, $3, $4) returning id";
+      const values = [email, hashedPassord, phone_number, role];
       postgreDatabase.query(query, values, (error, response) => {
         if (error) {
           console.log(error);
@@ -30,12 +29,11 @@ const registerUsers = (body) => {
   });
 };
 
-// Edit Password  ↴ // ◔ On progress
-const editPassword = (body) => {
+const editPassword = (body, token) => {
   return new Promise((resolve, reject) => {
-    const { old_password, new_password, id } = body;
+    const { old_password, new_password } = body;
     const getPwdQuery = "select password from users where id = $1";
-    const getPwdValues = [id];
+    const getPwdValues = [token];
     postgreDatabase.query(getPwdQuery, getPwdValues, (error, response) => {
       if (error) {
         console.log(error);
@@ -58,7 +56,7 @@ const editPassword = (body) => {
             return reject({ error });
           }
           const editPwdQuery = "update users set password = $1 where id = $2";
-          const editPwdValues = [newHashedPassword, id];
+          const editPwdValues = [newHashedPassword, token];
           postgreDatabase.query(
             editPwdQuery,
             editPwdValues,
@@ -76,7 +74,7 @@ const editPassword = (body) => {
   });
 };
 
-const editProfile = (body, params) => {
+const editProfile = (body, token) => {
   return new Promise((resolve, reject) => {
     let query = "update profiles set ";
 
@@ -87,7 +85,7 @@ const editProfile = (body, params) => {
         query += `${key} = $${index + 1} where profiles.user_id = $${
           index + 2 + `returning *`
         }`;
-        data.push(body[key], params.id);
+        data.push(body[key], token);
         return;
       }
       query += `${key} = $${index + 1},`;
@@ -105,19 +103,26 @@ const editProfile = (body, params) => {
 
 const deleteAccount = (params) => {
   return new Promise((resolve, reject) => {
-    const query = "delete from profiles where user_id = $1";
+    const firstQuery = "delete from profiles where user_id = $1";
     const values = [params.id];
-    postgreDatabase.query(query, values, (error, result) => {
+    postgreDatabase.query(firstQuery, values, (error, result) => {
+      // console.log(values);
       if (error) {
         console.log(error);
         return reject(error);
       }
-      return resolve(result);
+      // const lastQuery = `delete from profiles where id = (${token})`;
+      // console.log(response);
+      // postgreDatabase.query(lastQuery, (error, result) => {
+      //   if (error) {
+      //     return reject(error);
+      //   }
+      resolve(result);
+      // });
     });
   });
 };
 
-// Get Users ↴ // ◔ On progress
 const getUsers = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     let query =
@@ -188,12 +193,11 @@ const getUsers = (queryParams, url) => {
   });
 };
 
-// Get User ↴ // ◔ On progress
-const getUser = (queryParams) => {
+const getUser = (token) => {
   return new Promise((resolve, reject) => {
     const query =
       "select id, email, password, phone_number, role, created_at, updated_at from users where id = $1";
-    postgreDatabase.query(query, [queryParams.id], (error, result) => {
+    postgreDatabase.query(query, [token], (error, result) => {
       if (error) {
         console.log(error);
         return reject(error);
