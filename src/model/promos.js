@@ -4,7 +4,7 @@ const postgreDatabase = require("../config/postgre");
 const getPromos = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     let query =
-      "select promos.id, promos.code, promos.discount, p.product_name, promos.created_at, promos.updated_at from promos join products p on promos.product_id = p.id order by promos.id asc";
+      "select promos.id, promos.code, promos.discount, p.product_name, p.image, promos.created_at, promos.updated_at from promos join products p on promos.product_id = p.id order by promos.id asc";
 
     let link = `${url}/promos?`;
 

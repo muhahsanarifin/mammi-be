@@ -10,7 +10,7 @@ const {
 const promosController = {
   get: async (req, res) => {
     try {
-      const url = `${req.protocol}://localhost:8080/api/v1`;
+      const url = `${req.protocol}://${req.hostname}/api/v1`;
       const response = await getPromos(req.query, url);
       success(res, 200, response);
     } catch (err) {
@@ -21,7 +21,7 @@ const promosController = {
   create: async (req, res) => {
     try {
       const response = await createPromos(req.body);
-      console.table(response);
+      console.log(response);
       res.status(201).json({
         message: `Promo was created successfully`,
       });
@@ -36,7 +36,7 @@ const promosController = {
   edit: async (req, res) => {
     try {
       const response = await editPromos(req.body, req.params);
-      console.table(response);
+      console.log(response);
       res.status(200).json({
         message: `Promo was updated successfully`,
       });
@@ -51,7 +51,7 @@ const promosController = {
   drop: async (req, res) => {
     try {
       const response = await dropPromos(req.params);
-      console.table(response);
+      console.log(response);
       res.status(200).json({
         message: `Promo was updated successfully`,
       });
