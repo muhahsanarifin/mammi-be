@@ -10,5 +10,6 @@ module.exports = (...allowedRoles) => {
     }
     if (!isAllowed)
       return res.status(403).send({ message: "Forbidden", data: null });
+    next();
   };
 };
