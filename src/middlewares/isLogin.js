@@ -1,24 +1,24 @@
-const jwt = require("jsonwebtoken");
+let JWTR = require("jwt-redis").default;
+const client = require("../config/redis");
+const jwtr = new JWTR(client);
 module.exports = () => {
   return (req, res, next) => {
     const token = req.header("x-access-token");
     if (!token)
       return res
         .status(401)
-        .send({ message: "You must be login first", data: null });
+        .send({ message: "You have to login first", data: null });
 
-    jwt.verify(
-      token,
-      process.env.SECRET_KEY,
-      { issuer: process.env.ISSUER },
-      (err, decodedPaylod) => {
-        if (err) {
-          console.log(err);
-          return res.status(403).send({ message: err.message, data: null });
-        }
-        req.userPayload = decodedPaylod;
+    jwtr
+      .verify(token, process.env.SECRET_KEY, { issuer: process.env.ISSUER })
+      .then((decodePayload) => {
+        req.userPayload = decodePayload;
         next();
-      }
-    );
+      })
+      .catch((err) => {
+        return res
+          .status(401)
+          .json({ message: "You have to login first, data: null" });
+      });
   };
 };
