@@ -19,12 +19,12 @@ mainRouter.use(`${prefix}/transactions`, transactionsRouter); // transactions en
 mainRouter.use(`${prefix}/auth`, authRouter); //auth endpoint handled by authRouter
 
 // http:localhost:8080/ ⇦ http route access
-// mainRouter.get("/", (req, res) => {
-//   res.json({
-//     fullname: "MUH. AHSAN",
-//     talent: "Fazztrack",
-//     msg: "Welcome to mammi",
-//   });
-// });
+mainRouter.get("/", (req, res) => {
+  res.json({
+    fullname: "MUH. AHSAN",
+    talent: "Fazztrack",
+    msg: "Welcome to mammi",
+  });
+});
 
 module.exports = mainRouter;
