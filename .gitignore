@@ -30,6 +30,3 @@ access.log
 ### cloudinary ###
 src/middlewares/cloudinary.js
 src/config/cloudinary.js
-
-### vercel ###
-vercel.json
