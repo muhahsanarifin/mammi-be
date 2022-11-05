@@ -1,7 +1,21 @@
 const multer = require("multer");
 const path = require("path");
 
-const storage = multer.diskStorage({
+const limits = {
+  fileSize: 204800,
+};
+const fileFilter = (req, file, cb) => {
+  const extName = path.extname(file.originalname);
+  const allowedExt = /jpeg|jpg|png|gif/;
+  if (!allowedExt.test(extName))
+    return cb(
+      new Error("Only use allowed extension (JPEG,JPG, PNG, GIF)"),
+      false
+    );
+  cb(null, true);
+};
+
+const diskStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/images");
   },
@@ -13,26 +27,34 @@ const storage = multer.diskStorage({
   },
 });
 
-let upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 204800, // Maximum file size 200kb
-  },
-  fileFilter: (req, file, cb) => {
-    let fileTypes = /jpeg|jpg|png|gif/;
-
-    const extName = fileTypes.test(
-      path.extname(file.originalname).toLowerCase()
-    );
-
-    const mimeType = fileTypes.test(file.mimetype);
-
-    if (extName && mimeType) {
-      return cb(null, true);
-    } else {
-      cb("Format image must png, jpg, jpeg, gip");
-    }
-  },
+const diskUpload = multer({
+  storage: diskStorage,
+  limits,
+  fileFilter,
 });
 
-module.exports = upload;
+const memoryStorage = multer.memoryStorage();
+
+const memoryUpload = multer({
+  storage: memoryStorage,
+  limits,
+  fileFilter,
+});
+
+const errorHandler = (err, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(500).json({
+      status: "Upload Error",
+      message: err.message,
+    });
+  }
+  if (err) {
+    return res
+      .status(500)
+      .json({ status: "Internal Server Error", message: err.message });
+  }
+  console.log("Upload Sucess");
+  next();
+};
+
+module.exports = { diskUpload, memoryUpload, errorHandler };
