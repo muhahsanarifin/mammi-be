@@ -39,12 +39,12 @@ postgreDatabase
     server.use(express.urlencoded({ extended: false }));
 
     // Create a write stream (in append mode)
-    let accessLogStream = fs.createWriteStream(
-      path.join(__dirname, "access.log"),
-      {
-        flags: "a",
-      }
-    );
+    // let accessLogStream = fs.createWriteStream(
+    //   path.join(__dirname, "access.log"),
+    //   {
+    //     flags: "a",
+    //   }
+    // );
 
     // Import CORS
     const cors = require("cors");
@@ -60,11 +60,11 @@ postgreDatabase
     );
 
     // setup the logger
-    server.use(
-      morgan("combined", {
-        stream: accessLogStream,
-      })
-    );
+    // server.use(
+    //   morgan("combined", {
+    //     stream: accessLogStream,
+    //   })
+    // );
 
     // All requests to server is going to mainRouter
     server.use(mainRouter);
