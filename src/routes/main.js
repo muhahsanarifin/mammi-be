@@ -21,8 +21,6 @@ mainRouter.use(`${prefix}/auth`, authRouter); //auth endpoint handled by authRou
 // http:localhost:8080/ ⇦ http route access
 mainRouter.get("/", (req, res) => {
   res.json({
-    fullname: "MUH. AHSAN",
-    talent: "Fazztrack",
     message: "Welcome to MAMMI API",
   });
 });
