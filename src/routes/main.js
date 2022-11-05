@@ -23,7 +23,7 @@ mainRouter.get("/", (req, res) => {
   res.json({
     fullname: "MUH. AHSAN",
     talent: "Fazztrack",
-    msg: "Welcome to mammi",
+    message: "Welcome to MAMMI API",
   });
 });
 
