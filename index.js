@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 
@@ -36,12 +35,13 @@ const cors = require("./src/middlewares/cors");
 const server = express();
 const port = 8080;
 
+// Import cors
+server.use(cors);
+
 postgreDatabase
   .connect()
   .then(() => {
     console.log("Database is connected");
-
-    server.use(cors);
 
     //Access static files
     server.use(express.static("./public"));
@@ -59,13 +59,13 @@ postgreDatabase
     // );
 
     // Log only 4xx and 5xx response to console
-    server.use(
-      morgan("dev", {
-        skip: function (req, res) {
-          return res.statusCode < 400;
-        },
-      })
-    );
+    // server.use(
+    //   morgan("dev", {
+    //     skip: function (req, res) {
+    //       return res.statusCode < 400;
+    //     },
+    //   })
+    // );
 
     // setup the logger
     // server.use(
