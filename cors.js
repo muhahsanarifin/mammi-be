@@ -1,4 +1,4 @@
-const AllowedCors = (allow = async (req, res) => {
+const AllowedCors = async (req, res, next) => {
   res.setHeader("Access-Control-Allow-Credentials", true);
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -13,11 +13,7 @@ const AllowedCors = (allow = async (req, res) => {
     res.status(200).end();
     return;
   }
-  return await allow(req, res);
-});
-const handler = (req, res) => {
-  const d = new Date();
-  res.end(d.toString());
+  next();
 };
 
-module.exports = AllowedCors(handler);
+module.exports = AllowedCors();
