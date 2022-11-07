@@ -10,8 +10,8 @@ const { gets, get, create, update, drop } = require("../controllers/products");
 //   errorHandler,
 // } = require("../middlewares/uploadImages");
 
-// const isLogin = require("../middlewares/isLogin");
-// const allowedRoles = require("../middlewares/allowedRoles");
+const isLogin = require("../middlewares/isLogin");
+const allowedRoles = require("../middlewares/allowedRoles");
 // const validate = require("../middlewares/validate");
 // const cloudinaryUploader = require("../middlewares/cloudinary");
 // const upload = require("../middlewares/uploadImages");
@@ -21,7 +21,7 @@ const { diskUpload } = require("../middlewares/uploadImages");
 // GET ↴
 // productsRouter.get("/", gets);
 
-productsRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), get);
+productsRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), gets);
 
 productsRouter.get("/:id", get);
 
