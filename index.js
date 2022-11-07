@@ -14,7 +14,10 @@ const morgan = require("morgan");
 // import path
 const path = require("path");
 // Import fs
-const fs = require("fs");
+// const fs = require("fs");
+
+// Import cors
+const cors = require("cors");
 
 //Init express
 const server = express();
@@ -32,7 +35,6 @@ postgreDatabase
     });
 
     // Import CORS
-    const cors = require("cors");
     server.use(cors());
 
     //Access static files
