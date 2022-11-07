@@ -28,12 +28,6 @@ postgreDatabase
   .then(() => {
     console.log("Database is connected");
 
-    server.listen(port, () => {
-      console.log(
-        `Server is running successfully, and It is listening on port ${port}`
-      );
-    });
-
     // Import CORS
     server.use(cors());
 
@@ -70,6 +64,12 @@ postgreDatabase
 
     // All requests to server is going to mainRouter
     server.use(mainRouter);
+
+    server.listen(port, () => {
+      console.log(
+        `Server is running successfully, and It is listening on port ${port}`
+      );
+    });
   })
   .catch((err) => {
     console.log(err);
