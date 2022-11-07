@@ -12,15 +12,25 @@ const mainRouter = require("./src/routes/main");
 
 // Import morgan
 const morgan = require("morgan");
+
 // import path
-const path = require("path");
+// const path = require("path");
+
 // Import fs
 // const fs = require("fs");
 
 // Import cors
 // const cors = require("cors");
 
-const cors = require("./cors")
+// Import CORS
+// server.use(cors({ origin: "*" }));
+
+// server.options("*", (req, res) => {
+//   res.append("Access-Control-Allow-Origin", "*");
+//   res.status(204).send();
+// });
+
+const cors = require("./src/middlewares/cors");
 
 //Init express
 const server = express();
@@ -30,14 +40,6 @@ postgreDatabase
   .connect()
   .then(() => {
     console.log("Database is connected");
-
-    // Import CORS
-    // server.use(cors({ origin: "*" }));
-
-    // server.options("*", (req, res) => {
-    //   res.append("Access-Control-Allow-Origin", "*");
-    //   res.status(204).send();
-    // });
 
     server.use(cors);
 

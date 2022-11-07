@@ -113,6 +113,20 @@ const getProducts = (queryParams, url) => {
   });
 };
 
+const getProduct = (queryParams) => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id where p.id = $1";
+    postgreDatabase.query(query, [queryParams.id], (error, result) => {
+      if (error) {
+        console.log(error);
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 // Create Products ↴
 const createProducts = (body, file) => {
   return new Promise((resolve, reject) => {
@@ -172,6 +186,7 @@ const dropProducts = (params) => {
 
 const productsModel = {
   getProducts,
+  getProduct,
   createProducts,
   updateProducts,
   dropProducts,

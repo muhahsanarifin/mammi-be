@@ -19,9 +19,9 @@ const allowedRoles = require("../middlewares/allowedRoles");
 const { diskUpload } = require("../middlewares/uploadImages");
 
 // GET ↴
-// productsRouter.get("/", gets);
+productsRouter.get("/", gets);
 
-productsRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), gets);
+// productsRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), gets);
 
 productsRouter.get("/:id", get);
 

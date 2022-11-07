@@ -2,18 +2,29 @@ const { success, error } = require("../helpers/res");
 
 const {
   getProducts,
+  getProduct,
   createProducts,
   updateProducts,
   dropProducts,
 } = require("../model/products");
 
 const productController = {
-  get: async (req, res) => {
+  gets: async (req, res) => {
     try {
       const url = `${req.protocol}://${req.hostname}/api/v1`;
-      console.log(req.hostname);
+      // console.log(req.hostname);
       const response = await getProducts(req.query, url);
       success(res, 200, response);
+    } catch (err) {
+      error(res, 500, err.message);
+    }
+  },
+
+  get: async (req, res) => {
+    try {
+      const response = await getProduct(req.params);
+      // console.log(response);
+      success(res, 200, response.rows);
     } catch (err) {
       error(res, 500, err.message);
     }
