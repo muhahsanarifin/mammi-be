@@ -30,7 +30,12 @@ postgreDatabase
     console.log("Database is connected");
 
     // Import CORS
-    server.use(cors({ origin: "*" }));
+    // server.use(cors({ origin: "*" }));
+
+    server.options("*",(req,res) => {
+      res.append("Access-Control-Allow-Origin", "*")
+      res.status(204).send();
+    })
 
     //Access static files
     server.use(express.static("./public"));
