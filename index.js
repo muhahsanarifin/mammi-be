@@ -31,9 +31,6 @@ postgreDatabase
   .then(() => {
     console.log("Database is connected");
 
-    // All requests to server is going to mainRouter
-    server.use(mainRouter);
-
     // Import CORS
     // server.use(cors({ origin: "*" }));
 
@@ -41,6 +38,8 @@ postgreDatabase
     //   res.append("Access-Control-Allow-Origin", "*");
     //   res.status(204).send();
     // });
+
+    server.use(cors);
 
     //Access static files
     server.use(express.static("./public"));
@@ -71,10 +70,10 @@ postgreDatabase
     //   morgan("combined", {
     //     stream: accessLogStream,
     //   })
-    // ); 
+    // );
 
-    server.use(cors);
-
+    // All requests to server is going to mainRouter
+    server.use(mainRouter);
 
     server.listen(port, () => {
       console.log(
