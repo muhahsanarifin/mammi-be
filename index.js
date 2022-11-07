@@ -18,7 +18,9 @@ const path = require("path");
 // const fs = require("fs");
 
 // Import cors
-const cors = require("cors");
+// const cors = require("cors");
+
+const cors = require("./cors")
 
 //Init express
 const server = express();
@@ -29,13 +31,16 @@ postgreDatabase
   .then(() => {
     console.log("Database is connected");
 
+    // All requests to server is going to mainRouter
+    server.use(mainRouter);
+
     // Import CORS
     // server.use(cors({ origin: "*" }));
 
-    server.options("*",(req,res) => {
-      res.append("Access-Control-Allow-Origin", "*")
-      res.status(204).send();
-    })
+    // server.options("*", (req, res) => {
+    //   res.append("Access-Control-Allow-Origin", "*");
+    //   res.status(204).send();
+    // });
 
     //Access static files
     server.use(express.static("./public"));
@@ -66,10 +71,10 @@ postgreDatabase
     //   morgan("combined", {
     //     stream: accessLogStream,
     //   })
-    // );
+    // ); 
 
-    // All requests to server is going to mainRouter
-    server.use(mainRouter);
+    server.use(cors);
+
 
     server.listen(port, () => {
       console.log(
