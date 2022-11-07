@@ -16,4 +16,4 @@ const AllowedCors = async (req, res, next) => {
   next();
 };
 
-module.exports = AllowedCors();
+module.exports = AllowedCors;
