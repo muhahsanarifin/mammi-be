@@ -31,6 +31,10 @@ postgreDatabase
       );
     });
 
+    // Import CORS
+    const cors = require("cors");
+    server.use(cors());
+
     //Access static files
     server.use(express.static("./public"));
 
@@ -45,10 +49,6 @@ postgreDatabase
     //     flags: "a",
     //   }
     // );
-
-    // Import CORS
-    const cors = require("cors");
-    server.use(cors());
 
     // Log only 4xx and 5xx response to console
     server.use(
