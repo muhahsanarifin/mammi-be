@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 
@@ -29,7 +30,7 @@ postgreDatabase
     console.log("Database is connected");
 
     // Import CORS
-    server.use(cors());
+    server.options("*",cors());
 
     //Access static files
     server.use(express.static("./public"));
