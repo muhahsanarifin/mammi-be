@@ -2,7 +2,7 @@ const express = require("express");
 
 const productsRouter = express.Router();
 
-const { get, create, update, drop } = require("../controllers/products");
+const { gets, get, create, update, drop } = require("../controllers/products");
 
 // const {
 //   diskUpload,
@@ -19,9 +19,11 @@ const { get, create, update, drop } = require("../controllers/products");
 const { diskUpload } = require("../middlewares/uploadImages");
 
 // GET ↴
-productsRouter.get("/", get);
+// productsRouter.get("/", gets);
 
-// productsRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), get);
+productsRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), get);
+
+productsRouter.get("/:id", get);
 
 // POST ↴
 productsRouter.post("/", diskUpload.single("image"), create);
