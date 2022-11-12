@@ -5,6 +5,7 @@ const {
   editProfile,
   deleteAccount,
   getUsers,
+  getProfile,
   getUser,
 } = require("../model/users");
 
@@ -17,16 +18,14 @@ const userController = {
         message: "Create user was successfully.",
         data: { ...response.rows[0], email: body.email },
       });
-    } catch (error) {
-      res.status(500).json({
-        message: "Internal Server Erorr", // ◬ Issues
-      });
+    } catch (err) {
+      error(res, 500, err.message);
     }
   },
 
   editPassword: async (req, res) => {
     try {
-      const response = await editPassword(req.body, req.userPayload.id);
+      const response = await editPassword(req.body, req.userPayload.id); // ⇦ request userPayload
       console.log(response);
       res.status(200).json({
         message: "Password was changed successfully",
@@ -43,10 +42,10 @@ const userController = {
   editProfile: async (req, res) => {
     try {
       if (req.file) {
-        const imageURL = `images/${req.file.name}`;
+        const imageURL = `/images/${req.file.filename}`;
         req.body.picture = imageURL;
       }
-      const response = await editProfile(req.body, req.userPayload.id);
+      const response = await editProfile(req.body, req.userPayload.id); // ⇦ request userPayload
       res.status(200).json({
         resutl: response.rows,
         message: "Profile was updated successfully",
@@ -60,15 +59,13 @@ const userController = {
 
   deleteAccount: async (req, res) => {
     try {
-      const response = await deleteAccount(req.params);
+      const response = await deleteAccount(req.userPayload.id); // ⇦ request userPayload
       console.log(response);
       res.status(200).json({
         message: "User was deleted successfully",
       });
-    } catch (error) {
-      res.status(500).json({
-        message: "Internal Server Error",
-      });
+    } catch (err) {
+      error(res, 500, err.message);
     }
   },
 
@@ -84,7 +81,16 @@ const userController = {
 
   get: async (req, res) => {
     try {
-      const response = await getUser(req.userPayload.id);
+      const response = await getUser(req.userPayload.id); // ⇦ request userPayload
+      success(res, 200, response.rows);
+    } catch (err) {
+      error(res, 500, err.message);
+    }
+  },
+
+  getProfile: async (req, res) => {
+    try {
+      const response = await getProfile(req.userPayload.id); // ⇦ request userPayload
       success(res, 200, response.rows);
     } catch (err) {
       error(res, 500, err.message);

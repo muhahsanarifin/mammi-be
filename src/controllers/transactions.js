@@ -4,7 +4,6 @@ const {
   getTransactions,
   createTransactions,
   getHistory,
-  getHistories,
   editTransactions,
   dropTransactions,
 } = require("../model/transactions");
@@ -22,20 +21,7 @@ const transactionsController = {
 
   history: async (req, res) => {
     try {
-      const response = await getHistory(req.params);
-      res.status(200).json({
-        result: response.rows,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: "Internal Server Error",
-      });
-    }
-  },
-
-  histories: async (req, res) => {
-    try {
-      const response = await getHistories();
+      const response = await getHistory(req.userPayload.id); // ⇦ request userPayload
       res.status(200).json({
         result: response.rows,
       });
@@ -48,11 +34,9 @@ const transactionsController = {
 
   create: async (req, res) => {
     try {
-      const response = await createTransactions(req.body);
+      const response = await createTransactions(req.body, req.userPayload.id); // ⇦ request userPayload
       console.log(response);
-      res.status(201).json({
-        result: response.rows,
-      });
+      success(res, 200, response.rows);
     } catch (error) {
       console.log(error);
       res.status(500).json({
@@ -64,7 +48,7 @@ const transactionsController = {
   edit: async (req, res) => {
     try {
       const response = await editTransactions(req.body, req.params);
-      console.table(response);
+      console.log(response);
       res.status(200).json({
         message: "Transaction was updated successfully.",
       });

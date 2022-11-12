@@ -8,7 +8,7 @@ const authController = {
     try {
       const { body } = req;
       const response = await login(body);
-      console.log(response);
+      // console.log(response);
       success(res, 200, {
         result: response,
         message: "Login was successfully",
@@ -22,7 +22,7 @@ const authController = {
   logout: async (req, res) => {
     try {
       const response = await logout(req.userPayload);
-      console.log(response);
+      // console.log(response);
       success(res, 200, {
         message: "Logout was successfully",
       });

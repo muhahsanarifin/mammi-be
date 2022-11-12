@@ -12,7 +12,7 @@ const productController = {
   gets: async (req, res) => {
     try {
       const url = `${req.protocol}://${req.hostname}/api/v1`;
-      // console.log(req.hostname);
+      console.log(req.hostname);
       const response = await getProducts(req.query, url);
       success(res, 200, response);
     } catch (err) {
