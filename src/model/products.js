@@ -31,7 +31,7 @@ const getProducts = (queryParams, url) => {
 
     if (queryParams.favorite == "true") {
       query =
-        "select products.product_name, products.price, products.image, transactions.status, qty from transactions_product_size join transactions on transactions_product_size.transaction_id = transactions.id join products on transactions_product_size.product_id = products.id join sizes on transactions_product_size.size_id = sizes.id";
+        "select p.product_name, p.price, p.image from transactions t left join products p on t.product_id = p.id group by p.product_name, p.price, p.image";
       link += ` favorite=${queryParams.favorite}&`;
     }
 
