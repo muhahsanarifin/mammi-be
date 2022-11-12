@@ -11,11 +11,11 @@ const {
 } = require("../controllers/transactions");
 
 const isLogin = require("../middlewares/isLogin");
-// const allowedRoles = require("../middlewares/allowedRoles");
+const allowedRoles = require("../middlewares/allowedRoles");
 // const validate = require("../middlewares/validate");
 
 // GET transaction ↴
-transactionsRouter.get("/", isLogin(), get);
+transactionsRouter.get("/", isLogin(), allowedRoles("Admin"), get);
 
 // POST transaction ↴
 transactionsRouter.post("/", isLogin(), create);

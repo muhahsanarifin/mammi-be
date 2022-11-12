@@ -35,8 +35,8 @@ usersRouter.delete("/user/delete", isLogin(), deleteAccount);
 // EDIT profiles ↴
 usersRouter.patch(
   "/profile/edit",
-  diskUpload.single("picture"),
   isLogin(),
+  diskUpload.single("picture"),
   editProfile
 );
 // || Under maintenance
