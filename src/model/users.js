@@ -204,7 +204,7 @@ const getUser = (token) => {
 const getProfile = (token) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select user_id, first_name, last_name, display_name, address, picture from profiles where user_id = $1";
+      "select user_id, first_name, last_name, display_name, birth, address, picture from profiles where user_id = $1";
     postgreDatabase.query(query, [token], (error, result) => {
       if (error) {
         console.log(error);

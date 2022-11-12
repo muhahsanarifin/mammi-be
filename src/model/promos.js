@@ -1,6 +1,5 @@
 const postgreDatabase = require("../config/postgre");
 
-// Get Promos ↴ // ◔ On progress
 const getPromos = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     let query =
@@ -37,7 +36,6 @@ const getPromos = (queryParams, url) => {
           let end = page * limit;
           let next = "";
           let prev = "";
-          // console.log(queryResult);
           const nextData = Math.ceil(result.rowCount / limit);
           if (start <= result.rowCount) {
             next = page + 1;
