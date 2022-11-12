@@ -8,20 +8,20 @@ const isLogin = require("../middlewares/isLogin");
 const allowedRoles = require("../middlewares/allowedRoles");
 // const validate = require("../middlewares/validate");
 
-// GET ↴
+// GET promo ↴
 promosRouter.get("/", get);
 // promosRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), get);
 
-// POST ↴
-promosRouter.post("/", create);
+// POST promo ↴
 promosRouter.post("/", isLogin(), allowedRoles("Admin"), create);
+// promosRouter.post("/", create);
 
-// PATCH ↴
-promosRouter.patch("/:id", edit);
+// PATCH promo ↴
 promosRouter.patch("/:id", isLogin(), allowedRoles("Admin"), edit);
+// promosRouter.patch("/:id", edit);
 
-// DELETE ↴
-promosRouter.delete("/:id", drop);
+// DELETE promo ↴
 promosRouter.delete("/:id", isLogin(), allowedRoles("Admin"), drop);
+// promosRouter.delete("/:id", drop);
 
 module.exports = promosRouter;
