@@ -6,48 +6,27 @@ const {
   get,
   create,
   history,
-  histories,
   edit,
   drop,
 } = require("../controllers/transactions");
 
-// const isLogin = require("../middlewares/isLogin");
+const isLogin = require("../middlewares/isLogin");
 // const allowedRoles = require("../middlewares/allowedRoles");
 // const validate = require("../middlewares/validate");
 
-// GET
-transactionsRouter.get("/", get);
+// GET transaction ↴
+transactionsRouter.get("/", isLogin(), get);
 
-// transactionsRouter.get("/", isLogin(), allowedRoles("Admin"), get);
+// POST transaction ↴
+transactionsRouter.post("/", isLogin(), create);
 
-// GET history
-transactionsRouter.get("/history/:id", history);
+// EDIT transaction ↴
+transactionsRouter.patch("/:id", isLogin(), edit);
 
-// transactionsRouter.get(
-//   "/history/:id",
-//   isLogin(),
-//   allowedRoles("Admin"),
-//   history
-// );
+// DELETE transaction ↴
+transactionsRouter.delete("/:id", isLogin(), drop);
 
-// GET histories
-transactionsRouter.get("/history", histories);
-
-// transactionsRouter.get("/history", isLogin(), allowedRoles("Admin"), histories);
-
-// POST
-transactionsRouter.post("/", create);
-
-// transactionsRouter.post("/", isLogin(), allowedRoles("Admin"), create);
-
-// PATCH
-transactionsRouter.patch("/:id", edit);
-
-// transactionsRouter.patch("/:id", isLogin(), allowedRoles("Admin"), edit);
-
-// DELETE
-transactionsRouter.delete("/:id", drop);
-
-// transactionsRouter.delete("/:id", isLogin(), allowedRoles("Admin"), drop);
+// GET history transaction ↴
+transactionsRouter.get("/history", isLogin(), history);
 
 module.exports = transactionsRouter;

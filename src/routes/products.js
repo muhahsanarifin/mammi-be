@@ -11,18 +11,18 @@ const { gets, get, create, update, drop } = require("../controllers/products");
 // } = require("../middlewares/uploadImages");
 
 const isLogin = require("../middlewares/isLogin");
-const allowedRoles = require("../middlewares/allowedRoles");
+const { diskUpload } = require("../middlewares/uploadImages");
+// const allowedRoles = require("../middlewares/allowedRoles");
 // const validate = require("../middlewares/validate");
 // const cloudinaryUploader = require("../middlewares/cloudinary");
 // const upload = require("../middlewares/uploadImages");
 
-const { diskUpload } = require("../middlewares/uploadImages");
-
 // GET ↴
-productsRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), gets);
-// productsRouter.get("/", gets);
+// productsRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), gets);
+productsRouter.get("/", gets);
 
-productsRouter.get("/:id", isLogin(), allowedRoles("Admin", "Customer"), get);
+productsRouter.get("/:id", get);
+//productsRouter.get("/:id", isLogin(), allowedRoles("Admin", "Customer"), get);
 
 // POST ↴
 productsRouter.post("/", diskUpload.single("image"), create);
@@ -61,7 +61,6 @@ productsRouter.post("/", diskUpload.single("image"), create);
 // );
 
 // PATCH ↴
-
 productsRouter.patch("/:id", diskUpload.single("image"), update);
 
 // productsRouter.patch(
@@ -73,8 +72,6 @@ productsRouter.patch("/:id", diskUpload.single("image"), update);
 // );
 
 // DELETE ↴
-productsRouter.delete("/:id", drop);
-
-// productsRouter.delete("/:id", isLogin(), allowedRoles("Admin"), drop);
+productsRouter.delete("/:id", isLogin(), drop);
 
 module.exports = productsRouter;
