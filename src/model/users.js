@@ -1,9 +1,10 @@
 const bcrypt = require("bcrypt");
 const postgreDatabase = require("../config/postgre");
 
+// || Under maintenance
 const registerUsers = (body) => {
   return new Promise((resolve, reject) => {
-    const { email, password, phone_number, role } = body;
+    const { email, password, phone_number } = body;
     bcrypt.hash(password, 10, (error, hashedPassord) => {
       if (error) {
         console.log(error);
@@ -11,7 +12,7 @@ const registerUsers = (body) => {
       }
       const query =
         "insert into users (email, password, phone_number, role) values ($1, $2, $3, $4) returning id";
-      const values = [email, hashedPassord, phone_number, role];
+      const values = [email, hashedPassord, phone_number, "Customer"];
       postgreDatabase.query(query, values, (error, response) => {
         if (error) {
           console.log(error);
@@ -28,6 +29,7 @@ const registerUsers = (body) => {
     });
   });
 };
+// || Under maintenance
 
 const editPassword = (body, token) => {
   return new Promise((resolve, reject) => {
@@ -101,24 +103,16 @@ const editProfile = (body, token) => {
   });
 };
 
-const deleteAccount = (params) => {
+const deleteAccount = (token) => {
   return new Promise((resolve, reject) => {
-    const firstQuery = "delete from profiles where user_id = $1";
-    const values = [params.id];
+    const firstQuery = "delete from users where id = $1";
+    const values = [token];
     postgreDatabase.query(firstQuery, values, (error, result) => {
-      // console.log(values);
       if (error) {
         console.log(error);
         return reject(error);
       }
-      // const lastQuery = `delete from profiles where id = (${token})`;
-      // console.log(response);
-      // postgreDatabase.query(lastQuery, (error, result) => {
-      //   if (error) {
-      //     return reject(error);
-      //   }
       resolve(result);
-      // });
     });
   });
 };
@@ -207,11 +201,26 @@ const getUser = (token) => {
   });
 };
 
+const getProfile = (token) => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "select user_id, first_name, last_name, display_name, address, picture from profiles where user_id = $1";
+    postgreDatabase.query(query, [token], (error, result) => {
+      if (error) {
+        console.log(error);
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 const usersModel = {
   registerUsers,
   editPassword,
   getUsers,
   getUser,
+  getProfile,
   editProfile,
   deleteAccount,
 };

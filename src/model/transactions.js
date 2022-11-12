@@ -3,7 +3,7 @@ const postgreDatabase = require("../config/postgre");
 const getTransactions = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     let query =
-      "select t.id, user_id, users.email, users.phone_number, t.tax, payments.method, promos.discount, t.notes, t.status, deliveries.method, deliveries.shipping, t.created_at, t.updated_at from transactions t join users on t.user_id = users.id join payments on t.payment_id = payments.id join promos on t.promo_id = promos.id join deliveries on t.delivery_id  = deliveries.id order by t.id asc";
+      "select u.id , t.tax, pay.method, d.method, pro.discount, t.notes, t.status, t.total, prod.product_name, s.size, t.qty, t.subtotal from transactions t left join users u on user_id = u.id left join products prod on product_id = prod.id left join payments pay on payment_id = pay.id left join deliveries d on delivery_id = d.id left join promos pro on promo_id = pro.id left join sizes s on size_id = s.id";
 
     let link = `${url}/transactions?`;
 
@@ -74,12 +74,14 @@ const getTransactions = (queryParams, url) => {
   });
 };
 
-const getHistory = (queryParams) => {
+// || Under maintenance
+
+const getHistory = (token) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select transactions.user_id, products.product_name, transactions.status, sizes.size, qty, subtotal from transactions_product_size join transactions on transactions_product_size.transaction_id = transactions.id join products on transactions_product_size.product_id = products.id join sizes on transactions_product_size.size_id = sizes.id where transaction_id = $1 ";
+      "select p.product_name, p.price, t.notes, t.status from transactions t left join users u on t.user_id = u.id left join products p on t.product_id = p.id where user_id = $1";
 
-    postgreDatabase.query(query, [queryParams.id], (error, result) => {
+    postgreDatabase.query(query, [token], (error, result) => {
       if (error) {
         console.log(error);
         return reject(error);
@@ -89,30 +91,35 @@ const getHistory = (queryParams) => {
   });
 };
 
-const getHistories = () => {
+const createTransactions = (body, token) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select transactions.user_id, products.product_name, products.price, products.image, transactions.status, sizes.size, qty, subtotal from transactions_product_size join transactions on transactions_product_size.transaction_id = transactions.id join products on transactions_product_size.product_id = products.id join sizes on transactions_product_size.size_id = sizes.id order by transactions.user_id";
-
-    postgreDatabase.query(query, (error, result) => {
-      if (error) {
-        console.log(error);
-        return reject(error);
-      }
-      return resolve(result);
-    });
-  });
-};
-
-const createTransactions = (body) => {
-  return new Promise((resolve, reject) => {
-    const query =
-      "insert into transactions (user.id, taxt, payment_id, delivery_id promo_id, notes, status) values ($1,$2,$3,$4,$5,$6,$7)";
-    const { user_id, text, payment_id, delivery_id, promo_id, notes, status } =
-      body;
+      "insert into transactions ( user_id, product_id, size_id, qty, subtotal, tax, delivery_id, payment_id, notes, total) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning *";
+    const {
+      product_id,
+      size_id,
+      qty,
+      subtotal,
+      tax,
+      delivery_id,
+      payment_id,
+      notes,
+      total,
+    } = body;
     postgreDatabase.query(
       query,
-      [user_id, text, payment_id, delivery_id, promo_id, notes, status],
+      [
+        token,
+        product_id,
+        size_id,
+        qty,
+        subtotal,
+        tax,
+        delivery_id,
+        payment_id,
+        notes,
+        total,
+      ],
       (error, result) => {
         if (error) {
           console.log(error);
@@ -163,10 +170,11 @@ const dropTransactions = (params) => {
 const transactionsModel = {
   getTransactions,
   getHistory,
-  getHistories,
   createTransactions,
   editTransactions,
   dropTransactions,
 };
 
 module.exports = transactionsModel;
+
+// || Under maintenance

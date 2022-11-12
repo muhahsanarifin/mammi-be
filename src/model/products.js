@@ -1,11 +1,10 @@
 const postgreDatabase = require("../config/postgre");
 
-// Get Products ↴ // ◔ On progress
 const getProducts = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     // Find all products ↴
     let query =
-      "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id";
+      "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description from products p join categories c on p.category_id = c.id";
 
     let link = `${url}/products?`;
 
@@ -42,7 +41,6 @@ const getProducts = (queryParams, url) => {
       link += ` filter=${queryParams.filter}&`;
     }
 
-    // Search Products ↴ // ◔ On progress
     if (queryParams.search) {
       query += ` where lower(p.product_name) like lower('%${queryParams.search}%')`;
       link += ` seacrh=${queryParams.search}&`;
@@ -116,7 +114,7 @@ const getProducts = (queryParams, url) => {
 const getProduct = (queryParams) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select p.id, p.product_name, c.category_name, p.image, p.created_at, p.updated_at, p.price from products p join categories c on p.category_id = c.id where p.id = $1";
+      "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description from products p join categories c on p.category_id = c.id where p.id = $1";
     postgreDatabase.query(query, [queryParams.id], (error, result) => {
       if (error) {
         console.log(error);
@@ -127,7 +125,6 @@ const getProduct = (queryParams) => {
   });
 };
 
-// Create Products ↴
 const createProducts = (body, file) => {
   return new Promise((resolve, reject) => {
     const query =
@@ -145,7 +142,6 @@ const createProducts = (body, file) => {
   });
 };
 
-// Updated Products ↴
 const updateProducts = (body, params) => {
   return new Promise((resolve, reject) => {
     let query = "update products set ";
