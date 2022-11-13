@@ -72,6 +72,6 @@ productsRouter.patch("/:id", diskUpload.single("image"), update);
 // );
 
 // DELETE ↴
-productsRouter.delete("/:id", isLogin(), drop);
+productsRouter.delete("/:id", drop);
 
 module.exports = productsRouter;
