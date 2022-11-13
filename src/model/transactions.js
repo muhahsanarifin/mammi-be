@@ -79,7 +79,7 @@ const getTransactions = (queryParams, url) => {
 const getHistory = (token) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select p.product_name, p.price, t.notes, t.status from transactions t left join users u on t.user_id = u.id left join products p on t.product_id = p.id where user_id = $1";
+      "select p.product_name, p.price, p.image, t.notes, t.status from transactions t left join users u on t.user_id = u.id left join products p on t.product_id = p.id where user_id = $1";
 
     postgreDatabase.query(query, [token], (error, result) => {
       if (error) {

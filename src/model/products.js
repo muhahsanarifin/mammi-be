@@ -36,9 +36,9 @@ const getProducts = (queryParams, url) => {
     }
 
     // Search  Category Products ↴
-    if (queryParams.filter) {
-      query += ` where lower(c.category_name) like lower('%${queryParams.filter}%')`;
-      link += ` filter=${queryParams.filter}&`;
+    if (queryParams.category) {
+      query += ` where lower(c.category_name) like lower('%${queryParams.category}%')`;
+      link += ` category=${queryParams.category}&`;
     }
 
     if (queryParams.search) {
