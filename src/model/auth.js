@@ -11,7 +11,8 @@ const login = (body) => {
 
     // First step ↴
     const getPasswordByEmailQuery =
-      "select id, password, role from users where email = $1";
+      // "select id, password, role from users where email = $1";
+      "select id, email, password, role, picture from users left join profiles on id = user_id where email = $1 group by id, email, password, role, picture";
     const getPasswordByEmailValues = [email];
     postgreDatabase.query(
       getPasswordByEmailQuery,
@@ -44,6 +45,7 @@ const login = (body) => {
             id: response.rows[0].id,
             email: response.rows[0].email,
             role: response.rows[0].role,
+            picture: response.rows[0].picture,
           };
 
           jwtr
@@ -52,7 +54,12 @@ const login = (body) => {
               issuer: process.env.ISSUER,
             })
             .then((token) => {
-              return resolve({ id: payload.id, role: payload.role, token });
+              return resolve({
+                id: payload.id,
+                role: payload.role,
+                picture: payload.picture,
+                token,
+              });
             });
         });
       }
