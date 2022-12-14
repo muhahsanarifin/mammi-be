@@ -9,10 +9,10 @@ const productUpload = require("../middlewares/productUpload");
 // const validate = require("../middlewares/validate");
 
 // TODO: GET products
-productsRouter.get("/", allowedRoles("Admin", "Customer"), gets);
+productsRouter.get("/", gets);
 
 // TODO: GET product
-productsRouter.get("/:id", allowedRoles("Admin", "Customer"), get);
+productsRouter.get("/:id", get);
 
 // TODO: POST product
 productsRouter.post(

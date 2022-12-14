@@ -33,3 +33,6 @@ duplicate.js
 ### helpers ###
 auth.js
 transactions.js
+
+### log ###
+access.log
