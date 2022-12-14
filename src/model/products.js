@@ -130,7 +130,7 @@ const createProducts = (body, file) => {
     const query =
       "insert into products (product_name, category_id, image, price) values ($1,$2,$3,$4) returning *";
     const { product_name, category_id, price } = body;
-    const imageURL = `/images/${file.filename}`;
+    const imageURL = file.secure_url;
     const values = [product_name, category_id, imageURL, price];
     postgreDatabase.query(query, values, (error, result) => {
       if (error) {

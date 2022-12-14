@@ -48,7 +48,7 @@ const productController = {
   update: async (req, res) => {
     try {
       if (req.file) {
-        const imageURL = `/images/${req.file.filename}`;
+        const imageURL = req.file.secure_url;
         req.body.image = imageURL;
       }
       const response = await updateProducts(req.body, req.params);

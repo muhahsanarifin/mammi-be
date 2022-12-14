@@ -27,6 +27,9 @@ public/*
 ### access.log ###
 access.log
 
-### cloudinary ###
-src/middlewares/cloudinary.js
-src/config/cloudinary.js
+### duplicate ###
+duplicate.js
+
+### helpers ###
+auth.js
+transactions.js

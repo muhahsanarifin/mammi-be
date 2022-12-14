@@ -1,7 +1,5 @@
 const express = require("express");
-
 const usersRouter = express.Router();
-
 const {
   gets,
   get,
@@ -13,35 +11,38 @@ const {
 } = require("../controllers/users");
 
 const isLogin = require("../middlewares/isLogin");
-const { diskUpload } = require("../middlewares/uploadImages");
+const { memoryUpload, errorHandler } = require("../middlewares/uploadImages");
+const profileUpload = require("../middlewares/profileUpload");
 // const allowedRoles = require("../middlewares/allowedRoles");
 
-// GETS users ↴
+// TODO: GETS users
 usersRouter.get("/", gets);
 
-// GET user ↴
+// TODO: GET user
 usersRouter.get("/id", isLogin(), get);
 
-// GET Profile ↴
+// TODO: GET Profile
 usersRouter.get("/profile/id", isLogin(), getProfile);
 
-// REGISTER users
+// TODO: REGISTER users
 usersRouter.post("/", register);
 
-//DROP account/users ↴
+// TODO: DROP account/users
 usersRouter.delete("/user/delete", isLogin(), deleteAccount);
 
-// || Under maintenance
-// EDIT profiles ↴
+// TODO: EDIT profiles
 usersRouter.patch(
   "/profile/edit",
   isLogin(),
-  diskUpload.single("picture"),
+  (req, res, next) =>
+    memoryUpload.single("picture")(req, res, (err) => {
+      errorHandler(err, res, next);
+    }),
+  profileUpload,
   editProfile
 );
-// || Under maintenance
 
-// EDIT password ↴
+// TODO: EDIT password
 usersRouter.patch("/password/edit", isLogin(), editPassword);
 
 module.exports = usersRouter;

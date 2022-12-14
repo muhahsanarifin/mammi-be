@@ -42,7 +42,7 @@ const userController = {
   editProfile: async (req, res) => {
     try {
       if (req.file) {
-        const imageURL = `/images/${req.file.filename}`;
+        const imageURL = req.file.secure_url;
         req.body.picture = imageURL;
       }
       const response = await editProfile(req.body, req.userPayload.id); // ⇦ request userPayload

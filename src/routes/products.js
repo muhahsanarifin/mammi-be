@@ -1,77 +1,43 @@
 const express = require("express");
-
 const productsRouter = express.Router();
-
 const { gets, get, create, update, drop } = require("../controllers/products");
 
-// const {
-//   diskUpload,
-//   memoryUpload,
-//   errorHandler,
-// } = require("../middlewares/uploadImages");
-
+const { memoryUpload, errorHandler } = require("../middlewares/uploadImages");
 const isLogin = require("../middlewares/isLogin");
-const { diskUpload } = require("../middlewares/uploadImages");
-// const allowedRoles = require("../middlewares/allowedRoles");
+const allowedRoles = require("../middlewares/allowedRoles");
+const productUpload = require("../middlewares/productUpload");
 // const validate = require("../middlewares/validate");
-// const cloudinaryUploader = require("../middlewares/cloudinary");
-// const upload = require("../middlewares/uploadImages");
 
-// GET ↴
-// productsRouter.get("/", isLogin(), allowedRoles("Admin", "Customer"), gets);
-productsRouter.get("/", gets);
+// TODO: GET products
+productsRouter.get("/", allowedRoles("Admin", "Customer"), gets);
 
-productsRouter.get("/:id", get);
-//productsRouter.get("/:id", isLogin(), allowedRoles("Admin", "Customer"), get);
+// TODO: GET product
+productsRouter.get("/:id", allowedRoles("Admin", "Customer"), get);
 
-// POST ↴
-productsRouter.post("/", diskUpload.single("image"), create);
+// TODO: POST product
+productsRouter.post(
+  "/",
+  isLogin(),
+  allowedRoles("Admin"),
+  (req, res, next) =>
+    memoryUpload.single("image")(req, res, (err) => {
+      errorHandler(err, res, next);
+    }),
+  productUpload,
+  create
+);
 
-// productsRouter.post(
-//   "/",
-//   isLogin(),
-//   allowedRoles("Admin"),
-//   diskUpload.single("image"),
-//   create
-// );
+// TODO: PATCH product
+productsRouter.patch(
+  "/:id",
+  isLogin(),
+  allowedRoles("Admin"),
+  memoryUpload.single("image"),
+  productUpload,
+  update
+);
 
-// productsRouter.post(
-//   "/",
-//   isLogin(),
-//   allowedRoles("Admin"),
-//   (req, res, next) =>
-//     memoryUpload.single("image")(req, res, (err) => {
-//       errorHandler(err, res, next);
-//     }),
-//   cloudinaryUploader,
-//   (req, res) => {
-//     console.log(res);
-//     res.status(
-//       200,
-//       json({
-//         message: "Upload Success",
-//         data: {
-//           url: req.file.url,
-//           secure: req.file.secure_url,
-//         },
-//       })
-//     );
-//   },
-//   create
-// );
-
-// PATCH ↴
-productsRouter.patch("/:id", diskUpload.single("image"), update);
-
-// productsRouter.patch(
-//   "/:id",
-//   isLogin(),
-//   allowedRoles("Admin"),
-//   diskUpload.single("image"),
-//   update
-// );
-
-// DELETE ↴
+// TODO: DELETE product
 productsRouter.delete("/:id", drop);
 
 module.exports = productsRouter;

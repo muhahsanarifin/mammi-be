@@ -62,7 +62,7 @@ const transactionsController = {
   drop: async (req, res) => {
     try {
       const response = await dropTransactions(req.params);
-      console.table(response);
+      console.log(response);
       res.status(200).json({
         message: "Transaction was deleted successfully.",
       });

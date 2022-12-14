@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const postgreDatabase = require("../config/postgre");
 
-// || Under maintenance
 const registerUsers = (body) => {
   return new Promise((resolve, reject) => {
     const { email, password, phone_number } = body;
@@ -29,7 +28,6 @@ const registerUsers = (body) => {
     });
   });
 };
-// || Under maintenance
 
 const editPassword = (body, token) => {
   return new Promise((resolve, reject) => {

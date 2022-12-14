@@ -10,7 +10,7 @@ const authController = {
       const response = await login(body);
       // console.log(response);
       success(res, 200, {
-        result: response,
+        data: response,
         message: "Login was successfully",
       });
     } catch (objErr) {

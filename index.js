@@ -1,18 +1,13 @@
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
-
 const express = require("express");
-
-// Import db
+// TODO: Import db
 const postgreDatabase = require("./src/config/postgre");
-
-// Import mainRouter
+// TODO: Import mainRouter
 const mainRouter = require("./src/routes/main");
-
-// Import morgan
+// TODO: Import morgan
 const morgan = require("morgan");
-
-// import path
+// TODO:import path
 // const path = require("path");
 
 // Import fs
@@ -28,14 +23,12 @@ const morgan = require("morgan");
 //   res.append("Access-Control-Allow-Origin", "*");
 //   res.status(204).send();
 // });
-
 const cors = require("./src/middlewares/cors");
-
-//Init express
+// TODO: Init express
 const server = express();
 const port = 8080;
 
-// Import cors
+// TODO: Import cors
 server.use(cors);
 
 postgreDatabase
@@ -43,10 +36,10 @@ postgreDatabase
   .then(() => {
     console.log("Database is connected");
 
-    //Access static files
+    // TODO: Access static files
     server.use(express.static("./public"));
 
-    // Using parser for body
+    // TODO: Using parser for body
     server.use(express.json());
     server.use(express.urlencoded({ extended: false }));
 
@@ -67,7 +60,7 @@ postgreDatabase
     //   })
     // );
 
-    // setup the logger
+    // TODO: Setup the logger
     // server.use(
     //   morgan("combined", {
     //     stream: accessLogStream,

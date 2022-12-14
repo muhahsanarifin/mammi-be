@@ -4,7 +4,7 @@ module.exports = {
       result,
     });
   },
-  error: (res, status, message) => {
-    res.status(status).json({ message });
+  error: (res, status, result) => {
+    res.status(status).json({ result });
   },
 };
