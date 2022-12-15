@@ -21,7 +21,7 @@ transactionsRouter.get("/", isLogin(), allowedRoles("Admin"), get);
 transactionsRouter.post("/", isLogin(), create);
 
 // TODO: EDIT transaction
-transactionsRouter.patch("/:id", isLogin(), edit);
+transactionsRouter.patch("/:id", isLogin(), allowedRoles("Admin"), edit);
 
 // TODO: DELETE transaction
 transactionsRouter.delete("/:id", isLogin(), drop);
