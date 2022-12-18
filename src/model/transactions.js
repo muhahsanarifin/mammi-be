@@ -131,7 +131,7 @@ const createTransactions = (body, token) => {
       ],
       (error, result) => {
         if (error) {
-          console.log(error);
+          // console.log(error);
           return reject(error);
         }
         return resolve(result);
@@ -155,7 +155,7 @@ const editTransactions = (body, params) => {
     });
     postgreDatabase.query(query, data, (error, result) => {
       if (error) {
-        console.log(error);
+        // console.log(error);
         return reject(error);
       }
       return resolve(result);
@@ -168,7 +168,7 @@ const dropTransactions = (params) => {
     const query = "delete from transactions where id = $1";
     postgreDatabase.query(query, [params.id], (error, result) => {
       if (error) {
-        console.log(error);
+        // console.log(error);
         return reject(error);
       }
       return resolve(result);
