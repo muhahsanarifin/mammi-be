@@ -146,7 +146,7 @@ const editTransactions = (body, params) => {
     const data = [];
     Object.keys(body).forEach((key, index, array) => {
       if (index === array.length - 1) {
-        query += `${key} = $${index + 1} where id = $${index + 2}`;
+        query += `${key} = $${index + 1} where id = $${index + 2} returning *`;
         data.push(body[key], params.id);
         return;
       }
