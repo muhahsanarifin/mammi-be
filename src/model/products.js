@@ -2,13 +2,13 @@ const postgreDatabase = require("../config/postgre");
 
 const getProducts = (queryParams, url) => {
   return new Promise((resolve, reject) => {
-    // Find all products ↴
+    // TODO: Find all products
     let query =
       "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description from products p join categories c on p.category_id = c.id";
 
     let link = `${url}/products?`;
 
-    // Filter products ↴
+    // TODO: Filter products
     if (queryParams.post == "latest") {
       query += ` order by p.created_at desc`;
       link += ` post=${queryParams.post}&`;
@@ -35,7 +35,7 @@ const getProducts = (queryParams, url) => {
       link += ` favorite=${queryParams.favorite}&`;
     }
 
-    // Search  Category Products ↴
+    // TODO: Search  Category Products
     if (queryParams.category) {
       query += ` where lower(c.category_name) like lower('%${queryParams.category}%')`;
       link += ` category=${queryParams.category}&`;
