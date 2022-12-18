@@ -50,6 +50,7 @@ const transactionsController = {
       const response = await editTransactions(req.body, req.params);
       console.log(response);
       res.status(200).json({
+        data: response.rows,
         message: "Transaction was updated successfully.",
       });
     } catch (error) {
