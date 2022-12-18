@@ -3,13 +3,12 @@ const JWTR = require("jwt-redis").default;
 const client = require("../config/redis");
 const postgreDatabase = require("../config/postgre");
 
-// Login ↴
 const login = (body) => {
   return new Promise((resolve, reject) => {
     const { email, password } = body;
     const jwtr = new JWTR(client);
 
-    // First step ↴
+    // TODO: First step
     const getPasswordByEmailQuery =
       // "select id, password, role from users where email = $1";
       "select id, email, password, role, picture from users left join profiles on id = user_id where email = $1 group by id, email, password, role, picture";
@@ -28,7 +27,7 @@ const login = (body) => {
             statusCode: 401,
           });
 
-        // Second step ↴
+        // TODO: Second step
         const hashedPassword = response.rows[0].password;
         bcrypt.compare(password, hashedPassword, (error, isSame) => {
           if (error) {
@@ -40,7 +39,7 @@ const login = (body) => {
               statusCode: 401,
             });
 
-          // Third step ↴
+          // TODO: Third step
           const payload = {
             id: response.rows[0].id,
             email: response.rows[0].email,
@@ -67,7 +66,6 @@ const login = (body) => {
   });
 };
 
-// Logout ↴
 const logout = (token) => {
   return new Promise((resolve, reject) => {
     const jwtr = new JWTR(client);

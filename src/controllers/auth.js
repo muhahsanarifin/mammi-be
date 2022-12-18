@@ -1,6 +1,5 @@
 const { login, logout } = require("../model/auth");
 const { success, error } = require("../helpers/res");
-
 // const client = require("../config/redis");
 
 const authController = {
