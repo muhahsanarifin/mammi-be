@@ -15,8 +15,8 @@ const userController = {
       const { body } = req;
       const response = await registerUsers(body);
       res.status(201).json({
-        message: "Create user was successfully.",
         data: { ...response.rows[0], email: body.email },
+        message: "Create user was successfully.",
       });
     } catch (err) {
       error(res, 500, err.message);
@@ -28,8 +28,8 @@ const userController = {
       const response = await editPassword(req.body, req.userPayload.id); // ⇦ request userPayload
       console.log(response);
       res.status(200).json({
-        message: "Password was changed successfully",
         data: null,
+        message: "Password was changed successfully",
       });
     } catch (objErr) {
       const statusCode = objErr.statusCode || 500;
@@ -47,7 +47,7 @@ const userController = {
       }
       const response = await editProfile(req.body, req.userPayload.id); // ⇦ request userPayload
       res.status(200).json({
-        resutl: response.rows,
+        result: response.rows,
         message: "Profile was updated successfully",
       });
     } catch (error) {
