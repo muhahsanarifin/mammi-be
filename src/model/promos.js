@@ -90,6 +90,7 @@ const createPromos = (body) => {
   });
 };
 
+// TODO: Research
 const editPromos = (body, params) => {
   return new Promise((resolve, reject) => {
     let query = "update promos set ";
@@ -98,7 +99,9 @@ const editPromos = (body, params) => {
 
     Object.keys(body).forEach((key, index, array) => {
       if (index === array.length - 1) {
-        query += `${key} = $${index + 1} where promos.id = $${index + 2}`;
+        query += `${key} = $${index + 1} where promos.id = $${
+          index + 2
+        } returning *`;
         data.push(body[key], params.id);
         return;
       }
