@@ -13,10 +13,10 @@ const {
 const isLogin = require("../middlewares/isLogin");
 const { memoryUpload, errorHandler } = require("../middlewares/uploadImages");
 const profileUpload = require("../middlewares/profileUpload");
-// const allowedRoles = require("../middlewares/allowedRoles");
+const allowedRoles = require("../middlewares/allowedRoles");
 
 // TODO: GETS users
-usersRouter.get("/", gets);
+usersRouter.get("/", isLogin(), allowedRoles("Admin"), gets);
 
 // TODO: GET user
 usersRouter.get("/id", isLogin(), get);
