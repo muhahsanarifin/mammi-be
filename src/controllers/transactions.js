@@ -1,4 +1,4 @@
-const { success, error } = require("../helpers/res");
+const { success, error } = require("../helpers/response");
 
 const {
   getTransactions,
@@ -27,7 +27,7 @@ const transactionsController = {
       });
     } catch (error) {
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
@@ -40,7 +40,7 @@ const transactionsController = {
     } catch (error) {
       console.log(error);
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
@@ -51,11 +51,11 @@ const transactionsController = {
       console.log(response);
       res.status(200).json({
         data: response.rows,
-        message: "Transaction was updated successfully.",
+        msg: "Transaction updated successfully.",
       });
     } catch (error) {
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
@@ -65,11 +65,11 @@ const transactionsController = {
       const response = await dropTransactions(req.params);
       console.log(response);
       res.status(200).json({
-        message: "Transaction was deleted successfully.",
+        msg: "Transaction deleted successfully.",
       });
     } catch (error) {
       res.status(500).send({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
