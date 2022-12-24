@@ -79,13 +79,21 @@
 
 ## Endpoint
 
-| Endpoint      |            Method             | Info         |       Status      |
+<!-- | Endpoint      |            Method             | Info         |       Status      |
 | ------------  | :---------------------------: | :----------- |:----------------- |
 | /auth         |        `POST` `DELETE`        | Auth         | `On going fixing` |
 | /users        | `POST` `GET` `PATCH` `DELETE` | Users        | `On going fixing` |
 | /products     | `POST` `GET` `PATCH` `DELETE` | Products     | `On going fixing` |
 | /promos       | `POST` `GET` `PATCH` `DELETE` | Promos       | `On going fixing` |
-| /transactions | `POST` `GET` `PATCH` `DELETE` | Transactions | `On going fixing` |
+| /transactions | `POST` `GET` `PATCH` `DELETE` | Transactions | `On going fixing` | -->
+
+| Endpoint      |            Method             | Info         |
+| ------------  | :---------------------------: | :----------- |
+| /auth         |        `POST` `DELETE`        | Auth         |
+| /users        | `POST` `GET` `PATCH` `DELETE` | Users        |
+| /products     | `POST` `GET` `PATCH` `DELETE` | Products     |
+| /promos       | `POST` `GET` `PATCH` `DELETE` | Promos       |
+| /transactions | `POST` `GET` `PATCH` `DELETE` | Transactions |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
