@@ -1,4 +1,4 @@
-const { success, error } = require("../helpers/res");
+const { success, error } = require("../helpers/response");
 
 const {
   getProducts,
@@ -35,7 +35,7 @@ const productController = {
       const response = await createProducts(req.body, req.file);
       res.status(200).json({
         result: response.rows,
-        message: `Product was created successfully.`,
+        message: `Product created successfully.`,
       });
     } catch (error) {
       console.log(error);
@@ -54,7 +54,7 @@ const productController = {
       const response = await updateProducts(req.body, req.params);
       res.status(200).json({
         result: response.rows,
-        message: `Product was updated successfully.`,
+        message: `Product updated successfully.`,
       });
     } catch (error) {
       console.log(error);
@@ -69,7 +69,7 @@ const productController = {
       const response = await dropProducts(req.params);
       console.log(response);
       res.status(200).json({
-        message: `Product was deleted successfully.`,
+        message: `Product deleted successfully.`,
       });
     } catch (error) {
       console.log(error);
