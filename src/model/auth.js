@@ -55,6 +55,7 @@ const login = (body) => {
             .then((token) => {
               return resolve({
                 id: payload.id,
+                email: payload.email,
                 role: payload.role,
                 picture: payload.picture,
                 token,
