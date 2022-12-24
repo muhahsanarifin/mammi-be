@@ -24,13 +24,13 @@ usersRouter.get("/id", isLogin(), get);
 // TODO: GET Profile
 usersRouter.get("/profile/id", isLogin(), getProfile);
 
-// TODO: REGISTER users
-usersRouter.post("/", register);
+// TODO: POST account
+usersRouter.post("/register", register);
 
-// TODO: DROP account/users
-usersRouter.delete("/user/delete", isLogin(), deleteAccount);
+// TODO: DELETE account
+usersRouter.delete("/acc/delete", isLogin(), deleteAccount);
 
-// TODO: EDIT profiles
+// TODO: PATCH profile
 usersRouter.patch(
   "/profile/edit",
   isLogin(),
@@ -42,7 +42,7 @@ usersRouter.patch(
   editProfile
 );
 
-// TODO: EDIT password
+// TODO: PATCH password
 usersRouter.patch("/password/edit", isLogin(), editPassword);
 
 module.exports = usersRouter;
