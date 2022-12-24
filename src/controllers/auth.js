@@ -1,5 +1,5 @@
 const { login, logout } = require("../model/auth");
-const { success, error } = require("../helpers/res");
+const { success, error } = require("../helpers/response");
 // const client = require("../config/redis");
 
 const authController = {
@@ -10,11 +10,11 @@ const authController = {
       // console.log(response);
       success(res, 200, {
         data: response,
-        message: "Login was successfully",
+        msg: "Login successfully",
       });
     } catch (objErr) {
       const statusCode = objErr.statusCode || 500;
-      error(res, statusCode, { message: objErr.error.message });
+      error(res, statusCode, { msg: objErr.error.message });
     }
   },
 
@@ -23,7 +23,7 @@ const authController = {
       const response = await logout(req.userPayload);
       // console.log(response);
       success(res, 200, {
-        message: "Logout was successfully",
+        msg: "Logout successfully",
       });
     } catch (err) {
       error(res, 400, err.message);
