@@ -16,7 +16,7 @@ productsRouter.get("/:id", get);
 
 // TODO: POST product
 productsRouter.post(
-  "/",
+  "/create",
   isLogin(),
   allowedRoles("Admin"),
   (req, res, next) =>
@@ -29,7 +29,7 @@ productsRouter.post(
 
 // TODO: PATCH product
 productsRouter.patch(
-  "/:id",
+  "/edit/:id",
   isLogin(),
   allowedRoles("Admin"),
   memoryUpload.single("image"),
@@ -38,6 +38,6 @@ productsRouter.patch(
 );
 
 // TODO: DELETE product
-productsRouter.delete("/:id", drop);
+productsRouter.delete("/delete/:id", drop);
 
 module.exports = productsRouter;
