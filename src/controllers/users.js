@@ -1,4 +1,4 @@
-const { success, error } = require("../helpers/res");
+const { success, error } = require("../helpers/response");
 const {
   registerUsers,
   editPassword,
@@ -16,7 +16,7 @@ const userController = {
       const response = await registerUsers(body);
       res.status(201).json({
         data: { ...response.rows[0], email: body.email },
-        message: "Create user was successfully.",
+        msg: "Create user successfully.",
       });
     } catch (err) {
       error(res, 500, err.message);
@@ -29,12 +29,12 @@ const userController = {
       console.log(response);
       res.status(200).json({
         data: null,
-        message: "Password was changed successfully",
+        msg: "Password changed successfully",
       });
     } catch (objErr) {
       const statusCode = objErr.statusCode || 500;
       res.status(statusCode).json({
-        message: objErr.error,
+        msg: objErr.error,
       });
     }
   },
@@ -48,11 +48,11 @@ const userController = {
       const response = await editProfile(req.body, req.userPayload.id); // ⇦ request userPayload
       res.status(200).json({
         result: response.rows,
-        message: "Profile was updated successfully",
+        msg: "Profile updated successfully",
       });
     } catch (error) {
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
@@ -62,7 +62,7 @@ const userController = {
       const response = await deleteAccount(req.userPayload.id); // ⇦ request userPayload
       console.log(response);
       res.status(200).json({
-        message: "User was deleted successfully",
+        msg: "User deleted successfully",
       });
     } catch (err) {
       error(res, 500, err.message);
