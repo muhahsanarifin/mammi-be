@@ -12,12 +12,12 @@ const allowedRoles = require("../middlewares/allowedRoles");
 promosRouter.get("/", get);
 
 // TODO: POST promo
-promosRouter.post("/", isLogin(), allowedRoles("Admin"), create);
+promosRouter.post("/create", isLogin(), allowedRoles("Admin"), create);
 
 // TODO: PATCH promo
-promosRouter.patch("/:id", isLogin(), allowedRoles("Admin"), edit);
+promosRouter.patch("/edit/:id", isLogin(), allowedRoles("Admin"), edit);
 
 // TODO: DELETE promo
-promosRouter.delete("/:id", isLogin(), allowedRoles("Admin"), drop);
+promosRouter.delete("/delete/id", isLogin(), allowedRoles("Admin"), drop);
 
 module.exports = promosRouter;
