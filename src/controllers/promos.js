@@ -1,4 +1,4 @@
-const { success, error } = require("../helpers/res");
+const { success, error } = require("../helpers/response");
 
 const {
   getPromos,
@@ -23,12 +23,12 @@ const promosController = {
       const response = await createPromos(req.body);
       console.log(response);
       res.status(201).json({
-        message: `Promo was created successfully`,
+        msg: `Promo created successfully`,
       });
     } catch (error) {
       console.log(error);
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
@@ -38,12 +38,12 @@ const promosController = {
       const response = await editPromos(req.body, req.params);
       console.log(response);
       res.status(200).json({
-        message: `Promo was updated successfully`,
+        msg: `Promo updated successfully`,
       });
     } catch (error) {
       console.log(error);
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
@@ -53,12 +53,12 @@ const promosController = {
       const response = await dropPromos(req.params);
       console.log(response);
       res.status(200).json({
-        message: `Promo was updated successfully`,
+        msg: `Promo updated successfully`,
       });
     } catch (error) {
       console.log(error);
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
