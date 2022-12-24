@@ -18,13 +18,13 @@ const allowedRoles = require("../middlewares/allowedRoles");
 transactionsRouter.get("/", isLogin(), allowedRoles("Admin"), get);
 
 // TODO: POST transaction
-transactionsRouter.post("/", isLogin(), create);
+transactionsRouter.post("/create", isLogin(), create);
 
 // TODO: EDIT transaction
-transactionsRouter.patch("/:id", isLogin(), allowedRoles("Admin"), edit);
+transactionsRouter.patch("/edit/:id", isLogin(), allowedRoles("Admin"), edit);
 
 // TODO: DELETE transaction
-transactionsRouter.delete("/:id", isLogin(), drop);
+transactionsRouter.delete("/delete/:id", isLogin(), drop);
 
 // TODO: GET history transaction
 transactionsRouter.get("/history", isLogin(), history);
