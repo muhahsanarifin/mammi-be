@@ -6,7 +6,7 @@ const { login, logout } = require("../controllers/auth");
 const isLogin = require("../middlewares/isLogin");
 
 // TODO: Login
-authRouter.post("/", login);
+authRouter.post("/login", login);
 
 // TODO: Logout
 authRouter.delete("/logout", isLogin(), logout);
