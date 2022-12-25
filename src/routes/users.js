@@ -2,8 +2,8 @@ const express = require("express");
 const usersRouter = express.Router();
 const {
   gets,
-  get,
-  getProfile,
+  getProfileContacts,
+  getProfileDetails,
   register,
   editProfile,
   deleteAccount,
@@ -15,14 +15,14 @@ const { memoryUpload, errorHandler } = require("../middlewares/uploadImages");
 const profileUpload = require("../middlewares/profileUpload");
 const allowedRoles = require("../middlewares/allowedRoles");
 
-// TODO: GETS users
+// TODO: GET users
 usersRouter.get("/", isLogin(), allowedRoles("Admin"), gets);
 
-// TODO: GET user
-usersRouter.get("/id", isLogin(), get);
+// TODO: GET Profile Contact
+usersRouter.get("/acc/profile/contact/id", isLogin(), getProfileContacts);
 
-// TODO: GET Profile
-usersRouter.get("/profile/id", isLogin(), getProfile);
+// TODO: GET Profile Detail
+usersRouter.get("/acc/profile/detail/id", isLogin(), getProfileDetails);
 
 // TODO: POST account
 usersRouter.post("/register", register);
@@ -32,7 +32,7 @@ usersRouter.delete("/acc/delete", isLogin(), deleteAccount);
 
 // TODO: PATCH profile
 usersRouter.patch(
-  "/profile/edit",
+  "/acc/profile/edit",
   isLogin(),
   (req, res, next) =>
     memoryUpload.single("picture")(req, res, (err) => {

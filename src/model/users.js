@@ -185,7 +185,7 @@ const getUsers = (queryParams, url) => {
   });
 };
 
-const getUser = (token) => {
+const getProfileContacts = (token) => {
   return new Promise((resolve, reject) => {
     const query =
       "select id, email, password, phone_number, role, created_at, updated_at from users where id = $1";
@@ -199,7 +199,7 @@ const getUser = (token) => {
   });
 };
 
-const getProfile = (token) => {
+const getProfileDetails = (token) => {
   return new Promise((resolve, reject) => {
     const query =
       "select user_id, first_name, last_name, display_name, birth, gender, address, picture from profiles where user_id = $1";
@@ -217,8 +217,8 @@ const usersModel = {
   registerUsers,
   editPassword,
   getUsers,
-  getUser,
-  getProfile,
+  getProfileContacts,
+  getProfileDetails,
   editProfile,
   deleteAccount,
 };

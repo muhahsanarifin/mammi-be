@@ -5,8 +5,8 @@ const {
   editProfile,
   deleteAccount,
   getUsers,
-  getProfile,
-  getUser,
+  getProfileDetails,
+  getProfileContacts,
 } = require("../model/users");
 
 const userController = {
@@ -79,18 +79,18 @@ const userController = {
     }
   },
 
-  get: async (req, res) => {
+  getProfileContacts: async (req, res) => {
     try {
-      const response = await getUser(req.userPayload.id); // ⇦ request userPayload
+      const response = await getProfileContacts(req.userPayload.id); // ⇦ request userPayload
       success(res, 200, response.rows);
     } catch (err) {
       error(res, 500, err.message);
     }
   },
 
-  getProfile: async (req, res) => {
+  getProfileDetails: async (req, res) => {
     try {
-      const response = await getProfile(req.userPayload.id); // ⇦ request userPayload
+      const response = await getProfileDetails(req.userPayload.id); // ⇦ request userPayload
       success(res, 200, response.rows);
     } catch (err) {
       error(res, 500, err.message);
