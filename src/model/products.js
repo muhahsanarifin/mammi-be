@@ -128,10 +128,10 @@ const getProduct = (queryParams) => {
 const createProducts = (body, file) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into products (product_name, category_id, image, price) values ($1,$2,$3,$4) returning *";
-    const { product_name, category_id, price } = body;
+      "insert into products (product_name, category_id, image, price, description) values ($1,$2,$3,$4,$5) returning *";
+    const { product_name, category_id, price, description } = body;
     const imageURL = file.secure_url;
-    const values = [product_name, category_id, imageURL, price];
+    const values = [product_name, category_id, imageURL, price, description];
     postgreDatabase.query(query, values, (error, result) => {
       if (error) {
         console.log(error);
