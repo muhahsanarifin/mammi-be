@@ -18,6 +18,6 @@ promosRouter.post("/create", isLogin(), allowedRoles("Admin"), create);
 promosRouter.patch("/edit/:id", isLogin(), allowedRoles("Admin"), edit);
 
 // TODO: DELETE promo
-promosRouter.delete("/delete/id", isLogin(), allowedRoles("Admin"), drop);
+promosRouter.delete("/delete/:id", isLogin(), allowedRoles("Admin"), drop);
 
 module.exports = promosRouter;
