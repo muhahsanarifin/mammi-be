@@ -10,7 +10,6 @@ const login = (body) => {
 
     // TODO: First step
     const getPasswordByEmailQuery =
-      // "select id, password, role from users where email = $1";
       "select id, email, password, role, picture from users left join profiles on id = user_id where email = $1 group by id, email, password, role, picture";
     const getPasswordByEmailValues = [email];
     postgreDatabase.query(
