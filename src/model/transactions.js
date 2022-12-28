@@ -74,8 +74,6 @@ const getTransactions = (queryParams, url) => {
   });
 };
 
-// || Under maintenance
-
 const getHistory = (token) => {
   return new Promise((resolve, reject) => {
     const query =
@@ -185,5 +183,3 @@ const transactionsModel = {
 };
 
 module.exports = transactionsModel;
-
-// || Under maintenance
