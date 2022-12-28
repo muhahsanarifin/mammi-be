@@ -38,6 +38,7 @@ const promosController = {
       const response = await editPromos(req.body, req.params);
       console.log(response);
       res.status(200).json({
+        result: response.rows,
         msg: `Promo updated successfully`,
       });
     } catch (error) {
