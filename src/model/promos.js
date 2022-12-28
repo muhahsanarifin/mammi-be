@@ -75,10 +75,10 @@ const createPromos = (body) => {
   return new Promise((resolve, reject) => {
     const query =
       "insert into promos (code, discount, product_id, created_at, updated_at) values ($1, $2, $3, $4, $5)";
-    const { code, discount, product_id, created_at, updated_at } = body;
+    const { code, discount, product_id } = body;
     postgreDatabase.query(
       query,
-      [code, discount, product_id, created_at, updated_at],
+      [code, discount, product_id, now(), now()],
       (error, result) => {
         if (error) {
           console.log(error);
