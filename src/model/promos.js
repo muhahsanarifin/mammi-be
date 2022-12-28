@@ -76,9 +76,20 @@ const createPromos = (body) => {
     const query =
       "insert into promos (code, discount, product_id, created_at, updated_at) values ($1, $2, $3, $4, $5)";
     const { code, discount, product_id } = body;
+
+    let date = new Date();
+    let day = ("0" + date.getDate()).slice(-2);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    const currentDate = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+
     postgreDatabase.query(
       query,
-      [code, discount, product_id, now(), now()],
+      [code, discount, product_id, currentDate, currentDate],
       (error, result) => {
         if (error) {
           console.log(error);
@@ -93,28 +104,32 @@ const createPromos = (body) => {
 // TODO: Research
 const editPromos = (body, params) => {
   return new Promise((resolve, reject) => {
-    let query = "update promos set ";
+    const query =
+      "update promos set code = $2, discount = $3, product_id = $4, updated_at = $5 where promos.id = $1 returning *";
 
-    const data = [];
+    const { code, discount, product_id } = body;
 
-    Object.keys(body).forEach((key, index, array) => {
-      if (index === array.length - 1) {
-        query += `${key} = $${index + 1} where promos.id = $${
-          index + 2
-        } returning *`;
-        data.push(body[key], params.id);
-        return;
+    let date = new Date();
+    let day = ("0" + date.getDate()).slice(-2);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    const updatedDate = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+
+    postgreDatabase.query(
+      query,
+      [params.id, code, discount, product_id, updatedDate],
+      (error, result) => {
+        if (error) {
+          console.log(error);
+          return reject(error);
+        }
+        return resolve(result);
       }
-      query += `${key} = $${index + 1},`;
-      data.push(body[key]);
-    });
-    postgreDatabase.query(query, data, (error, result) => {
-      if (error) {
-        console.log(error);
-        return reject(error);
-      }
-      return resolve(result);
-    });
+    );
   });
 };
 
