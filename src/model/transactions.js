@@ -92,7 +92,7 @@ const getHistory = (token) => {
 const createTransactions = (body, token) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into transactions ( user_id, product_id, promo_id, size_id, qty, subtotal, tax, delivery_id, payment_id, notes, status, total) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) returning *";
+      "insert into transactions ( user_id, tax, payment_id, delivery_id, promo_id, notes, status, created_at, updated_at, total, product_id, size_id, qty, subtotal) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) returning *";
     const {
       product_id,
       size_id,
@@ -111,49 +111,107 @@ const createTransactions = (body, token) => {
     } = body;
     // TODO: Research
     // let subTotal = product price(promo or not promo) * qty + tax + delivery fee = subtotal === total
-    postgreDatabase.query(
-      query,
-      [
-        token,
-        product_id,
-        promo_id,
-        size_id,
-        qty,
-        subtotal,
-        tax,
-        delivery_id,
-        payment_id,
-        notes,
-        "Pending",
-        total,
-      ],
-      (error, result) => {
-        if (error) {
-          // console.log(error);
-          return reject(error);
-        }
-        return resolve(result);
+
+    let date = new Date();
+    let day = ("0" + date.getDate()).slice(-2);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    const currentDate = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+
+    const initStatus = "Pending";
+
+    const value = [
+      token,
+      tax,
+      payment_id,
+      delivery_id,
+      promo_id,
+      notes,
+      initStatus,
+      currentDate,
+      currentDate,
+      total,
+      product_id,
+      size_id,
+      qty,
+      subtotal,
+    ];
+    postgreDatabase.query(query, value, (error, result) => {
+      if (error) {
+        // console.log(error);
+        return reject(error);
       }
-    );
+      return resolve(result);
+    });
   });
 };
 
 const editTransactions = (body, params) => {
   return new Promise((resolve, reject) => {
     let query = "update transactions set ";
-    const data = [];
+    const value = [];
     Object.keys(body).forEach((key, index, array) => {
       if (index === array.length - 1) {
         query += `${key} = $${index + 1} where id = $${index + 2} returning *`;
-        data.push(body[key], params.id);
+        value.push(body[key], params.id);
         return;
       }
       query += `${key} = $${index + 1},`;
-      data.push(body[key]);
+      value.push(body[key]);
     });
-    postgreDatabase.query(query, data, (error, result) => {
+
+    // TODO: Research
+
+    // const query =
+    //   "update transactions set tax = $2, payment_id = $3, delivery_id = $4, promo_id = $5, notes = $6, status = $7, updated_at = $8, total = $9, product_id = $10, size_id = $11, qty = $12, subtotal = $13 where transactions.id = $1 returning *";
+
+    // let date = new Date();
+    // let day = ("0" + date.getDate()).slice(-2);
+    // let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    // let year = date.getFullYear();
+    // let hours = date.getHours();
+    // let minutes = date.getMinutes();
+    // let seconds = date.getSeconds();
+
+    // const updatedDate = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+
+    // const {
+    //   tax,
+    //   payment_id,
+    //   delivery_id,
+    //   promo_id,
+    //   notes,
+    //   status,
+    //   total,
+    //   product_id,
+    //   size_id,
+    //   qty,
+    //   subtotal,
+    // } = body;
+
+    // const value = [
+    //   params.id,
+    //   tax,
+    //   payment_id,
+    //   delivery_id,
+    //   promo_id,
+    //   notes,
+    //   status,
+    //   updatedDate,
+    //   total,
+    //   product_id,
+    //   size_id,
+    //   qty,
+    //   subtotal,
+    // ];
+
+    postgreDatabase.query(query, value, (error, result) => {
       if (error) {
-        // console.log(error);
+        console.log(error);
         return reject(error);
       }
       return resolve(result);
