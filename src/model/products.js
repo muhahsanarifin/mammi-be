@@ -128,10 +128,30 @@ const getProduct = (queryParams) => {
 const createProducts = (body, file) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into products (product_name, category_id, image, price, description) values ($1,$2,$3,$4,$5) returning *";
-    const { product_name, category_id, price, description } = body;
+      "insert into products (product_name, price, category_id, image, created_at, updated_at, description) values ($1,$2,$3,$4,$5,$6,$7) returning *";
+    const { product_name, price, category_id, description } = body;
+
     const imageURL = file.secure_url;
-    const values = [product_name, category_id, imageURL, price, description];
+
+    let date = new Date();
+    let day = ("0" + date.getDate()).slice(-2);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    const currentDate = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+
+    const values = [
+      product_name,
+      price,
+      category_id,
+      currentDate,
+      currentDate,
+      imageURL,
+      description,
+    ];
     postgreDatabase.query(query, values, (error, result) => {
       if (error) {
         console.log(error);
@@ -144,21 +164,32 @@ const createProducts = (body, file) => {
 
 const updateProducts = (body, params) => {
   return new Promise((resolve, reject) => {
-    let query = "update products set ";
-    const data = [];
+    const query =
+      "update products set product_name = $2, price = $3, category_id = $4, image = $5, updated_at = $6, description = $7 where products.id = $1 returning *";
 
-    Object.keys(body).forEach((key, index, array) => {
-      if (index === array.length - 1) {
-        query += `${key} = $${index + 1} where products.id = $${
-          index + 2
-        } returning *`;
-        data.push(body[key], params.id);
-        return;
-      }
-      query += `${key} = $${index + 1},`;
-      data.push(body[key]);
-    });
-    postgreDatabase.query(query, data, (error, result) => {
+    const { product_name, price, category_id, image, description } = body;
+
+    let date = new Date();
+    let day = ("0" + date.getDate()).slice(-2);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    const updatedDate = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+
+    const value = [
+      params.id,
+      product_name,
+      price,
+      category_id,
+      image,
+      updatedDate,
+      description,
+    ];
+
+    postgreDatabase.query(query, value, (error, result) => {
       if (error) {
         return reject(error);
       }
