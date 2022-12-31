@@ -9,27 +9,27 @@ const getProducts = (queryParams, url) => {
     let link = `${url}/products?`;
 
     // TODO: Filter products
-    if (queryParams.post == "latest") {
+    if (queryParams.post === "latest") {
       query += ` order by p.created_at desc`;
       link += ` post=${queryParams.post}&`;
     }
 
-    if (queryParams.post == "oldest") {
+    if (queryParams.post === "oldest") {
       query += ` order by p.created_at asc`;
       link += ` post=${queryParams.post}&`;
     }
 
-    if (queryParams.price == "low") {
+    if (queryParams.price === "low") {
       query += ` order by p.price asc`;
       link += ` price=${queryParams.price}&`;
     }
 
-    if (queryParams.price == "expensive") {
+    if (queryParams.price === "expensive") {
       query += ` order by p.price desc`;
       link += ` price=${queryParams.price}&`;
     }
 
-    if (queryParams.favorite == "true") {
+    if (queryParams.favorite === "true") {
       query =
         "select p.product_name, p.price, p.image from transactions t left join products p on t.product_id = p.id group by p.product_name, p.price, p.image";
       link += ` favorite=${queryParams.favorite}&`;
