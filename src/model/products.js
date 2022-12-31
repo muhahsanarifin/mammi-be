@@ -4,7 +4,7 @@ const getProducts = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     // TODO: Find all products
     let query =
-      "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description from products p join categories c on p.category_id = c.id";
+      "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description from products p left join categories c on p.category_id = c.id";
 
     let link = `${url}/products?`;
 
@@ -31,11 +31,11 @@ const getProducts = (queryParams, url) => {
 
     if (queryParams.favorite === "true") {
       query =
-        "select p.product_name, p.price, p.image from transactions t left join products p on t.product_id = p.id group by p.product_name, p.price, p.image";
+        "select p.id, p.product_name, p.price, p.image from transactions t left join products p on t.product_id = p.id group by p.id, p.product_name, p.price, p.image";
       link += ` favorite=${queryParams.favorite}&`;
     }
 
-    // TODO: Search  Category Products
+    // TODO: Search & Category Products
     if (queryParams.category) {
       query += ` where lower(c.category_name) like lower('%${queryParams.category}%')`;
       link += ` category=${queryParams.category}&`;
@@ -53,13 +53,14 @@ const getProducts = (queryParams, url) => {
       let page = Number(queryParams.page);
       let limit = Number(queryParams.limit);
       let offset = (page - 1) * limit;
-      queryLimit = query + ` order by p.id limit $1 offset $2`;
+      queryLimit = query + ` limit $1 offset $2`;
       values.push(limit, offset);
     } else {
       queryLimit = query;
     }
 
     postgreDatabase.query(query, (error, result) => {
+      console.log(result);
       postgreDatabase.query(queryLimit, values, (error, queryResult) => {
         if (error) {
           return reject(error);
