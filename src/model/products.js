@@ -166,7 +166,7 @@ const createProducts = (body, file) => {
 const updateProducts = (body, params) => {
   return new Promise((resolve, reject) => {
     const query =
-      "update products set product_name = $2, price = $3, category_id = $4, image = $5, updated_at = $6, description = $7 where products.id = $1 returning *";
+      "update products set product_name = $2, price = $3, category_id = $4, image = $5, updated_at = $6, description = $7 where id = $1 returning *";
 
     const { product_name, price, category_id, image, description } = body;
 
@@ -178,7 +178,7 @@ const updateProducts = (body, params) => {
     let minutes = date.getMinutes();
     let seconds = date.getSeconds();
 
-    const updatedDate = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+    let updatedDate = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
 
     const value = [
       params.id,
