@@ -6,6 +6,7 @@ const {
   getHistory,
   editTransactions,
   dropTransactions,
+  updateStatusTransactions,
 } = require("../model/transactions");
 
 const transactionsController = {
@@ -69,6 +70,22 @@ const transactionsController = {
       });
     } catch (error) {
       res.status(500).send({
+        msg: "Internal Server Error",
+      });
+    }
+  },
+
+  updateStatus: async (req, res) => {
+    const { status } = req.body;
+    try {
+      const response = await updateStatusTransactions(status, req.params);
+      console.log(response);
+      res.status(200).json({
+        data: { status: response.rows[0].status },
+        msg: "Transaction updated successfully.",
+      });
+    } catch (error) {
+      res.status(500).json({
         msg: "Internal Server Error",
       });
     }

@@ -165,7 +165,6 @@ const editTransactions = (body, params) => {
     });
 
     // TODO: Research
-
     // const query =
     //   "update transactions set tax = $2, payment_id = $3, delivery_id = $4, promo_id = $5, notes = $6, status = $7, updated_at = $8, total = $9, product_id = $10, size_id = $11, qty = $12, subtotal = $13 where transactions.id = $1 returning *";
 
@@ -224,7 +223,33 @@ const dropTransactions = (params) => {
     const query = "delete from transactions where id = $1";
     postgreDatabase.query(query, [params.id], (error, result) => {
       if (error) {
-        // console.log(error);
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+const updateStatusTransactions = (status, params) => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "update transactions set status = $2, updated_at = $3 where id = $1 returning *";
+
+    let date = new Date();
+    let day = ("0" + date.getDate()).slice(-2);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    const updatedDate = `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+
+    const values = [params.id, status, updatedDate];
+
+    postgreDatabase.query(query, values, (error, result) => {
+      console.log(values);
+      if (error) {
         return reject(error);
       }
       return resolve(result);
@@ -238,6 +263,7 @@ const transactionsModel = {
   createTransactions,
   editTransactions,
   dropTransactions,
+  updateStatusTransactions,
 };
 
 module.exports = transactionsModel;

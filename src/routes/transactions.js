@@ -8,6 +8,7 @@ const {
   history,
   edit,
   drop,
+  updateStatus,
 } = require("../controllers/transactions");
 
 const isLogin = require("../middlewares/isLogin");
@@ -28,5 +29,13 @@ transactionsRouter.delete("/delete/:id", isLogin(), drop);
 
 // TODO: GET history transaction
 transactionsRouter.get("/history", isLogin(), history);
+
+// TODO: UPDATE status transaction
+transactionsRouter.patch(
+  "/status/update/:id",
+  isLogin(),
+  allowedRoles("Admin"),
+  updateStatus
+);
 
 module.exports = transactionsRouter;
