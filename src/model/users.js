@@ -1,17 +1,30 @@
 const bcrypt = require("bcrypt");
 const postgreDatabase = require("../config/postgre");
-
 const registerUsers = (body) => {
   return new Promise((resolve, reject) => {
     const { email, password, phone_number } = body;
+
     bcrypt.hash(password, 10, (error, hashedPassord) => {
       if (error) {
         console.log(error);
         return reject(error);
       }
+
       const query =
         "insert into users (email, password, phone_number, role) values ($1, $2, $3, $4) returning id";
+
+      //TODO: Research
+      // let values = [email, hashedPassord, phone_number];
+
+      // if (role.length < 1) {
+      //   values.push("Customer");
+      // } else {
+      //   values = [email, hashedPassord, phone_number, role];
+      // }
+      // console.log(typeof role.length < 1);
+
       const values = [email, hashedPassord, phone_number, "Customer"];
+
       postgreDatabase.query(query, values, (error, response) => {
         if (error) {
           console.log(error);
@@ -25,6 +38,30 @@ const registerUsers = (body) => {
           resolve(result);
         });
       });
+    });
+  });
+};
+
+const checkDuplicateEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    const query = "select * from users where email = $1";
+    postgreDatabase.query(query, [email], (error, result) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(result);
+    });
+  });
+};
+
+const checkMaxDuplicatePhoneNumber = (phone_number) => {
+  return new Promise((resolve, reject) => {
+    const query = "select * from users where phone_number = $1";
+    postgreDatabase.query(query, [phone_number], (error, result) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(result);
     });
   });
 };
@@ -215,6 +252,8 @@ const getProfileDetails = (token) => {
 
 const usersModel = {
   registerUsers,
+  checkDuplicateEmail,
+  checkMaxDuplicatePhoneNumber,
   editPassword,
   getUsers,
   getProfileContacts,
