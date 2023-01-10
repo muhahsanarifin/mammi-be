@@ -87,8 +87,8 @@ const getPromo = (params) => {
 const createPromos = (body) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into promos (code, discount, product_id, created_at, updated_at) values ($1, $2, $3, $4, $5)";
-    const { code, discount, product_id } = body;
+      "insert into promos (code, discount, product_id, start_active_date, , created_at, updated_at) values ($1, $2, $3, $4, $5, $6, $7)";
+    const { code, discount, product_id, start_active_date, expiry_date } = body;
 
     let date = new Date();
     let day = ("0" + date.getDate()).slice(-2);
@@ -102,7 +102,15 @@ const createPromos = (body) => {
 
     postgreDatabase.query(
       query,
-      [code, discount, product_id, currentDate, currentDate],
+      [
+        code,
+        discount,
+        product_id,
+        start_active_date,
+        expiry_date,
+        currentDate,
+        currentDate,
+      ],
       (error, result) => {
         if (error) {
           console.log(error);
@@ -118,9 +126,9 @@ const createPromos = (body) => {
 const editPromos = (body, params) => {
   return new Promise((resolve, reject) => {
     const query =
-      "update promos set code = $2, discount = $3, product_id = $4, updated_at = $5 where promos.id = $1 returning *";
+      "update promos set code = $2, discount = $3, product_id = $4, start_active_date = $5, expiry_date = $6, updated_at = $7 where promos.id = $1 returning *";
 
-    const { code, discount, product_id } = body;
+    const { code, discount, product_id, start_active_date, expiry_date } = body;
 
     let date = new Date();
     let day = ("0" + date.getDate()).slice(-2);
@@ -134,7 +142,15 @@ const editPromos = (body, params) => {
 
     postgreDatabase.query(
       query,
-      [params.id, code, discount, product_id, updatedDate],
+      [
+        params.id,
+        code,
+        discount,
+        product_id,
+        start_active_date,
+        expiry_date,
+        updatedDate,
+      ],
       (error, result) => {
         if (error) {
           console.log(error);
