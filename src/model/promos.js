@@ -74,7 +74,7 @@ const getPromos = (queryParams, url) => {
 const getPromo = (params) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select promos.code, promos.discount, products.image, promos.created_at, promos.updated_at from promos left join products on promos.product_id = products.id where promos.id = $1";
+      "select promos.code, promos.discount, products.product_name, products.image, promos.created_at, promos.updated_at from promos left join products on promos.product_id = products.id where promos.id = $1";
     postgreDatabase.query(query, [params.id], (error, result) => {
       if (error) {
         reject(error);
