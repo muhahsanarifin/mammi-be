@@ -2,6 +2,7 @@ const { success, error } = require("../helpers/response");
 
 const {
   getPromos,
+  getPromo,
   createPromos,
   editPromos,
   dropPromos,
@@ -13,6 +14,15 @@ const promosController = {
       const url = `${req.protocol}://${req.hostname}/api/v1`;
       const response = await getPromos(req.query, url);
       success(res, 200, response);
+    } catch (err) {
+      error(res, 500, err.message);
+    }
+  },
+
+  getById: async (req, res) => {
+    try {
+      const response = await getPromo(req.params);
+      success(res, 200, response.rows);
     } catch (err) {
       error(res, 500, err.message);
     }

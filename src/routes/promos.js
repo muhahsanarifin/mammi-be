@@ -2,14 +2,17 @@ const express = require("express");
 
 const promosRouter = express.Router();
 
-const { get, create, edit, drop } = require("../controllers/promos");
+const { get, getById, create, edit, drop } = require("../controllers/promos");
 
 const isLogin = require("../middlewares/isLogin");
 const allowedRoles = require("../middlewares/allowedRoles");
 // const validate = require("../middlewares/validate");
 
-// TODO: GET promo
+// TODO: GET promos
 promosRouter.get("/", get);
+
+// TODO: GET promo
+promosRouter.get("/:id", getById);
 
 // TODO: POST promo
 promosRouter.post("/create", isLogin(), allowedRoles("Admin"), create);

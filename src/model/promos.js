@@ -71,6 +71,18 @@ const getPromos = (queryParams, url) => {
   });
 };
 
+const getPromo = (params) => {
+  return new Promise((resolve, reject) => {
+    const query = "select * from promos where id = $1";
+    postgreDatabase.query(query, [params.id], (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(result);
+    });
+  });
+};
+
 const createPromos = (body) => {
   return new Promise((resolve, reject) => {
     const query =
@@ -148,6 +160,7 @@ const dropPromos = (params) => {
 
 const promosModel = {
   getPromos,
+  getPromo,
   createPromos,
   editPromos,
   dropPromos,
