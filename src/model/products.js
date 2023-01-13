@@ -126,13 +126,17 @@ const getProduct = (queryParams) => {
   });
 };
 
+// TODO: Research multiple files
 const createProducts = (body, file) => {
   return new Promise((resolve, reject) => {
+    // const query =
+    //   "insert into products (product_name, price, category_id, image, created_at, updated_at, description) values ($1,$2,$3,$4,$5,$6,$7) returning *";
     const query =
-      "insert into products (product_name, price, category_id, image, created_at, updated_at, description) values ($1,$2,$3,$4,$5,$6,$7) returning *";
+      "insert into products(product_name, price, category_id, image, created_at, updated_at, description) values ($1,$2,$3,$4,$5,$6,$7) returning *";
     const { product_name, price, category_id, description } = body;
 
     const imageURL = file.secure_url;
+    // console.log(imageURL);
 
     let date = new Date();
     let day = ("0" + date.getDate()).slice(-2);
@@ -148,12 +152,13 @@ const createProducts = (body, file) => {
       product_name,
       price,
       category_id,
-      currentDate,
-      currentDate,
       imageURL,
+      currentDate,
+      currentDate,
       description,
     ];
     postgreDatabase.query(query, values, (error, result) => {
+      // console.log(values);
       if (error) {
         console.log(error);
         reject(error);
@@ -163,6 +168,7 @@ const createProducts = (body, file) => {
   });
 };
 
+// TODO: Research multiple files
 const updateProducts = (body, params) => {
   return new Promise((resolve, reject) => {
     const query =

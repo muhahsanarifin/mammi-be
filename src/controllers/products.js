@@ -30,9 +30,11 @@ const productController = {
     }
   },
 
+  // TODO: Research multiple files
   create: async (req, res) => {
     try {
-      const response = await createProducts(req.body, req.file);
+      const response = await createProducts(req.body, req.files);
+      // console.log(req.files);
       res.status(200).json({
         result: response.rows,
         message: `Product created successfully.`,
@@ -45,6 +47,7 @@ const productController = {
     }
   },
 
+  // TODO: Research multiple files
   update: async (req, res) => {
     try {
       if (req.file) {

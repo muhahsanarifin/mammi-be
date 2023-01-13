@@ -15,12 +15,13 @@ productsRouter.get("/", gets);
 productsRouter.get("/:id", get);
 
 // TODO: POST product
+// TODO: Research multiple files
 productsRouter.post(
   "/create",
   isLogin(),
   allowedRoles("Admin"),
   (req, res, next) =>
-    memoryUpload.single("image")(req, res, (err) => {
+    memoryUpload.array("image", 5)(req, res, (err) => {
       errorHandler(err, res, next);
     }),
   productUpload,
