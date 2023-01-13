@@ -6,7 +6,7 @@ const postgreDatabase = require("./src/config/postgre");
 // TODO: Import mainRouter
 const mainRouter = require("./src/routes/main");
 // TODO: Import morgan
-const morgan = require("morgan");
+// const morgan = require("morgan");
 // TODO:import path
 // const path = require("path");
 
@@ -37,7 +37,7 @@ postgreDatabase
     console.log("Database is connected");
 
     // TODO: Access static files
-    server.use(express.static("./public"));
+    // server.use(express.static("./public"));
 
     // TODO: Using parser for body
     server.use(express.json());
