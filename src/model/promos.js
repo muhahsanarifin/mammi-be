@@ -87,7 +87,7 @@ const getPromo = (params) => {
 const createPromos = (body) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into promos (code, discount, product_id, start_active_date, , created_at, updated_at) values ($1, $2, $3, $4, $5, $6, $7)";
+      "insert into promos (code, discount, product_id, start_active_date, expiry_date, created_at, updated_at) values ($1, $2, $3, $4, $5, $6, $7)";
     const { code, discount, product_id, start_active_date, expiry_date } = body;
 
     let date = new Date();
