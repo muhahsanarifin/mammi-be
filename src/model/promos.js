@@ -3,7 +3,7 @@ const postgreDatabase = require("../config/postgre");
 const getPromos = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     let query =
-      "select promos.id, promos.code, promos.discount, p.product_name, p.image, promos.created_at, promos.updated_at from promos join products p on promos.product_id = p.id order by promos.id asc";
+      "select promos.id, promos.code, promos.discount, p.product_name, p.image, promos.created_at, promos.updated_at, promos.description, promos.expiry_date, promos.start_active_date from promos join products p on promos.product_id = p.id order by promos.id asc";
 
     let link = `${url}/promos?`;
 
@@ -74,7 +74,7 @@ const getPromos = (queryParams, url) => {
 const getPromo = (params) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select promos.code, promos.discount, products.product_name,products.price, products.image, promos.created_at, promos.updated_at from promos left join products on promos.product_id = products.id where promos.id = $1";
+      "select promos.code, promos.discount, products.product_name, products.price, products.image, promos.created_at, promos.updated_at, promos.description, promos.expiry_date, promos.start_active_date from promos left join products on promos.product_id = products.id where promos.id = $1";
     postgreDatabase.query(query, [params.id], (error, result) => {
       if (error) {
         reject(error);
