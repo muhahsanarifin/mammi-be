@@ -126,9 +126,9 @@ const createPromos = (body) => {
 const editPromos = (body, params) => {
   return new Promise((resolve, reject) => {
     const query =
-      "update promos set code = $2, discount = $3, product_id = $4, start_active_date = $5, expiry_date = $6, updated_at = $7 where promos.id = $1 returning *";
+      "update promos set code = $2, discount = $3, start_active_date = $4, expiry_date = $5, updated_at = $6 where promos.id = $1 returning *";
 
-    const { code, discount, product_id, start_active_date, expiry_date } = body;
+    const { code, discount, start_active_date, expiry_date } = body;
 
     let date = new Date();
     let day = ("0" + date.getDate()).slice(-2);
@@ -142,15 +142,7 @@ const editPromos = (body, params) => {
 
     postgreDatabase.query(
       query,
-      [
-        params.id,
-        code,
-        discount,
-        product_id,
-        start_active_date,
-        expiry_date,
-        updatedDate,
-      ],
+      [params.id, code, discount, start_active_date, expiry_date, updatedDate],
       (error, result) => {
         if (error) {
           console.log(error);
