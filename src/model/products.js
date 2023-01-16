@@ -4,7 +4,7 @@ const getProducts = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     // TODO: Find all products
     let query =
-      "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description from products p left join categories c on p.category_id = c.id";
+      "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id";
 
     let link = `${url}/products?`;
 
@@ -115,7 +115,7 @@ const getProducts = (queryParams, url) => {
 const getProduct = (queryParams) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description from products p join categories c on p.category_id = c.id where p.id = $1";
+      "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p join categories c on p.category_id = c.id where p.id = $1";
     postgreDatabase.query(query, [queryParams.id], (error, result) => {
       if (error) {
         console.log(error);
@@ -129,8 +129,8 @@ const getProduct = (queryParams) => {
 const createProducts = (body, file) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into products (product_name, price, category_id, image, created_at, updated_at, description) values ($1,$2,$3,$4,$5,$6,$7) returning *";
-    const { product_name, price, category_id, description } = body;
+      "insert into products (product_name, price, category_id, image, created_at, updated_at, description, stock) values ($1,$2,$3,$4,$5,$6,$7,$8) returning *";
+    const { product_name, price, category_id, description, stock } = body;
 
     const imageURL = file.secure_url;
 
@@ -152,6 +152,7 @@ const createProducts = (body, file) => {
       currentDate,
       imageURL,
       description,
+      stock,
     ];
     postgreDatabase.query(query, values, (error, result) => {
       if (error) {
@@ -166,9 +167,10 @@ const createProducts = (body, file) => {
 const updateProducts = (body, params) => {
   return new Promise((resolve, reject) => {
     const query =
-      "update products set product_name = $2, price = $3, category_id = $4, image = $5, updated_at = $6, description = $7 where id = $1 returning *";
+      "update products set product_name = $2, price = $3, category_id = $4, image = $5, updated_at = $6, description = $7, stock = $8 where id = $1 returning *";
 
-    const { product_name, price, category_id, image, description } = body;
+    const { product_name, price, category_id, image, description, stock } =
+      body;
 
     let date = new Date();
     let day = ("0" + date.getDate()).slice(-2);
@@ -188,6 +190,7 @@ const updateProducts = (body, params) => {
       image,
       updatedDate,
       description,
+      stock,
     ];
 
     postgreDatabase.query(query, value, (error, result) => {
