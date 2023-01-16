@@ -115,7 +115,7 @@ const getProducts = (queryParams, url) => {
 const getProduct = (queryParams) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p join categories c on p.category_id = c.id where p.id = $1";
+      "select p.id, p.product_name, p.price, p.category_id, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p join categories c on p.category_id = c.id where p.id = $1";
     postgreDatabase.query(query, [queryParams.id], (error, result) => {
       if (error) {
         console.log(error);
