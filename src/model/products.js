@@ -6,44 +6,65 @@ const getProducts = (queryParams, url) => {
     let query =
       "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id";
 
+    let queryFavoriteProduct =
+      "select p.id, p.product_name, p.price, p.image, p.created_at, p.updated_at from transactions t left join products p on t.product_id = p.id group by p.id, p.product_name, p.price, p.image";
+
     let link = `${url}/products?`;
 
-    // TODO: Filter products
-    if (queryParams.post === "latest") {
+    if (query) {
       query += ` order by p.created_at desc`;
-      link += ` post=${queryParams.post}&`;
-    }
+      // TODO: Filter products
+      if (queryParams.post === "latest") {
+        query += ` order by p.created_at desc`;
+        link += `post=${queryParams.post}&`;
 
-    if (queryParams.post === "oldest") {
-      query += ` order by p.created_at asc`;
-      link += ` post=${queryParams.post}&`;
-    }
+        if (queryParams.post === "latest") {
+          query = queryFavoriteProduct += ` order by p.created_at desc`;
+        }
+      }
 
-    if (queryParams.price === "low") {
-      query += ` order by p.price asc`;
-      link += ` price=${queryParams.price}&`;
-    }
+      if (queryParams.post === "oldest") {
+        query += ` order by p.created_at asc`;
+        link += `post=${queryParams.post}&`;
 
-    if (queryParams.price === "expensive") {
-      query += ` order by p.price desc`;
-      link += ` price=${queryParams.price}&`;
-    }
+        if (queryParams.post === "oldest") {
+          query = queryFavoriteProduct += ` order by p.created_at asc`;
+        }
+      }
 
-    if (queryParams.favorite === "true") {
-      query =
-        "select p.id, p.product_name, p.price, p.image from transactions t left join products p on t.product_id = p.id group by p.id, p.product_name, p.price, p.image";
-      link += ` favorite=${queryParams.favorite}&`;
-    }
+      if (queryParams.price === "low") {
+        query += ` order by p.price asc`;
+        link += `price=${queryParams.price}&`;
 
-    // TODO: Search & Category Products
-    if (queryParams.category) {
-      query += ` where lower(c.category_name) like lower('%${queryParams.category}%')`;
-      link += ` category=${queryParams.category}&`;
-    }
+        if (queryParams.post === "low") {
+          query = queryFavoriteProduct += ` order by p.price asc`;
+        }
+      }
 
-    if (queryParams.search) {
-      query += ` where lower(p.product_name) like lower('%${queryParams.search}%')`;
-      link += ` seacrh=${queryParams.search}&`;
+      if (queryParams.price === "expensive") {
+        query += ` order by p.price desc`;
+        link += `price=${queryParams.price}&`;
+
+        if (queryParams.post === "expensive") {
+          query = queryFavoriteProduct += ` order by p.price desc`;
+        }
+      }
+
+      // TODO: Search & Category Products
+      if (queryParams.category) {
+        query += ` where lower(c.category_name) like lower('%${queryParams.category}%')`;
+        link += `category=${queryParams.category}&`;
+
+        if (queryParams.category === "Favorite") {
+          query = queryFavoriteProduct;
+          link += `favorite=${queryParams.category}&`;
+        }
+      }
+
+      if (queryParams.search) {
+        query += ` where lower(p.product_name) like lower('%${queryParams.search}%')`;
+        link += `seacrh=${queryParams.search}&`;
+      }
     }
 
     let queryLimit = "";
@@ -65,8 +86,11 @@ const getProducts = (queryParams, url) => {
         if (error) {
           return reject(error);
         }
-        if (queryResult.rows.length == 0)
-          return reject(new Error("Product Not Found"));
+        if (queryResult.rows.length === 0)
+          return reject({
+            error: new Error("Product Not Found"),
+            statusCode: 404,
+          });
         let nextRes = null;
         let prevRes = null;
         if (queryParams.page && queryParams.limit) {

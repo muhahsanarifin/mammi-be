@@ -15,8 +15,9 @@ const productController = {
       console.log(req.hostname);
       const response = await getProducts(req.query, url);
       success(res, 200, response);
-    } catch (err) {
-      error(res, 500, err.message);
+    } catch (objErr) {
+      const statusCode = objErr.statusCode || 500;
+      error(res, statusCode, { msg: objErr.error.message });
     }
   },
 
