@@ -52,7 +52,7 @@ const getProducts = (queryParams, url) => {
 
       // TODO: Search & Category Products
       if (queryParams.category) {
-        query += ` where lower(c.category_name) like lower('%${queryParams.category}%')`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%')`;
         link += `category=${queryParams.category}&`;
 
         if (queryParams.category === "Favorite") {
@@ -62,7 +62,7 @@ const getProducts = (queryParams, url) => {
       }
 
       if (queryParams.search) {
-        query += ` where lower(p.product_name) like lower('%${queryParams.search}%')`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(p.product_name) like lower('%${queryParams.search}%')`;
         link += `seacrh=${queryParams.search}&`;
       }
     }
@@ -81,6 +81,9 @@ const getProducts = (queryParams, url) => {
     }
 
     postgreDatabase.query(query, (error, result) => {
+      if (error) {
+        return reject(error);
+      }
       console.log(result);
       postgreDatabase.query(queryLimit, values, (error, queryResult) => {
         if (error) {
