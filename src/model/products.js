@@ -2,43 +2,76 @@ const postgreDatabase = require("../config/postgre");
 
 const getProducts = (queryParams, url) => {
   return new Promise((resolve, reject) => {
-    // TODO: Find all products
-
     let query;
 
+    // Find all products
     query =
       "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id";
 
     let link = `${url}/products?`;
 
-    if (queryParams.post === "latest") {
-      query =
-        "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.created_at desc";
-      link += `post=${queryParams.post}&`;
-    }
-
     if (queryParams.post === "oldest") {
       query =
         "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.created_at asc";
       link += `post=${queryParams.post}&`;
+
+      if (queryParams.price === "low") {
+        query =
+          "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.created_at asc, p.price asc";
+      }
+
+      if (queryParams.price === "expensive") {
+        query =
+          "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.created_at asc, p.price desc";
+      }
+    }
+
+    if (queryParams.post === "latest") {
+      query =
+        "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.created_at desc";
+      link += `post=${queryParams.post}&`;
+
+      if (queryParams.price === "low") {
+        query =
+          "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.created_at desc, p.price asc";
+      }
+
+      if (queryParams.price === "expensive") {
+        query =
+          "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.created_at desc, p.price desc";
+      }
     }
 
     if (queryParams.price === "low") {
       query =
         "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.price asc";
       link += `price=${queryParams.price}&`;
+
+      if (queryParams.post === "oldest") {
+        query =
+          "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.price asc, p.created_at asc";
+      }
+
+      if (queryParams.post === "latest") {
+        query =
+          "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.price asc, p.created_at desc";
+      }
     }
 
     if (queryParams.price === "expensive") {
       query =
         "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.price desc";
       link += `price=${queryParams.price}&`;
-    }
 
-    // TODO: Search
-    if (queryParams.search) {
-      query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(p.product_name) like lower('%${queryParams.search}%')`;
-      link += `seacrh=${queryParams.search}&`;
+      if (queryParams.post === "oldest") {
+        query =
+          "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.price desc, p.created_at asc";
+      }
+
+      if (queryParams.post === "latest") {
+        query =
+          "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.price desc, p.created_at desc";
+      }
     }
 
     // Category Products
@@ -77,6 +110,12 @@ const getProducts = (queryParams, url) => {
         query =
           "select p.id, p.product_name, p.price, p.image, p.created_at, p.updated_at from transactions t left join products p on t.product_id = p.id group by p.id, p.product_name, p.price, p.image order by p.created_at desc";
       }
+    }
+
+    // Search
+    if (queryParams.search) {
+      query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(p.product_name) like lower('%${queryParams.search}%')`;
+      link += `seacrh=${queryParams.search}&`;
     }
 
     let queryLimit = "";
