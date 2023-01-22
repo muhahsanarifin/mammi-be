@@ -17,7 +17,7 @@ const productController = {
       success(res, 200, response);
     } catch (objErr) {
       const statusCode = objErr.statusCode || 500;
-      error(res, statusCode, { msg: objErr.message });
+      error(res, statusCode, { msg: objErr.error.message });
     }
   },
 

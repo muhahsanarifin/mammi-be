@@ -12,22 +12,26 @@ const getProducts = (queryParams, url) => {
     let link = `${url}/products?`;
 
     if (queryParams.post === "latest") {
-      query += ` order by p.created_at desc`;
+      query =
+        "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.created_at desc";
       link += `post=${queryParams.post}&`;
     }
 
     if (queryParams.post === "oldest") {
-      query += ` order by p.created_at asc`;
+      query =
+        "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.created_at asc";
       link += `post=${queryParams.post}&`;
     }
 
     if (queryParams.price === "low") {
-      query += ` order by p.price asc`;
+      query =
+        "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.price asc";
       link += `price=${queryParams.price}&`;
     }
 
     if (queryParams.price === "expensive") {
-      query += ` order by p.price desc`;
+      query =
+        "select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id order by p.price desc";
       link += `price=${queryParams.price}&`;
     }
 
@@ -43,19 +47,19 @@ const getProducts = (queryParams, url) => {
       link += `category=${queryParams.category}&`;
 
       if (queryParams.post === "latest") {
-        query += ` order by p.created_at desc`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%') order by p.created_at desc`;
       }
 
       if (queryParams.post === "oldest") {
-        query += ` order by p.created_at asc`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%') order by p.created_at asc`;
       }
 
       if (queryParams.price === "low") {
-        query += ` order by p.price asc`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%') order by p.price asc`;
       }
 
       if (queryParams.price === "expensive") {
-        query += ` order by p.price desc`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%') order by p.price desc`;
       }
     }
 
