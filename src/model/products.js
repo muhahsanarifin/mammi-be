@@ -102,7 +102,7 @@ const getProducts = (queryParams, url) => {
       if (queryParams.price === "low") {
         query = `select p.id, p.product_name, p.price, p.image, p.created_at, p.updated_at from transactions t left join products p on t.product_id = p.id group by p.id, p.product_name, p.price, p.image order by p.price asc`;
       }
-      if (queryParams.price === "low") {
+      if (queryParams.price === "expensive") {
         query = `select p.id, p.product_name, p.price, p.image, p.created_at, p.updated_at from transactions t left join products p on t.product_id = p.id group by p.id, p.product_name, p.price, p.image order by p.price desc`;
       }
       if (queryParams.post === "oldest") {
