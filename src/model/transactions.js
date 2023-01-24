@@ -27,7 +27,7 @@ const getTransactions = (queryParams, url) => {
         if (error) {
           return reject(error);
         }
-        if (queryResult.rows.length == 0)
+        if (queryResult.rows.length === 0)
           return reject(new Error("Transaction Not Found"));
         let nextRes = null;
         let prevRes = null;
@@ -164,7 +164,7 @@ const editTransactions = (body, params) => {
       value.push(body[key]);
     });
 
-    // TODO: Research
+    // Research
     // const query =
     //   "update transactions set tax = $2, payment_id = $3, delivery_id = $4, promo_id = $5, notes = $6, status = $7, updated_at = $8, total = $9, product_id = $10, size_id = $11, qty = $12, subtotal = $13 where transactions.id = $1 returning *";
 

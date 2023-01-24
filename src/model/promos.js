@@ -25,7 +25,7 @@ const getPromos = (queryParams, url) => {
         if (error) {
           return reject(error);
         }
-        if (queryResult.rows.length == 0)
+        if (queryResult.rows.length === 0)
           return reject(new Error("Promo Not Found"));
         let nextRes = null;
         let prevRes = null;

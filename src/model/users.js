@@ -13,7 +13,7 @@ const registerUsers = (body) => {
       const query =
         "insert into users (email, password, phone_number, role) values ($1, $2, $3, $4) returning id";
 
-      //TODO: Research
+      // Research
       // let values = [email, hashedPassord, phone_number];
 
       // if (role.length < 1) {
