@@ -6,6 +6,8 @@ const productsRouter = require("./products");
 const promosRouter = require("./promos");
 const transactionsRouter = require("./transactions");
 const authRouter = require("./auth");
+const deliveriesRouter = require("./deliveries");
+const sizesRouter = require("./sizes");
 
 const mainRouter = express.Router();
 
@@ -17,6 +19,10 @@ mainRouter.use(`${prefix}/products`, productsRouter); // ⇦ products endpoint h
 mainRouter.use(`${prefix}/promos`, promosRouter); // ⇦ promos endpoint handled by promoRouter
 mainRouter.use(`${prefix}/transactions`, transactionsRouter); // ⇦ transactions endpoint handled by transactionsRouter
 mainRouter.use(`${prefix}/auth`, authRouter); // ⇦ auth endpoint handled by authRouter
+
+// Research
+mainRouter.use(`${prefix}/deliveries`, deliveriesRouter); // ⇦ deliveries endpoint handled by deliveriesRouter
+mainRouter.use(`${prefix}/sizes`, sizesRouter); // ⇦ sizes endpoint handled by sizesRouter
 
 // http:localhost:8080/ ⇦ http route access
 mainRouter.get("/", (req, res) => {
