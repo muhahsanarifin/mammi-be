@@ -92,7 +92,7 @@ const getHistory = (token) => {
 const createTransactions = (body, token) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into transactions ( user_id, tax, payment_id, delivery_id, promo_id, notes, status, created_at, updated_at, total, product_id, size_id, qty, subtotal) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) returning *";
+      "insert into transactions ( user_id, tax, payment_id, delivery_id, promo_id, notes, address, telp, status, created_at, updated_at, total, product_id, size_id, qty, subtotal) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) returning *";
     const {
       product_id,
       size_id,
@@ -101,6 +101,8 @@ const createTransactions = (body, token) => {
       delivery_id,
       payment_id,
       notes,
+      address,
+      telp,
       total,
       subtotal,
       tax,
@@ -131,6 +133,8 @@ const createTransactions = (body, token) => {
       delivery_id,
       promo_id,
       notes,
+      address,
+      telp,
       initStatus,
       currentDate,
       currentDate,
