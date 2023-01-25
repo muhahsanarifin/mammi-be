@@ -225,7 +225,7 @@ const getUsers = (queryParams, url) => {
 const getProfileContacts = (token) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select id, email, password, phone_number, role, created_at, updated_at from users where id = $1";
+      "select id, email phone_number, role, created_at, updated_at from users where id = $1";
     postgreDatabase.query(query, [token], (error, result) => {
       if (error) {
         console.log(error);
