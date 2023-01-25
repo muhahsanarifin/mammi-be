@@ -3,7 +3,7 @@ const postgreDatabase = require("../config/postgre");
 const getSizes = () => {
   return new Promise((resolve, reject) => {
     let query =
-      "select id, size name, created_at, updated_at from sizes order by sizes.id asc";
+      "select id, size, name, cost, created_at, updated_at from sizes order by sizes.id asc";
 
     postgreDatabase.query(query, (error, result) => {
       if (error) {
@@ -17,7 +17,7 @@ const getSizes = () => {
 const getSize = (params) => {
   return new Promise((resolve, reject) => {
     let query =
-      "select id, size name, created_at, updated_at from sizes where id = $1";
+      "select id, size, name, cost, created_at, updated_at from sizes where id = $1";
 
     postgreDatabase.query(query, [params.id], (error, result) => {
       if (error) {
