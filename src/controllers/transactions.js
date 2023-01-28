@@ -15,8 +15,9 @@ const transactionsController = {
       const url = `${req.protocol}://${req.hostname}/api/v1`;
       const response = await getTransactions(req.query, url);
       success(res, 200, response);
-    } catch (err) {
-      error(res, 500, err.message);
+    } catch (objErr) {
+      const statusCode = objErr.statusCode || 500;
+      error(res, statusCode, { msg: objErr.error.message });
     }
   },
 
@@ -37,7 +38,7 @@ const transactionsController = {
     try {
       const response = await createTransactions(req.body, req.userPayload.id); // ⇦ request userPayload
       console.log(response);
-      success(res, 200, response.rows);
+      success(res, 200, response.rows, "Transaction successfully.");
     } catch (error) {
       console.log(error);
       res.status(500).json({
@@ -52,7 +53,7 @@ const transactionsController = {
       console.log(response);
       res.status(200).json({
         data: response.rows,
-        msg: "Transaction updated successfully.",
+        msg: "Update transaction successfully.",
       });
     } catch (error) {
       res.status(500).json({
@@ -66,7 +67,7 @@ const transactionsController = {
       const response = await dropTransactions(req.params);
       console.log(response);
       res.status(200).json({
-        msg: "Transaction deleted successfully.",
+        msg: "Delete transaction successfully.",
       });
     } catch (error) {
       res.status(500).send({
@@ -82,7 +83,7 @@ const transactionsController = {
       console.log(response);
       res.status(200).json({
         data: { status: response.rows[0].status },
-        msg: "Transaction updated successfully.",
+        msg: "Update status transaction successfully.",
       });
     } catch (error) {
       res.status(500).json({
