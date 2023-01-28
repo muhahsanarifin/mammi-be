@@ -14,7 +14,7 @@ const productController = {
       const url = `${req.protocol}://${req.hostname}/api/v1`;
       // console.log(req.hostname);
       const response = await getProducts(req.query, url);
-      success(res, 200, response);
+      success(res, 200, response.rows);
     } catch (objErr) {
       const statusCode = objErr.statusCode || 500;
       error(res, statusCode, { msg: objErr.error.message });
@@ -36,12 +36,12 @@ const productController = {
       const response = await createProducts(req.body, req.file);
       res.status(200).json({
         result: response.rows,
-        message: `Product created successfully.`,
+        msg: `Product created successfully.`,
       });
     } catch (error) {
       console.log(error);
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
@@ -55,12 +55,12 @@ const productController = {
       const response = await updateProducts(req.body, req.params);
       res.status(200).json({
         result: response.rows,
-        message: `Product updated successfully.`,
+        msg: `Product updated successfully.`,
       });
     } catch (error) {
       console.log(error);
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
@@ -70,12 +70,12 @@ const productController = {
       const response = await dropProducts(req.params);
       console.log(response);
       res.status(200).json({
-        message: `Product deleted successfully.`,
+        msg: `Product deleted successfully.`,
       });
     } catch (error) {
       console.log(error);
       res.status(500).json({
-        message: "Internal Server Error",
+        msg: "Internal Server Error",
       });
     }
   },
