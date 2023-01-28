@@ -14,7 +14,7 @@ const productController = {
       const url = `${req.protocol}://${req.hostname}/api/v1`;
       // console.log(req.hostname);
       const response = await getProducts(req.query, url);
-      success(res, 200, response.rows);
+      success(res, 200, response);
     } catch (objErr) {
       const statusCode = objErr.statusCode || 500;
       error(res, statusCode, { msg: objErr.error.message });
