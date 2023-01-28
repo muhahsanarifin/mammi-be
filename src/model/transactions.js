@@ -2,10 +2,25 @@ const postgreDatabase = require("../config/postgre");
 
 const getTransactions = (queryParams, url) => {
   return new Promise((resolve, reject) => {
-    let query =
-      "select u.id , t.tax, pay.method, d.method, pro.discount, t.notes, t.status, t.total, prod.product_name, s.size, t.qty, t.subtotal from transactions t left join users u on user_id = u.id left join products prod on product_id = prod.id left join payments pay on payment_id = pay.id left join deliveries d on delivery_id = d.id left join promos pro on promo_id = pro.id left join sizes s on size_id = s.id";
+    let query;
+    query =
+      "select u.id , t.tax, pay.method, d.method, pro.discount, t.notes, t.status, t.total, prod.product_name, prod.image, s.size, t.qty, t.subtotal from transactions t left join users u on user_id = u.id left join products prod on product_id = prod.id left join payments pay on payment_id = pay.id left join deliveries d on delivery_id = d.id left join promos pro on promo_id = pro.id left join sizes s on size_id = s.id";
 
     let link = `${url}/transactions?`;
+
+    if (queryParams.status) {
+      query = `select u.id , t.tax, pay.method, d.method, pro.discount, t.notes, t.status, t.total, prod.product_name, prod.image, s.size, t.qty, t.subtotal from transactions t left join users u on user_id = u.id left join products prod on product_id = prod.id left join payments pay on payment_id = pay.id left join deliveries d on delivery_id = d.id left join promos pro on promo_id = pro.id left join sizes s on size_id = s.id where lower(t.status) like lower('%${queryParams.status}%')`;
+      link += `status=${queryParams.status}&`;
+
+      if (queryParams.customer) {
+        query = `select u.id , t.tax, pay.method, d.method, pro.discount, t.notes, t.status, t.total, prod.product_name, prod.image, s.size, t.qty, t.subtotal from transactions t left join users u on user_id = u.id left join products prod on product_id = prod.id left join payments pay on payment_id = pay.id left join deliveries d on delivery_id = d.id left join promos pro on promo_id = pro.id left join sizes s on size_id = s.id where u.id = ${queryParams.customer}`;
+      }
+    }
+
+    if (queryParams.customer) {
+      query = `select u.id , t.tax, pay.method, d.method, pro.discount, t.notes, t.status, t.total, prod.product_name, prod.image, s.size, t.qty, t.subtotal from transactions t left join users u on user_id = u.id left join products prod on product_id = prod.id left join payments pay on payment_id = pay.id left join deliveries d on delivery_id = d.id left join promos pro on promo_id = pro.id left join sizes s on size_id = s.id where u.id = ${queryParams.customer}`;
+      link += `customer=${queryParams.customer}`;
+    }
 
     let queryLimit = "";
     let values = [];
@@ -21,6 +36,7 @@ const getTransactions = (queryParams, url) => {
     }
 
     postgreDatabase.query(query, (error, result) => {
+      console.log(result);
       postgreDatabase.query(queryLimit, values, (error, queryResult) => {
         console.log(queryLimit);
         console.log(values);
@@ -106,13 +122,14 @@ const createTransactions = (body, token) => {
       total,
       subtotal,
       tax,
-      // TODO: Research
+      // || Research
       // total,
       // subtotal,
       // tax,
     } = body;
-    // TODO: Research
-    // let subTotal = product price(promo or not promo) * qty + tax + delivery fee = subtotal === total
+    // || Research
+    // let subTotal = ((product price * (promo or not promo / 100%)) * qty )
+    // let total = (subTotal+ tax + delivery fee)
 
     let date = new Date();
     let day = ("0" + date.getDate()).slice(-2);
