@@ -12,7 +12,7 @@ const productUpload = require("../middlewares/productUpload");
 productsRouter.get("/", gets);
 
 // TODO: GET product
-productsRouter.get("/:id", get);
+productsRouter.get("/:id", isLogin(), get);
 
 // TODO: POST product
 productsRouter.post(

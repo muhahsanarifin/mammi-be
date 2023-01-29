@@ -11,16 +11,10 @@ const validate = require("../middlewares/validate");
 sizesRouter.get("/", get);
 
 // TODO: GET sizes
-sizesRouter.get("/:id", getById);
+sizesRouter.get("/:id", isLogin(), getById);
 
 // TODO: POST sizes
-sizesRouter.post(
-  "/create",
-  isLogin(),
-  allowedRoles("Admin"),
-  
-  create
-);
+sizesRouter.post("/create", isLogin(), allowedRoles("Admin"), create);
 
 // TODO: PATCH sizes
 sizesRouter.patch("/edit/:id", isLogin(), allowedRoles("Admin"), edit);

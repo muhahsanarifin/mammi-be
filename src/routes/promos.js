@@ -12,7 +12,7 @@ const allowedRoles = require("../middlewares/allowedRoles");
 promosRouter.get("/", get);
 
 // TODO: GET promo
-promosRouter.get("/:id", getById);
+promosRouter.get("/:id", isLogin(), getById);
 
 // TODO: POST promo
 promosRouter.post("/create", isLogin(), allowedRoles("Admin"), create);
