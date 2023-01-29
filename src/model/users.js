@@ -155,7 +155,8 @@ const deleteAccount = (token) => {
 const getUsers = (queryParams, url) => {
   return new Promise((resolve, reject) => {
     let query =
-      "select id, email, phone_number, role, created_at, updated_at from users order by id asc";
+      // "select id, email, phone_number, role, created_at, updated_at from users where like 'customer' order by id asc";
+      "select id, email, phone_number, role, created_at, updated_at from users where role like 'Customer' order by id asc";
 
     let link = `${url}/users?`;
 
@@ -176,7 +177,7 @@ const getUsers = (queryParams, url) => {
         if (error) {
           return reject(error);
         }
-        if (queryResult.rows.length == 0)
+        if (queryResult.rows.length === 0)
           return reject(new Error("User Not Found"));
         let nextRes = null;
         let prevRes = null;
