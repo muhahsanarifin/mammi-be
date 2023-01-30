@@ -13,13 +13,17 @@ const getTransactions = (queryParams, url) => {
       link += `status=${queryParams.status}&`;
 
       if (queryParams.customer) {
-        query = `select u.id , t.tax, pay.method, d.method, pro.discount, t.notes, t.status, t.total, prod.product_name, prod.image, s.size, t.qty, t.subtotal from transactions t left join users u on user_id = u.id left join products prod on product_id = prod.id left join payments pay on payment_id = pay.id left join deliveries d on delivery_id = d.id left join promos pro on promo_id = pro.id left join sizes s on size_id = s.id where u.id = ${queryParams.customer}`;
+        query += ` and lower(t.status) like lower('%${queryParams.status}%')`;
       }
     }
 
     if (queryParams.customer) {
       query = `select u.id , t.tax, pay.method, d.method, pro.discount, t.notes, t.status, t.total, prod.product_name, prod.image, s.size, t.qty, t.subtotal from transactions t left join users u on user_id = u.id left join products prod on product_id = prod.id left join payments pay on payment_id = pay.id left join deliveries d on delivery_id = d.id left join promos pro on promo_id = pro.id left join sizes s on size_id = s.id where u.id = ${queryParams.customer}`;
       link += `customer=${queryParams.customer}`;
+
+      if (queryParams.status) {
+        query += ` and lower(t.status) like lower('%${queryParams.status}%')`;
+      }
     }
 
     let queryLimit = "";
@@ -36,7 +40,15 @@ const getTransactions = (queryParams, url) => {
     }
 
     postgreDatabase.query(query, (error, result) => {
-      console.log(result);
+      console.log("Result: ", result);
+      if (error) {
+        return reject(error);
+      }
+      if (result.rows.length === 0)
+        return reject({
+          error: new Error("Product Not Found"),
+          statusCode: 404,
+        });
       postgreDatabase.query(queryLimit, values, (error, queryResult) => {
         console.log(queryLimit);
         console.log(values);

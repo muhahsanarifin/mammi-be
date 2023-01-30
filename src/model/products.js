@@ -138,6 +138,11 @@ const getProducts = (queryParams, url) => {
       if (error) {
         return reject(error);
       }
+      if (result.rows.length === 0)
+        return reject({
+          error: new Error("Product Not Found"),
+          statusCode: 404,
+        });
       console.log(result);
       postgreDatabase.query(queryLimit, values, (error, queryResult) => {
         if (error) {
