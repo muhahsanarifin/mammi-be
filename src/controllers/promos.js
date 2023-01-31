@@ -64,7 +64,7 @@ const promosController = {
       const response = await dropPromos(req.params);
       console.log(response);
       res.status(200).json({
-        msg: `Promo updated successfully`,
+        msg: `Promo delete successfully`,
       });
     } catch (error) {
       console.log(error);
