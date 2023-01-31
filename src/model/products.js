@@ -216,9 +216,10 @@ const createProducts = (body, file) => {
   return new Promise((resolve, reject) => {
     const query =
       "insert into products (product_name, price, category_id, image, created_at, updated_at, description, stock) values ($1,$2,$3,$4,$5,$6,$7,$8) returning *";
-    const { product_name, price, category_id, description, stock } = body;
+    const { product_name, price, category_id, image, description, stock } =
+      body;
 
-    const imageURL = file.secure_url;
+    let imageURL = file.secure_url;
 
     let date = new Date();
     let day = ("0" + date.getDate()).slice(-2);
@@ -234,9 +235,9 @@ const createProducts = (body, file) => {
       product_name,
       price,
       category_id,
-      currentDate,
-      currentDate,
       imageURL,
+      currentDate,
+      currentDate,
       description,
       stock,
     ];
