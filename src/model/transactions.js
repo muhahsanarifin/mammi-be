@@ -117,6 +117,19 @@ const getHistory = (token) => {
   });
 };
 
+const getDataDashboard = () => {
+  return new Promise((resolve, reject) => {
+    const query = "select subtotal, updated_at from transactions";
+
+    postgreDatabase.query(query, (error, result) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 const createTransactions = (body, token) => {
   return new Promise((resolve, reject) => {
     const query =
@@ -293,6 +306,7 @@ const updateStatusTransactions = (status, params) => {
 const transactionsModel = {
   getTransactions,
   getHistory,
+  getDataDashboard,
   createTransactions,
   editTransactions,
   dropTransactions,

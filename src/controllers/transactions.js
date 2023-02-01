@@ -4,6 +4,7 @@ const {
   getTransactions,
   createTransactions,
   getHistory,
+  getDataDashboard,
   editTransactions,
   dropTransactions,
   updateStatusTransactions,
@@ -26,6 +27,19 @@ const transactionsController = {
       const response = await getHistory(req.userPayload.id); // ⇦ request userPayload
       res.status(200).json({
         result: response.rows,
+      });
+    } catch (error) {
+      res.status(500).json({
+        msg: "Internal Server Error",
+      });
+    }
+  },
+
+  dataDashboard: async (req, res) => {
+    try {
+      const response = await getDataDashboard();
+      res.status(200).json({
+        data: response.rows,
       });
     } catch (error) {
       res.status(500).json({

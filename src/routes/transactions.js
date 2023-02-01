@@ -9,6 +9,7 @@ const {
   edit,
   drop,
   updateStatus,
+  dataDashboard,
 } = require("../controllers/transactions");
 
 const isLogin = require("../middlewares/isLogin");
@@ -17,6 +18,14 @@ const allowedRoles = require("../middlewares/allowedRoles");
 
 // TODO: GET transaction
 transactionsRouter.get("/", isLogin(), allowedRoles("Admin"), get);
+
+// TODO: GET transaction for data dashboard
+transactionsRouter.get(
+  "/data/dashboard",
+  isLogin(),
+  allowedRoles("Admin"),
+  dataDashboard
+);
 
 // TODO: POST transaction
 transactionsRouter.post("/create", isLogin(), create);
