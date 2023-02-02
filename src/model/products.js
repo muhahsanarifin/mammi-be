@@ -76,23 +76,23 @@ const getProducts = (queryParams, url) => {
 
     // Category Products
     if (queryParams.category) {
-      query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%')`;
+      query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where c.category_name = '${queryParams.category}'`;
       link += `category=${queryParams.category}&`;
 
       if (queryParams.post === "latest") {
-        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%') order by p.created_at desc`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where c.category_name = '${queryParams.category}' order by p.created_at desc`;
       }
 
       if (queryParams.post === "oldest") {
-        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%') order by p.created_at asc`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where c.category_name = '${queryParams.category}' order by p.created_at asc`;
       }
 
       if (queryParams.price === "low") {
-        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%') order by p.price asc`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where c.category_name = '${queryParams.category}' order by p.price asc`;
       }
 
       if (queryParams.price === "expensive") {
-        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where lower(c.category_name) like lower('%${queryParams.category}%') order by p.price desc`;
+        query = `select p.id, p.product_name, p.price, c.category_name, p.image, p.created_at, p.updated_at, p.description, p.stock from products p left join categories c on p.category_id = c.id where c.category_name = '${queryParams.category}' order by p.price desc`;
       }
     }
 
@@ -143,7 +143,8 @@ const getProducts = (queryParams, url) => {
           error: new Error("Product Not Found"),
           statusCode: 404,
         });
-      console.log(result);
+      // console.log("Result: ", result.rows.length);
+      // console.log(query);
       postgreDatabase.query(queryLimit, values, (error, queryResult) => {
         if (error) {
           return reject(error);
