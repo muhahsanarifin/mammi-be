@@ -13,9 +13,8 @@ const {
 const transactionsController = {
   get: async (req, res) => {
     try {
-      const url = `${req.protocol === "https" || req.protocol}://${
-        req.hostname
-      }/api/v1`;
+      const url = `https://${req.hostname}/api/v1`;
+      // const url = `${req.protocol}://${req.hostname}/api/v1`;
       const response = await getTransactions(req.query, url);
       success(res, 200, response);
     } catch (objErr) {

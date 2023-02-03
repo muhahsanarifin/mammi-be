@@ -11,8 +11,8 @@ const {
 const productController = {
   gets: async (req, res) => {
     try {
-      const url = `${req.protocol === "https"}://${req.hostname}/api/v1`;
-      // const url = `${req.protocol === "https" || req.protocol}://${
+      const url = `https://${req.hostname}/api/v1`;
+      // const url = `${req.protocol}://${
       //   req.hostname
       // }/api/v1`;
       // console.log(req.hostname);
