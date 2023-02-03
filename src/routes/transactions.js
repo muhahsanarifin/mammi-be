@@ -1,5 +1,4 @@
 const express = require("express");
-var cors = require("cors");
 const transactionsRouter = express.Router();
 
 const {
@@ -17,7 +16,7 @@ const allowedRoles = require("../middlewares/allowedRoles");
 // const validate = require("../middlewares/validate");
 
 // TODO: GET transaction
-transactionsRouter.get("/", isLogin(), allowedRoles("Admin"), cors(), get);
+transactionsRouter.get("/", isLogin(), allowedRoles("Admin"), get);
 
 // TODO: GET transaction for data dashboard
 transactionsRouter.get(
