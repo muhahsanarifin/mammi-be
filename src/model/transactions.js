@@ -46,17 +46,20 @@ const getTransactions = (queryParams, url) => {
       }
       if (result.rows.length === 0)
         return reject({
-          error: new Error("Product Not Found"),
+          error: new Error("Transaction Not Found"),
           statusCode: 404,
         });
       postgreDatabase.query(queryLimit, values, (error, queryResult) => {
-        console.log(queryLimit);
-        console.log(values);
+        // console.log(queryLimit);
+        // console.log(values);
         if (error) {
           return reject(error);
         }
         if (queryResult.rows.length === 0)
-          return reject(new Error("Transaction Not Found"));
+          return reject({
+            error: new Error("Transaction Not Found"),
+            statusCode: 404,
+          });
         let nextRes = null;
         let prevRes = null;
         if (queryParams.page && queryParams.limit) {
@@ -102,17 +105,91 @@ const getTransactions = (queryParams, url) => {
   });
 };
 
-const getHistory = (token) => {
+const getHistory = (token, queryParams, url) => {
   return new Promise((resolve, reject) => {
-    const query =
+    let query =
       "select p.product_name, p.price, p.image, t.notes, t.status from transactions t left join users u on t.user_id = u.id left join products p on t.product_id = p.id where user_id = $1";
 
+    let link = `${url}/transactions/history?`;
+
+    let queryLimit = "";
+    let values = [];
+
+    if (queryParams.page && queryParams.limit) {
+      let page = Number(queryParams.page);
+      let limit = Number(queryParams.limit);
+      let offset = (page - 1) * limit;
+      queryLimit = query + ` limit $2 offset $3`;
+      values.push(token, limit, offset);
+    } else {
+      queryLimit = query;
+      values.push(token);
+    }
+
     postgreDatabase.query(query, [token], (error, result) => {
+      // console.log("Query: ", query);
+      // console.log("Result: ", result);
       if (error) {
-        console.log(error);
         return reject(error);
       }
-      return resolve(result);
+      if (result.rows.length === 0)
+        return reject({
+          error: new Error("History Not Found"),
+          statusCode: 404,
+        });
+      postgreDatabase.query(queryLimit, values, (error, queryResult) => {
+        // console.log(queryLimit);
+        // console.log("Result value: ", values);
+        // console.log("Query Result: ", queryResult);
+        if (error) {
+          return reject(error);
+        }
+        if (queryResult.rows.length === 0)
+          return reject({
+            error: new Error("History Not Found"),
+            statusCode: 404,
+          });
+        let nextRes = null;
+        let prevRes = null;
+        if (queryParams.page && queryParams.limit) {
+          let page = parseInt(queryParams.page);
+          let limit = parseInt(queryParams.limit);
+          let start = (page - 1) * limit;
+          let end = page * limit;
+          let next = "";
+          let prev = "";
+          // console.log(queryResult);
+          const nextData = Math.ceil(result.rowCount / limit);
+          if (start <= result.rowCount) {
+            next = page + 1;
+          }
+          if (end > 0) {
+            prev = page - 1;
+          }
+          if (parseInt(next) <= parseInt(nextData)) {
+            nextRes = `${link}page=${next}&limit=${limit}`;
+          }
+          if (parseInt(prev) !== 0) {
+            prevRes = `${link}page=${prev}&limit=${limit}`;
+          }
+          let sendResponse = {
+            dataCount: result.rowCount,
+            next: nextRes,
+            previous: prevRes,
+            totalPages: Math.ceil(result.rowCount / limit),
+            data: queryResult.rows,
+          };
+          return resolve(sendResponse);
+        }
+        let sendResponse = {
+          dataCount: result.rowCount,
+          next: nextRes,
+          previous: prevRes,
+          totalPages: null,
+          data: queryResult.rows,
+        };
+        return resolve(sendResponse);
+      });
     });
   });
 };

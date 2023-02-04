@@ -19,20 +19,22 @@ const transactionsController = {
       success(res, 200, response);
     } catch (objErr) {
       const statusCode = objErr.statusCode || 500;
-      error(res, statusCode, { msg: objErr.error.message });
+      error(res, statusCode, { msg: objErr.error?.message });
     }
   },
 
   history: async (req, res) => {
     try {
-      const response = await getHistory(req.userPayload.id); // ⇦ request userPayload
-      res.status(200).json({
-        result: response.rows,
-      });
-    } catch (error) {
-      res.status(500).json({
-        msg: "Internal Server Error",
-      });
+      const url = `https://${req.hostname}/api/v1`;
+      // const url = `${req.protocol}://${req.hostname}/api/v1`;
+      const response = await getHistory(req.userPayload.id, req.query, url); // ⇦ request userPayload
+      // res.status(200).json({
+      //   result: response,
+      // });
+      success(res, 200, response);
+    } catch (objErr) {
+      const statusCode = objErr.statusCode || 500;
+      error(res, statusCode, { msg: objErr.error?.message });
     }
   },
 
