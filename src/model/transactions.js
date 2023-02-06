@@ -19,7 +19,7 @@ const getTransactions = (queryParams, url) => {
 
     if (queryParams.customer) {
       query = `select t.id, t.user_id, u.email, t.tax, pay.method, d.method, pro.discount, t.notes, t.status, t.total, prod.product_name, prod.image, s.size, t.qty, t.subtotal from transactions t left join users u on user_id = u.id left join products prod on product_id = prod.id left join payments pay on payment_id = pay.id left join deliveries d on delivery_id = d.id left join promos pro on promo_id = pro.id left join sizes s on size_id = s.id where t.user_id = ${queryParams.customer}`;
-      link += `customer=${queryParams.customer}`;
+      link += `customer=${queryParams.customer}&`;
 
       if (queryParams.status) {
         query += ` and lower(t.status) like lower('%${queryParams.status}%')`;
